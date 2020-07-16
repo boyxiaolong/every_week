@@ -218,7 +218,7 @@ client *createClient(connection *conn) {
     c->name = NULL;
     connNonBlock(conn);
     connEnableTcpNoDelay(conn);
-    //设置可读回调
+    //将conn和读函数readQueryFromClient设置到event_loop上
     connSetReadHandler(conn, readQueryFromClient);
     connSetPrivateData(conn, c);
 	//将client放在全局clients链表中
@@ -227,7 +227,7 @@ client *createClient(connection *conn) {
 }
 ```
 
-一旦有来自客户端的命令，就会触发`readQueryFromClient`,接收client数据并解析：
+一旦有来自客户端的命令，就会触发`aeProcessEvents` 调用对应fd上绑定的读回调`readQueryFromClient`,接收client数据并解析：
 
 ```c
 void readQueryFromClient(connection *conn) {
