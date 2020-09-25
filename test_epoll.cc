@@ -44,7 +44,13 @@ class Socket
 
         void process_data()
         {
-            printf("get data length %d\n", cur_pos);
+            //just f test
+            if (get_left_length() > 0)
+            {
+                *(buf_+cur_pos+1) = '/0';
+            }
+            
+            printf("get data length %d data:%s\n", cur_pos, buf_);
             cur_pos = 0;
         }
 
