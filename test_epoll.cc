@@ -8,10 +8,58 @@
 #include "unistd.h"
 #include <fcntl.h>
 #include <errno.h>
+#include <map>
 
 #define max_events 100
 #define max_buff 1024
 #define SERVER_PORT 9999
+
+class Socket
+{
+    public:
+        Socket(int fd):fd_(fd)
+        , max_length(1024)
+        , cur_pos(0)
+        {
+            buf_ = new char[max_length];
+        }
+        ~Socket()
+        {
+            if (NULL != buf_)
+            {
+                delete []buf_;
+            }
+            printf("fd %d dtor\n", fd_);
+        }
+        
+        char* get_data()
+        {
+            return buf_+cur_pos;
+        }
+
+        int get_left_length()
+        {
+            return max_length-cur_pos;
+        }
+
+        void process_data()
+        {
+            printf("get data length %d\n", cur_pos);
+            cur_pos = 0;
+        }
+
+        void add_pos(int length)
+        {
+            cur_pos += length;
+        }   
+
+    private:
+        int fd_;
+        int state_;
+        char* buf_;
+        int max_length;
+        int cur_pos;
+};
 
 int main()
 {
@@ -23,10 +71,11 @@ int main()
     }
     
     int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (listen_sock < 1) {
-	perror("socket create");
-	exit(-1);    
-}
+    if (listen_sock < 1) 
+    {
+        perror("socket create");
+        exit(-1);    
+    }
     struct sockaddr_in serv_addr;
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -58,6 +107,9 @@ int main()
         perror("epoll_ctl");
         exit(-1);
     }
+
+    typedef std::map<int, Socket*> socket_map;
+    socket_map socket_map_;
     
     struct epoll_event events[max_events];
     while (true)
@@ -97,15 +149,24 @@ int main()
                     perror("epoll add clientfd");
                     exit(-1);
                 }
+                Socket* ps = new Socket(new_socket);
+                socket_map_.insert(std::make_pair(new_socket, ps));
             }
             else
             {
-                char buf[max_buff];
+                socket_map::iterator iter = socket_map_.find(cur_fd);
+                if (iter == socket_map_.end())
+                {
+                    printf("can find fd %d socket data\n");
+                    continue;
+                }
+                
+                Socket* ps = iter->second;
                 int readn = 0;
                 bool is_read_error = false;
                 while (true)
                 {
-                    int nread = read(cur_fd, buf + readn, max_buff-readn);
+                    int nread = read(cur_fd, ps->get_data(), ps->get_left_length());
                     if (nread < 0)
                     {
                         if (errno == EAGAIN)
@@ -116,6 +177,9 @@ int main()
                         
                         epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_fd, NULL);
                         printf("delete fd:%d\n", cur_fd);
+                        socket_map_.erase(iter);
+                        delete ps;
+                        ps = NULL;
                         is_read_error = true;
                         break;
                     }
@@ -125,6 +189,9 @@ int main()
                         {
                             epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_fd, NULL);
                             printf("delete fd:%d client close socket\n", cur_fd);
+                            socket_map_.erase(iter);
+                            delete ps;
+                            ps = NULL;
                         }
                         else
                         {
@@ -134,6 +201,7 @@ int main()
                         break;
                     }
                     
+                    ps->add_pos(nread);
                     readn += nread;
                     printf("readnum:%d\n", nread);
                 }
@@ -144,8 +212,10 @@ int main()
                     continue;
                 }
                 
-                buf[readn] = '\0';
-                printf("client fd:%d readn:%d read %s\n", cur_fd, readn, buf);
+                if (ps)
+                {
+                    ps->process_data();
+                }
 	        }
         }
     }
