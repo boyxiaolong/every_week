@@ -6,6 +6,8 @@
 #include "netinet/in.h"
 #include "string.h"
 #include "unistd.h"
+#include <fcntl.h>
+#include <errno.h>
 
 #define max_events 100
 #define max_buff 1024
@@ -71,7 +73,8 @@ int main()
         for (size_t i = 0; i < nfds; i++)
         {
             epoll_event& cur_ev = events[i];
-            if (cur_ev.data.fd == listen_sock)
+            int cur_fd = cur_ev.data.fd;
+            if (cur_fd == listen_sock)
             {
                 /* code */
                 struct sockaddr_in client_addr;
@@ -82,6 +85,9 @@ int main()
                     perror("accept");
                     exit(-1);
                 }
+                int flags = fcntl(new_socket, F_GETFL);
+                flags |= O_NONBLOCK;
+                fcntl(new_socket, F_SETFL, flags);
                 printf("accept new socket %d and addto epoll\n", new_socket);
                 struct epoll_event client_ev;
                 client_ev.events = EPOLLIN;
@@ -99,15 +105,32 @@ int main()
                 bool is_read_error = false;
                 while (true)
                 {
-                    int nread = read(cur_ev.data.fd, buf + readn, max_buff-readn);
-                    if (nread == -1){
-                        epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_ev.data.fd, NULL);
-                        printf("delete fd:%d\n", cur_ev.data.fd);
+                    int nread = read(cur_fd, buf + readn, max_buff-readn);
+                    if (nread < 0)
+                    {
+                        if (errno == EAGAIN)
+                        {
+                            printf("fd %d read end!", cur_fd);
+                            break;
+                        }
+                        
+                        epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_fd, NULL);
+                        printf("delete fd:%d\n", cur_fd);
                         is_read_error = true;
                         break;
                     }
                     if (nread == 0)
                     {
+                        if (readn == 0)
+                        {
+                            epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_fd, NULL);
+                            printf("delete fd:%d client close socket\n", cur_fd);
+                        }
+                        else
+                        {
+                            printf("readnum 0 so read end");
+                        }
+                        
                         break;
                     }
                     
@@ -122,7 +145,7 @@ int main()
                 }
                 
                 buf[readn] = '\0';
-                printf("client fd:%d readn:%d read %s\n", cur_ev.data.fd, readn, buf);
+                printf("client fd:%d readn:%d read %s\n", cur_fd, readn, buf);
 	        }
         }
     }
