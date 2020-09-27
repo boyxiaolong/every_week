@@ -67,6 +67,13 @@ class Socket
         int cur_pos;
 };
 
+void set_sock_noblock(int& sock)
+{
+    int flags = fcntl(sock, F_GETFL);
+    flags |= O_NONBLOCK;
+    fcntl(sock, F_SETFL, flags);
+}
+
 int main()
 {
     fd_set rfds;
@@ -83,6 +90,8 @@ int main()
         perror("socket create");
         exit(-1);    
     }
+
+    set_sock_noblock(listen_sock);
     struct sockaddr_in serv_addr;
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -115,13 +124,13 @@ int main()
     typedef std::map<int, Socket*> socket_map;
     socket_map socket_map_;
     
-    fd_set working_set;
     while (true)
     {
-	    
+	    fd_set working_set;
         printf("begin select max_fd %d\n", max_fd);
-        //memcpy(&working_set, &rfds, sizeof(rfds));
-        int rc = select(max_fd+1, &rfds, NULL, NULL, NULL);
+        FD_ZERO(&working_set);
+        memcpy(&working_set, &rfds, sizeof(fd_set));
+        int rc = select(max_fd+1, &working_set, NULL, NULL, NULL);
         if (rc < 0)
         {
             perror("select fail");
@@ -145,7 +154,6 @@ int main()
             }
 
             printf("cur fd:%d\n", i);
-            --total_events;
             int cur_fd = i;
             if (cur_fd == listen_sock)
             {
@@ -155,12 +163,17 @@ int main()
                 int new_socket = accept(listen_sock, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
                 if (new_socket < 0)
                 {
+                    if (errno == EAGAIN)
+                    {
+                        printf("fd %d acceptc nonblock!", cur_fd);
+                        continue;
+                    }
                     perror("accept");
                     exit(-1);
                 }
-                int flags = fcntl(new_socket, F_GETFL);
-                flags |= O_NONBLOCK;
-                fcntl(new_socket, F_SETFL, flags);
+
+                --total_events;
+                set_sock_noblock(new_socket);
                 printf("accept new socket %d and addto select\n", new_socket);
                 FD_SET(new_socket, &rfds);
                 if (new_socket > max_fd)
@@ -236,6 +249,7 @@ int main()
                 
                 if (ps)
                 {
+                    --total_events;
                     ps->process_data();
                 }
 	        }
