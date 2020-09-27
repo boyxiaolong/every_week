@@ -118,9 +118,10 @@ int main()
     fd_set working_set;
     while (true)
     {
-	    printf("begin select\n");
-        memcpy(&working_set, &rfds, sizeof(rfds));
-        int rc = select(max_fd+1, &working_set, NULL, NULL, NULL);
+	    
+        printf("begin select max_fd %d\n", max_fd);
+        //memcpy(&working_set, &rfds, sizeof(rfds));
+        int rc = select(max_fd+1, &rfds, NULL, NULL, NULL);
         if (rc < 0)
         {
             perror("select fail");
