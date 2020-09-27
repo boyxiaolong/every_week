@@ -147,12 +147,13 @@ int main()
 	    printf("get select data %d max_fd %d total_events %d \n", rc, max_fd, total_events);
         for (size_t i = 0; i <= max_fd && total_events > 0; i++)
         {
-            if (!FD_ISSET(i, &rfds))
+            if (!FD_ISSET(i, &working_set))
             {
                 printf("i:%d not set\n", i);
                 continue;                
             }
 
+            --total_events;
             printf("cur fd:%d\n", i);
             int cur_fd = i;
             if (cur_fd == listen_sock)
@@ -172,7 +173,7 @@ int main()
                     exit(-1);
                 }
 
-                --total_events;
+                
                 set_sock_noblock(new_socket);
                 printf("accept new socket %d and addto select\n", new_socket);
                 FD_SET(new_socket, &rfds);
@@ -249,7 +250,6 @@ int main()
                 
                 if (ps)
                 {
-                    --total_events;
                     ps->process_data();
                 }
 	        }
