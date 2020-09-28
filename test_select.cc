@@ -158,33 +158,34 @@ int main()
             int cur_fd = i;
             if (cur_fd == listen_sock)
             {
-                /* code */
-                struct sockaddr_in client_addr;
-                int addrlen = 0;
-                int new_socket = accept(listen_sock, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
-                if (new_socket < 0)
+                do
                 {
-                    if (errno == EAGAIN)
+                    struct sockaddr_in client_addr;
+                    int addrlen = 0;
+                    int new_socket = accept(listen_sock, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
+                    if (new_socket < 0)
                     {
-                        printf("fd %d acceptc nonblock!", cur_fd);
-                        continue;
+                        if (errno == EAGAIN)
+                        {
+                            printf("fd %d acceptc nonblock!", cur_fd);
+                            break;
+                        }
+                        perror("accept");
+                        exit(-1);
                     }
-                    perror("accept");
-                    exit(-1);
-                }
 
-                
-                set_sock_noblock(new_socket);
-                printf("accept new socket %d and addto select\n", new_socket);
-                FD_SET(new_socket, &rfds);
-                if (new_socket > max_fd)
-                {
-                    max_fd = new_socket;
-                    printf("max_fd is %d\n", max_fd);
-                }
-                
-                Socket* ps = new Socket(new_socket);
-                socket_map_.insert(std::make_pair(new_socket, ps));
+                    set_sock_noblock(new_socket);
+                    printf("accept new socket %d and addto select\n", new_socket);
+                    FD_SET(new_socket, &rfds);
+                    if (new_socket > max_fd)
+                    {
+                        max_fd = new_socket;
+                        printf("max_fd is %d\n", max_fd);
+                    }
+                    
+                    Socket* ps = new Socket(new_socket);
+                    socket_map_.insert(std::make_pair(new_socket, ps));
+                } while (true);
             }
             else
             {
@@ -255,4 +256,5 @@ int main()
 	        }
         }
     }
+ 
 }
