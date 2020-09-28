@@ -67,6 +67,13 @@ class Socket
         int cur_pos;
 };
 
+void set_sock_noblock(int& sock)
+{
+    int flags = fcntl(sock, F_GETFL);
+    flags |= O_NONBLOCK;
+    fcntl(sock, F_SETFL, flags);
+}
+
 int main()
 {
     int epoll_fd = epoll_create(max_events);
@@ -82,6 +89,8 @@ int main()
         perror("socket create");
         exit(-1);    
     }
+
+    set_sock_noblock(listen_sock);
     struct sockaddr_in serv_addr;
     memset(&serv_addr, 0, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
@@ -134,29 +143,34 @@ int main()
             int cur_fd = cur_ev.data.fd;
             if (cur_fd == listen_sock)
             {
-                /* code */
-                struct sockaddr_in client_addr;
-                int addrlen = 0;
-                int new_socket = accept(listen_sock, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
-                if (new_socket < 0)
+                do
                 {
-                    perror("accept");
-                    exit(-1);
-                }
-                int flags = fcntl(new_socket, F_GETFL);
-                flags |= O_NONBLOCK;
-                fcntl(new_socket, F_SETFL, flags);
-                printf("accept new socket %d and addto epoll\n", new_socket);
-                struct epoll_event client_ev;
-                client_ev.events = EPOLLIN;
-                client_ev.data.fd = new_socket;
-                if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &client_ev) < 0)
-                {
-                    perror("epoll add clientfd");
-                    exit(-1);
-                }
-                Socket* ps = new Socket(new_socket);
-                socket_map_.insert(std::make_pair(new_socket, ps));
+                    struct sockaddr_in client_addr;
+                    int addrlen = 0;
+                    int new_socket = accept(listen_sock, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
+                    if (new_socket < 0)
+                    {
+                        if (errno == EAGAIN)
+                        {
+                            printf("fd %d acceptc nonblock!", cur_fd);
+                            break;
+                        }
+                        perror("accept");
+                        exit(-1);
+                    }
+                    set_sock_noblock(new_socket);
+                    printf("accept new socket %d and addto epoll\n", new_socket);
+                    struct epoll_event client_ev;
+                    client_ev.events = EPOLLIN;
+                    client_ev.data.fd = new_socket;
+                    if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &client_ev) < 0)
+                    {
+                        perror("epoll add clientfd");
+                        exit(-1);
+                    }
+                    Socket* ps = new Socket(new_socket);
+                    socket_map_.insert(std::make_pair(new_socket, ps));
+                } while (true);
             }
             else
             {
