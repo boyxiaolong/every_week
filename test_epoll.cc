@@ -47,7 +47,7 @@ class Socket
             //just f test
             if (get_left_length() > 0)
             {
-                *(buf_+cur_pos+1) = '/0';
+                *(buf_+cur_pos+1) = '\0';
             }
             
             printf("get data length %d data:%s\n", cur_pos, buf_);
@@ -57,7 +57,52 @@ class Socket
         void add_pos(int length)
         {
             cur_pos += length;
-        }   
+        }
+
+        int read_data(){
+            int readn = 0;
+            bool is_read_error = false;
+            while (true)
+            {
+                int nread = read(fd_, get_data(), get_left_length());
+                if (nread < 0)
+                {
+                    if (errno == EAGAIN)
+                    {
+                        printf("fd %d read end!", fd_);
+                        break;
+                    }
+                    
+                    is_read_error = true;
+                    break;
+                }
+                if (nread == 0)
+                {
+                    if (readn == 0)
+                    {
+                        is_read_error = true;
+                    }
+                    else
+                    {
+                        printf("readnum 0 so read end");
+                    }
+                    
+                    break;
+                }
+                
+                add_pos(nread);
+                readn += nread;
+                printf("readnum:%d\n", nread);
+            }
+                        
+            if (is_read_error)
+            {
+                printf("is_read_error\n");
+                return -1;
+            }
+
+            process_data();
+        }
 
     private:
         int fd_;
@@ -67,12 +112,174 @@ class Socket
         int cur_pos;
 };
 
-void set_sock_noblock(int& sock)
+class Server
 {
-    int flags = fcntl(sock, F_GETFL);
-    flags |= O_NONBLOCK;
-    fcntl(sock, F_SETFL, flags);
-}
+    public:
+        typedef std::map<int, Socket*> socket_map;
+        Server(int ae_fd):ae_fd_(ae_fd){}
+        ~Server(){
+
+        }
+        virtual int create_server_sock(){
+            listen_fd_ = socket(AF_INET, SOCK_STREAM, 0);
+            if (listen_fd_ < 1) 
+            {
+                perror("socket create");
+                return -1;    
+            }
+
+            set_sock_noblock(listen_fd_);
+            struct sockaddr_in serv_addr;
+            memset(&serv_addr, 0, sizeof(serv_addr));
+            serv_addr.sin_family = AF_INET;
+            serv_addr.sin_port = htons (SERVER_PORT);
+            serv_addr.sin_addr.s_addr = htonl (INADDR_ANY);
+            
+            printf("begin bind\n");
+            int ret = bind(listen_fd_, (struct sockaddr *) (&serv_addr), sizeof(serv_addr));
+            if (ret < 0)
+            {
+                perror("bind");
+                return -1;
+            }
+            printf("bind success\n");
+            
+            ret = listen(listen_fd_, max_events);
+            if (ret < 0)
+            {
+                perror("listen");
+                return -1;
+            }
+            printf("listen success %d\n", listen_fd_);
+
+            struct epoll_event ev;
+            ev.events = EPOLLIN;
+            ev.data.fd = listen_fd_;
+            if (epoll_ctl(ae_fd_, EPOLL_CTL_ADD, listen_fd_, &ev) < 0)
+            {
+                perror("epoll_ctl");
+                return -1;
+            }
+        }
+
+        virtual int ae_accept(){
+            printf("begin ae_accept\n");
+            int res = 0;
+            do
+            {
+                struct sockaddr_in client_addr;
+                int addrlen = 0;
+                int new_socket = accept(listen_fd_, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
+                if (new_socket < 0)
+                {
+                    if (errno == EAGAIN)
+                    {
+                        printf("fd %d acceptc nonblock!", ae_fd_);
+                        break;
+                    }
+                    res = -1;
+                    break;
+                }
+                set_sock_noblock(new_socket);
+                struct epoll_event client_ev;
+                client_ev.events = EPOLLIN;
+                client_ev.data.fd = new_socket;
+                if (epoll_ctl(ae_fd_, EPOLL_CTL_ADD, new_socket, &client_ev) < 0)
+                {
+                    res = -1;
+                    break;
+                }
+                printf("accept new socket %d and addto epoll\n", new_socket);
+                Socket* ps = new Socket(new_socket);
+                socket_map_.insert(std::make_pair(new_socket, ps));
+            } while (true);
+            printf("end ae_accept\n");
+            return res;
+        }
+
+        void set_sock_noblock(int& sock)
+        {
+            int flags = fcntl(sock, F_GETFL);
+            flags |= O_NONBLOCK;
+            fcntl(sock, F_SETFL, flags);
+        }
+
+        Socket* get_sock_ps(int cur_fd){
+            socket_map::iterator iter = socket_map_.find(cur_fd);
+            if (iter == socket_map_.end())
+            {
+                return NULL;
+            }
+
+            return iter->second;
+        }
+
+        virtual void rm_client_sock(int cur_fd){
+            socket_map::iterator iter = socket_map_.find(cur_fd);
+            if (iter == socket_map_.end())
+            {
+                return;
+            }
+            
+            Socket* ps = iter->second;
+            if (ps)
+            {
+                delete ps;
+            }
+            socket_map_.erase(iter);
+
+            epoll_ctl(ae_fd_, EPOLL_CTL_DEL, cur_fd, NULL);
+            printf("delete fd:%d client close socket\n", cur_fd);
+        }
+
+        virtual int ae_poll(){
+            struct epoll_event events[max_events];
+            while (true)
+            {
+                printf("begin epoll\n");
+                int nfds = epoll_wait(ae_fd_, events, max_events, -1);
+                if (nfds == -1)
+                {
+                    if (errno == EINTR)
+                    {
+                        continue;
+                    }
+                    
+                    perror("wait");
+                    exit(-1);
+                }
+                printf("get epoll data %d\n", nfds);
+                for (size_t i = 0; i < nfds; i++)
+                {
+                    epoll_event& cur_ev = events[i];
+                    int cur_fd = cur_ev.data.fd;
+                    printf("epoll cur_fd %d\n", cur_fd);
+                    if (cur_fd == listen_fd_)
+                    {
+                        ae_accept();
+                    }
+                    else
+                    {
+                        Socket* ps = get_sock_ps(cur_fd);
+                        if (NULL == ps)
+                        {
+                            continue;
+                        }
+                        int res = ps->read_data();
+                        if (res < 0)
+                        {
+                            rm_client_sock(cur_fd);
+                        }
+                    }
+                }
+            }
+        }
+    private:
+        int ae_fd_;
+        int listen_fd_;
+            
+        socket_map socket_map_;
+};
 
 int main()
 {
@@ -83,161 +290,13 @@ int main()
         exit(-1);
     }
     
-    int listen_sock = socket(AF_INET, SOCK_STREAM, 0);
-    if (listen_sock < 1) 
+    Server ser(epoll_fd);
+    int res = ser.create_server_sock();
+    if (res < 0)
     {
-        perror("socket create");
-        exit(-1);    
+        printf("create error\n");
+        return res;
     }
 
-    set_sock_noblock(listen_sock);
-    struct sockaddr_in serv_addr;
-    memset(&serv_addr, 0, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons (SERVER_PORT);
-    serv_addr.sin_addr.s_addr = htonl (INADDR_ANY);
-    
-    printf("begin bind\n");
-    int ret = bind(listen_sock, (struct sockaddr *) (&serv_addr), sizeof(serv_addr));
-    if (ret < 0)
-    {
-        perror("bind");
-        exit(-1);
-    }
-    printf("bind success\n");
-	
-    ret = listen(listen_sock, max_events);
-    if (ret < 0)
-    {
-        perror("listen");
-        exit(-1);
-    }
-    printf("listen success\n");
-
-    struct epoll_event ev;
-    ev.events = EPOLLIN;
-    ev.data.fd = listen_sock;
-    if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, listen_sock, &ev) < 0)
-    {
-        perror("epoll_ctl");
-        exit(-1);
-    }
-
-    typedef std::map<int, Socket*> socket_map;
-    socket_map socket_map_;
-    
-    struct epoll_event events[max_events];
-    while (true)
-    {
-	    printf("begin epoll\n");
-        int nfds = epoll_wait(epoll_fd, events, max_events, -1);
-        if (nfds == -1)
-        {
-            perror("wait");
-            exit(-1);
-        }
-	    printf("get epoll data %d\n", nfds);
-        for (size_t i = 0; i < nfds; i++)
-        {
-            epoll_event& cur_ev = events[i];
-            int cur_fd = cur_ev.data.fd;
-            if (cur_fd == listen_sock)
-            {
-                do
-                {
-                    struct sockaddr_in client_addr;
-                    int addrlen = 0;
-                    int new_socket = accept(listen_sock, (struct sockaddr *)&client_addr,(socklen_t*)&addrlen);
-                    if (new_socket < 0)
-                    {
-                        if (errno == EAGAIN)
-                        {
-                            printf("fd %d acceptc nonblock!", cur_fd);
-                            break;
-                        }
-                        perror("accept");
-                        exit(-1);
-                    }
-                    set_sock_noblock(new_socket);
-                    printf("accept new socket %d and addto epoll\n", new_socket);
-                    struct epoll_event client_ev;
-                    client_ev.events = EPOLLIN;
-                    client_ev.data.fd = new_socket;
-                    if (epoll_ctl(epoll_fd, EPOLL_CTL_ADD, new_socket, &client_ev) < 0)
-                    {
-                        perror("epoll add clientfd");
-                        exit(-1);
-                    }
-                    Socket* ps = new Socket(new_socket);
-                    socket_map_.insert(std::make_pair(new_socket, ps));
-                } while (true);
-            }
-            else
-            {
-                socket_map::iterator iter = socket_map_.find(cur_fd);
-                if (iter == socket_map_.end())
-                {
-                    printf("can find fd %d socket data\n");
-                    continue;
-                }
-                
-                Socket* ps = iter->second;
-                int readn = 0;
-                bool is_read_error = false;
-                while (true)
-                {
-                    int nread = read(cur_fd, ps->get_data(), ps->get_left_length());
-                    if (nread < 0)
-                    {
-                        if (errno == EAGAIN)
-                        {
-                            printf("fd %d read end!", cur_fd);
-                            break;
-                        }
-                        
-                        epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_fd, NULL);
-                        printf("delete fd:%d\n", cur_fd);
-                        socket_map_.erase(iter);
-                        delete ps;
-                        ps = NULL;
-                        is_read_error = true;
-                        break;
-                    }
-                    if (nread == 0)
-                    {
-                        if (readn == 0)
-                        {
-                            epoll_ctl(epoll_fd, EPOLL_CTL_DEL, cur_fd, NULL);
-                            printf("delete fd:%d client close socket\n", cur_fd);
-                            socket_map_.erase(iter);
-                            delete ps;
-                            ps = NULL;
-                        }
-                        else
-                        {
-                            printf("readnum 0 so read end");
-                        }
-                        
-                        break;
-                    }
-                    
-                    ps->add_pos(nread);
-                    readn += nread;
-                    printf("readnum:%d\n", nread);
-                }
-                
-                if (is_read_error)
-                {
-                    printf("is_read_error\n");
-                    continue;
-                }
-                
-                if (ps)
-                {
-                    ps->process_data();
-                }
-	        }
-        }
-    }
-    
+    ser.ae_poll();
 }
