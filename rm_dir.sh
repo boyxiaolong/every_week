@@ -10,6 +10,8 @@ do
        str=$dir_re$i
    fi
    str=$str$end
-   rm -rf $str
+   rm -rf $str&
    echo "delete $str"
 done
+wait
+echo "delete finish"
