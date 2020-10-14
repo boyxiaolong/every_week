@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/sem.h>
 #include "string.h"
 
 #define ipckey 0x366378
@@ -13,6 +14,7 @@ struct st_setting
         unsigned char file_no;
 };
 
+#define semkey 6666
 int main()
 {
         int shm_id = shmget(ipckey, 1028, 0640);
@@ -32,6 +34,25 @@ int main()
         }
         printf("create shm success\n");
         st_setting* ps = (st_setting*)(shmat(shm_id, NULL, 0));
+        int semid = semget(semkey, 1, 0666);
+        if (semid == -1)
+        {
+                semid = semget(semkey, 1, 0666|IPC_CREAT);
+                if (semid == -1)
+                {
+                        perror("sem");
+                        exit(-1);
+                }
+                semun sem_union;
+                if (semctl(semid, 0, SETVAL, sem_union) == -1)
+                {
+                        perror("semctl error");
+                        exit(-1);
+                }
+        }
+        printf("semid:%d\n", semid);
+
+        
         strncpy(ps->agen, "gate", 10);
         ps->file_no = 1;
         system("ipcs -m");
