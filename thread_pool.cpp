@@ -215,6 +215,15 @@ public:
 				pw->stop();
 			}
 		}
+		for (thread_vec::iterator iter = thd_vec_.begin();
+			iter != thd_vec_.end(); ++iter)
+		{
+			pWorkerThread pw = *iter;
+			if (pw)
+			{
+				delete pw;
+			}
+		}
 	}
 
 private:
