@@ -28,7 +28,7 @@ public:
 		}
 	}
 	void run()
-	{		
+	{
 		while (thread_runing_)
 		{
 			std::queue<TaskData> temp;
@@ -80,6 +80,7 @@ public:
 			std::unique_lock<std::mutex> guard(thread_lock_);
 			con_.notify_one();
 		}
+		return true;
 	}
 	void wait()
 	{
@@ -95,7 +96,7 @@ public:
 	}
 private:
 	std::queue<TaskData> tasks_;
-	volatile bool thread_runing_(true);
+	volatile bool thread_runing_ = true;
 	std::mutex task_lock_;
 	std::mutex thread_lock_;
 	std::condition_variable con_;
@@ -114,13 +115,13 @@ int main()
 	std::signal(SIGINT, sig_handler);
 	WorkerThread w;
 	w.start();
-	for (int i = 0; i < 999;++i)
+	for (int i = 0; i < 999; ++i)
 	{
 		TaskData t;
 		t.data = i;
 		w.push(t);
 	}
-	
+
 	while (is_running)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
