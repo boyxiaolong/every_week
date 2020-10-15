@@ -7,6 +7,7 @@
 #include <queue>
 #include <mutex>
 #include <condition_variable>
+#include <csignal>
 
 class TaskData
 {
@@ -95,9 +96,15 @@ private:
 	std::thread* thd_ = NULL;
 };
 
-bool is_running = true;
+volatile std::sig_atomic_t gSignalStatus;
+std::atomic_bool is_running = true;
+void sig_handler(int sig)
+{
+	is_running = false;
+}
 int main()
 {
+	std::signal(SIGINT, sig_handler);
 	WorkerThread w;
 	w.start();
 	for (int i = 0; i < 999;++i)
