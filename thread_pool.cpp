@@ -87,9 +87,14 @@ public:
 			thd_->join();
 		}
 	}
+
+	void stop()
+	{
+		is_runing_ = true;
+	}
 private:
 	std::queue<TaskData> tasks_;
-	bool is_runing_ = true;
+	std::atomic_bool is_runing_(true);
 	std::mutex task_lock_;
 	std::mutex thread_lock_;
 	std::condition_variable con_;
