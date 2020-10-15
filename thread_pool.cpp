@@ -95,7 +95,7 @@ public:
 	}
 private:
 	std::queue<TaskData> tasks_;
-	std::atomic_bool is_runing_(true);
+	volatile bool is_runing_(true);
 	std::mutex task_lock_;
 	std::mutex thread_lock_;
 	std::condition_variable con_;
