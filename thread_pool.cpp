@@ -29,7 +29,7 @@ public:
 	}
 	void run()
 	{		
-		while (is_runing_)
+		while (thread_runing_)
 		{
 			std::queue<TaskData> temp;
 			{
@@ -41,7 +41,7 @@ public:
 			}
 			{
 				std::unique_lock<std::mutex> guard(thread_lock_);
-				if (temp.empty() && is_runing_)
+				if (temp.empty() && thread_runing_)
 				{
 					con_.wait(guard, [] {std::chrono::milliseconds(10); return true; });
 					continue;
@@ -91,11 +91,11 @@ public:
 
 	void stop()
 	{
-		is_runing_ = true;
+		thread_runing_ = true;
 	}
 private:
 	std::queue<TaskData> tasks_;
-	volatile bool is_runing_(true);
+	volatile bool thread_runing_(true);
 	std::mutex task_lock_;
 	std::mutex thread_lock_;
 	std::condition_variable con_;
