@@ -108,6 +108,15 @@ public:
 	{
 		return task_size_ >= max_queue_size_;
 	}
+
+	bool is_empty()
+	{
+		return task_size_ < 1;
+	}
+	int get_thread_id()
+	{
+		return thread_id_;
+	}
 private:
 	std::queue<TaskData> tasks_;
 	volatile bool thread_runing_ = true;
@@ -145,7 +154,16 @@ public:
 		{
 			return false;
 		}
-		check_min_threads();
+		bool is_create_new = check_min_threads();
+		if (!is_create_new)
+		{
+			shrink_threads();
+		}
+		return handle_task(t);
+	}
+
+	bool handle_task(TaskData& t)
+	{
 		bool is_handled = false;
 		std::unique_lock<std::mutex> guard(thread_lock_);
 		for (thread_vec::iterator iter = thd_vec_.begin();
@@ -180,7 +198,6 @@ public:
 			printf("create thread %d\n", thd_id);
 			return true;
 		}
-
 		return false;
 	}
 
@@ -201,7 +218,7 @@ public:
 	}
 
 private:
-	void check_min_threads()
+	bool check_min_threads()
 	{
 		std::unique_lock<std::mutex> guard(thread_lock_);
 		int thd_size = thd_vec_.size();
@@ -214,12 +231,43 @@ private:
 				thd_vec_.push_back(pw);
 				printf("create thread %d\n", i);
 			}
+			return true;
+		}
+		return false;
+	}
+	bool shrink_threads()
+	{
+		std::unique_lock<std::mutex> guard(thread_lock_);
+		int thd_size = thd_vec_.size();
+		if (thd_size <= min_thread_num_)
+		{
+			return false;
+		}
+		int i = 0;
+		for (thread_vec::iterator iter = thd_vec_.begin();
+			iter != thd_vec_.end(); )
+		{
+			++i;
+			if (i <= min_thread_num_)
+			{
+				++iter;
+				continue;
+			}
+			pWorkerThread pw = *iter;
+			if (pw && pw->is_empty())
+			{
+				printf("shrink_threads %d\n", pw->get_thread_id());
+				pw->stop();
+				delete pw;
+				iter = thd_vec_.erase(iter);
+				continue;
+			}
+			++iter;
 		}
 	}
-
 private:
 	int min_thread_num_ = 1;
-	int max_thread_num_ = 10;
+	int max_thread_num_ = 5;
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
 	volatile bool is_runing_ = true;
@@ -235,7 +283,7 @@ int main()
 {
 	std::signal(SIGINT, sig_handler);
 	ThreadPool tp;
-	for (int i = 0; i < 99; ++i)
+	for (int i = 0; i < 999; ++i)
 	{
 		TaskData t;
 		t.data = i;
