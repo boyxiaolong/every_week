@@ -21,12 +21,14 @@ class WorkerThread
 {
 public:
 	WorkerThread(int thread_id) :thread_id_(thread_id)
+		, task_size_(0)
+		, thread_runing_(true)
 	{
 
 	}
 	virtual ~WorkerThread()
 	{
-		printf("~WorkerThread %d\n", thread_id_);
+		printf("~WorkerThread\n");
 		stop();
 		if (thd_)
 		{
@@ -119,15 +121,14 @@ public:
 	}
 private:
 	std::queue<TaskData> tasks_;
-	volatile bool thread_runing_ = true;
+	std::atomic<bool> thread_runing_;
 	std::mutex task_lock_;
 	std::mutex thread_lock_;
 	std::condition_variable con_;
 	int max_queue_size_ = 10;
 	std::thread* thd_ = NULL;
 	int thread_id_;
-	//todo
-	volatile int task_size_ = 0;
+	std::atomic<int> task_size_;
 };
 
 typedef WorkerThread* pWorkerThread;
@@ -136,7 +137,7 @@ class ThreadPool
 {
 public:
 	typedef std::list<pWorkerThread> thread_vec;
-	ThreadPool()
+	ThreadPool() :is_runing_(true)
 	{
 	}
 	~ThreadPool()
@@ -273,13 +274,14 @@ private:
 			}
 			++iter;
 		}
+		return true;
 	}
 private:
 	int min_thread_num_ = 1;
 	int max_thread_num_ = 5;
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
-	volatile bool is_runing_ = true;
+	std::atomic<bool> is_runing_;
 };
 
 volatile std::sig_atomic_t gSignalStatus;
@@ -303,6 +305,4 @@ int main()
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
-
-	//system("pause");
 }
