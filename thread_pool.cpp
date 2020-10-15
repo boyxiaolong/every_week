@@ -98,7 +98,7 @@ private:
 };
 
 volatile std::sig_atomic_t gSignalStatus;
-std::atomic_bool is_running = true;
+std::atomic_bool is_running(true);
 void sig_handler(int sig)
 {
 	is_running = false;
