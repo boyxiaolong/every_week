@@ -20,7 +20,8 @@ public:
 class WorkerThread
 {
 public:
-	WorkerThread(int thread_id) :thread_id_(thread_id)
+	WorkerThread(int thread_id, int max_queue_size) :thread_id_(thread_id)
+		, max_queue_size_(max_queue_size)
 		, task_size_(0)
 		, thread_runing_(true)
 	{
@@ -125,7 +126,7 @@ private:
 	std::mutex task_lock_;
 	std::mutex thread_lock_;
 	std::condition_variable con_;
-	int max_queue_size_ = 10;
+	int max_queue_size_;
 	std::thread* thd_ = NULL;
 	int thread_id_;
 	std::atomic<int> task_size_;
@@ -137,7 +138,11 @@ class ThreadPool
 {
 public:
 	typedef std::list<pWorkerThread> thread_vec;
-	ThreadPool() :is_runing_(true)
+	ThreadPool(int min_thread_num, int max_thread_num, int max_queue_size) :
+		min_thread_num_(min_thread_num)
+		, max_thread_num_(max_thread_num)
+		, max_queue_size_(max_queue_size)
+		, is_runing_(true)
 	{
 	}
 	~ThreadPool()
@@ -192,7 +197,7 @@ public:
 		if (thd_size < max_thread_num_)
 		{
 			int thd_id = thd_size + 1;
-			WorkerThread* pw = new WorkerThread(thd_id);
+			WorkerThread* pw = new WorkerThread(thd_id, max_queue_size_);
 			pw->start();
 			thd_vec_.push_back(pw);
 			pw->push(t);
@@ -236,7 +241,7 @@ private:
 		{
 			for (int i = thd_size + 1; i <= min_thread_num_; ++i)
 			{
-				WorkerThread* pw = new WorkerThread(i);
+				WorkerThread* pw = new WorkerThread(i, max_queue_size_);
 				pw->start();
 				thd_vec_.push_back(pw);
 				printf("create thread %d\n", i);
@@ -277,8 +282,9 @@ private:
 		return true;
 	}
 private:
-	int min_thread_num_ = 1;
-	int max_thread_num_ = 5;
+	int min_thread_num_;
+	int max_thread_num_;
+	int max_queue_size_;
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
 	std::atomic<bool> is_runing_;
@@ -293,7 +299,10 @@ void sig_handler(int sig)
 int main()
 {
 	std::signal(SIGINT, sig_handler);
-	ThreadPool tp;
+	int min_thread_num = 5;
+	int max_thread_num = 10;
+	int max_queue_size = 10;
+	ThreadPool tp(min_thread_num, max_thread_num, max_queue_size);
 	for (int i = 0; i < 999; ++i)
 	{
 		TaskData t;
@@ -305,4 +314,6 @@ int main()
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
+
+	system("pause");
 }
