@@ -21,6 +21,7 @@ public:
 	virtual ~WorkerThread()
 	{
 		printf("~WorkerThread\n");
+		stop();
 		if (thd_)
 		{
 			thd_->join();
@@ -92,7 +93,7 @@ public:
 
 	void stop()
 	{
-		thread_runing_ = true;
+		thread_runing_ = false;
 	}
 private:
 	std::queue<TaskData> tasks_;
