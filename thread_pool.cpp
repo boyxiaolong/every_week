@@ -26,7 +26,7 @@ public:
 	}
 	virtual ~WorkerThread()
 	{
-		printf("~WorkerThread\n");
+		printf("~WorkerThread %d\n", thread_id_);
 		stop();
 		if (thd_)
 		{
@@ -304,5 +304,5 @@ int main()
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 
-	system("pause");
+	//system("pause");
 }
