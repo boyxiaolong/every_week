@@ -19,6 +19,7 @@ class WorkerThread
 public:
 	virtual ~WorkerThread()
 	{
+		printf("~WorkerThread\n");
 		if (thd_)
 		{
 			thd_->join();
