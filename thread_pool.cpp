@@ -37,7 +37,7 @@ public:
 	}
 	virtual ~WorkerThread()
 	{
-		printf("~WorkerThread\n");
+		printf("~WorkerThread %d\n", thread_id_);
 		stop();
 		if (thd_)
 		{
@@ -81,6 +81,11 @@ public:
 	}
 
 	bool push(TaskData& data) {
+		if (!thread_runing_)
+		{
+			return false;
+		}
+
 		bool is_notify = false;
 		{
 			std::unique_lock<std::mutex> guard(task_lock_);
@@ -94,6 +99,11 @@ public:
 			is_notify = total_size == 0;
 			tasks_.push(data);
 			++task_size_;
+		}
+
+		if (!thread_runing_)
+		{
+			return false;
 		}
 
 		last_active_ms_ = std::chrono::system_clock::now();
@@ -114,6 +124,7 @@ public:
 
 	void stop()
 	{
+		printf("try stop thread %d\n", thread_id_);
 		thread_runing_ = false;
 	}
 
@@ -175,6 +186,7 @@ public:
 	{
 		if (!is_runing_)
 		{
+			printf("threadpool has stop\n");
 			return false;
 		}
 		bool is_create_new = check_min_threads();
@@ -319,6 +331,7 @@ volatile std::sig_atomic_t gSignalStatus;
 std::atomic_bool is_running(true);
 void sig_handler(int sig)
 {
+	printf("get sig\n");
 	is_running = false;
 }
 int main()
