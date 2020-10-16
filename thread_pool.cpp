@@ -279,12 +279,10 @@ private:
 public:
 	bool shrink_threads()
 	{
-		printf("shrink_threads\n");
 		std::unique_lock<std::mutex> guard(thread_lock_);
 		int thd_size = thd_vec_.size();
 		if (thd_size <= min_thread_num_)
 		{
-			printf("shrink_threads end\n");
 			return false;
 		}
 		int i = 0;
@@ -313,7 +311,6 @@ public:
 			}
 			++iter;
 		}
-		printf("shrink_threads end\n");
 		return true;
 	}
 private:
@@ -340,6 +337,7 @@ int main()
 	int max_thread_num = 10;
 	int max_queue_size = 10;
 	ThreadPool tp(min_thread_num, max_thread_num, max_queue_size);
+	tp.start();
 	for (int i = 0; i < 999; ++i)
 	{
 		TaskData t;
