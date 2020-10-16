@@ -290,7 +290,7 @@ private:
 			pWorkerThread pw = *iter;
 			if (pw && pw->is_empty())
 			{
-				long long unlive_ms = std::chrono::duration_cast<std::chrono::microseconds>(now - pw->get_last_active_ms()).count();
+				long long unlive_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - pw->get_last_active_ms()).count();
 				if (unlive_ms < keep_live_time_)
 				{
 					continue;
