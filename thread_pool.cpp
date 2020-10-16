@@ -189,11 +189,7 @@ public:
 			printf("threadpool has stop\n");
 			return false;
 		}
-		bool is_create_new = check_min_threads();
-		if (!is_create_new)
-		{
-			shrink_threads();
-		}
+		check_min_threads();
 		return handle_task(t);
 	}
 
@@ -283,10 +279,12 @@ private:
 public:
 	bool shrink_threads()
 	{
+		printf("shrink_threads\n");
 		std::unique_lock<std::mutex> guard(thread_lock_);
 		int thd_size = thd_vec_.size();
 		if (thd_size <= min_thread_num_)
 		{
+			printf("shrink_threads end\n");
 			return false;
 		}
 		int i = 0;
@@ -304,18 +302,18 @@ public:
 			if (pw && pw->is_empty())
 			{
 				long long unlive_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - pw->get_last_active_ms()).count();
-				if (unlive_ms < keep_live_time_)
+				if (unlive_ms >= keep_live_time_)
 				{
+					printf("shrink_threads %d unlive_ms:%lld\n", pw->get_thread_id(), unlive_ms);
+					pw->stop();
+					delete pw;
+					iter = thd_vec_.erase(iter);
 					continue;
 				}
-				printf("shrink_threads %d unlive_ms:%lld\n", pw->get_thread_id(), unlive_ms);
-				pw->stop();
-				delete pw;
-				iter = thd_vec_.erase(iter);
-				continue;
 			}
 			++iter;
 		}
+		printf("shrink_threads end\n");
 		return true;
 	}
 private:
@@ -325,7 +323,7 @@ private:
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
 	std::atomic<bool> is_runing_;
-	int keep_live_time_ = 1000;
+	int keep_live_time_ = 5000;
 };
 
 volatile std::sig_atomic_t gSignalStatus;
@@ -351,7 +349,7 @@ int main()
 
 	while (is_running)
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		tp.shrink_threads();
 	}
 #ifdef _WIN32
