@@ -354,9 +354,6 @@ int main()
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		tp.shrink_threads();
 	}
-	TaskData t;
-	t.data = 1;
-	tp.push(t);
 #ifdef _WIN32
 	system("pause");
 #endif
