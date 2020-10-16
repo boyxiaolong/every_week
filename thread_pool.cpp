@@ -17,6 +17,11 @@ class TaskData
 {
 public:
 	int data;
+
+	void process()
+	{
+		printf("task data:%d\n", data);
+	}
 };
 
 
@@ -66,7 +71,7 @@ public:
 			{
 				TaskData& t = temp.front();
 				temp.pop();
-				printf("task id:%d\n", t.data);
+				t.process();
 				--task_size_;
 			}
 		}
@@ -256,15 +261,7 @@ public:
 				pw->stop();
 			}
 		}
-		for (thread_vec::iterator iter = thd_vec_.begin();
-			iter != thd_vec_.end(); ++iter)
-		{
-			std::shared_ptr<WorkerThread> pw = *iter;
-			if (pw)
-			{
-				pw.reset();
-			}
-		}
+		thd_vec_.clear();
 	}
 
 private:
@@ -312,9 +309,8 @@ public:
 				long long unlive_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - pw->get_last_active_ms()).count();
 				if (unlive_ms >= keep_live_time_)
 				{
-					printf("shrink_threads %d unlive_ms:%lld\n", pw->get_thread_id(), unlive_ms);
+					printf("shrink_threads %d unlive_ms:%lld ref:%d \n", pw->get_thread_id(), unlive_ms, pw.use_count());
 					pw->stop();
-					pw.reset();
 					iter = thd_vec_.erase(iter);
 					continue;
 				}
@@ -330,7 +326,7 @@ private:
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
 	std::atomic<bool> is_runing_;
-	int keep_live_time_ = 5000;
+	int keep_live_time_ = 1000;
 };
 
 volatile std::sig_atomic_t gSignalStatus;
@@ -348,7 +344,7 @@ int main()
 	int max_queue_size = 10;
 	ThreadPool tp(min_thread_num, max_thread_num, max_queue_size);
 	tp.start();
-	for (int i = 0; i < 10; ++i)
+	for (int i = 0; i < 100000; ++i)
 	{
 		TaskData t;
 		t.data = i;
