@@ -280,6 +280,7 @@ private:
 		return false;
 	}
 
+public:
 	bool shrink_threads()
 	{
 		std::unique_lock<std::mutex> guard(thread_lock_);
@@ -351,6 +352,7 @@ int main()
 	while (is_running)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		tp.shrink_threads();
 	}
 	TaskData t;
 	t.data = 1;
