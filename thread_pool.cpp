@@ -17,6 +17,12 @@ class TaskData
 public:
 	int data;
 };
+
+static long long get_cur_time()
+{
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
+
 class WorkerThread
 {
 public:
@@ -87,6 +93,8 @@ public:
 			tasks_.push(data);
 			++task_size_;
 		}
+
+		last_active_ms_ = get_cur_time();
 		if (is_notify)
 		{
 			std::unique_lock<std::mutex> guard(thread_lock_);
@@ -120,6 +128,12 @@ public:
 	{
 		return thread_id_;
 	}
+
+	long long get_last_active_ms()
+	{
+		return last_active_ms_;
+	}
+
 private:
 	std::queue<TaskData> tasks_;
 	std::atomic<bool> thread_runing_;
@@ -130,6 +144,7 @@ private:
 	std::thread* thd_ = NULL;
 	int thread_id_;
 	std::atomic<int> task_size_;
+	long long last_active_ms_ = get_cur_time();
 };
 
 typedef WorkerThread* pWorkerThread;
@@ -250,6 +265,7 @@ private:
 		}
 		return false;
 	}
+
 	bool shrink_threads()
 	{
 		std::unique_lock<std::mutex> guard(thread_lock_);
@@ -259,6 +275,7 @@ private:
 			return false;
 		}
 		int i = 0;
+		long long now = get_cur_time();
 		for (thread_vec::iterator iter = thd_vec_.begin();
 			iter != thd_vec_.end(); )
 		{
@@ -271,7 +288,12 @@ private:
 			pWorkerThread pw = *iter;
 			if (pw && pw->is_empty())
 			{
-				printf("shrink_threads %d\n", pw->get_thread_id());
+				long long unlive_ms = now - pw->get_last_active_ms();
+				if (unlive_ms < keep_live_time_)
+				{
+					continue;
+				}
+				printf("shrink_threads %d keep_live_time:%d\n", pw->get_thread_id(), keep_live_time_);
 				pw->stop();
 				delete pw;
 				iter = thd_vec_.erase(iter);
@@ -288,6 +310,7 @@ private:
 	thread_vec thd_vec_;
 	std::mutex thread_lock_;
 	std::atomic<bool> is_runing_;
+	int keep_live_time_ = 1000;
 };
 
 volatile std::sig_atomic_t gSignalStatus;
@@ -314,6 +337,9 @@ int main()
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
+	TaskData t;
+	t.data = 1;
+	tp.push(t);
 #ifdef _WIN32
 	system("pause");
 #endif
