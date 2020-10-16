@@ -23,6 +23,8 @@ static long long get_cur_time()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
+typedef std::chrono::system_clock::time_point task_tm;
+
 class WorkerThread
 {
 public:
@@ -94,7 +96,7 @@ public:
 			++task_size_;
 		}
 
-		last_active_ms_ = get_cur_time();
+		last_active_ms_ = std::chrono::system_clock::now();
 		if (is_notify)
 		{
 			std::unique_lock<std::mutex> guard(thread_lock_);
@@ -129,7 +131,7 @@ public:
 		return thread_id_;
 	}
 
-	long long get_last_active_ms()
+	task_tm get_last_active_ms()
 	{
 		return last_active_ms_;
 	}
@@ -144,7 +146,7 @@ private:
 	std::thread* thd_ = NULL;
 	int thread_id_;
 	std::atomic<int> task_size_;
-	long long last_active_ms_ = get_cur_time();
+	std::chrono::system_clock::time_point last_active_ms_ = std::chrono::system_clock::now();
 };
 
 typedef WorkerThread* pWorkerThread;
@@ -275,7 +277,7 @@ private:
 			return false;
 		}
 		int i = 0;
-		long long now = get_cur_time();
+		auto now = std::chrono::system_clock::now();
 		for (thread_vec::iterator iter = thd_vec_.begin();
 			iter != thd_vec_.end(); )
 		{
@@ -288,12 +290,12 @@ private:
 			pWorkerThread pw = *iter;
 			if (pw && pw->is_empty())
 			{
-				long long unlive_ms = now - pw->get_last_active_ms();
+				long long unlive_ms = std::chrono::duration_cast<std::chrono::microseconds>(now - pw->get_last_active_ms()).count();
 				if (unlive_ms < keep_live_time_)
 				{
 					continue;
 				}
-				printf("shrink_threads %d keep_live_time:%d\n", pw->get_thread_id(), keep_live_time_);
+				printf("shrink_threads %d unlive_ms:%lld\n", pw->get_thread_id(), unlive_ms);
 				pw->stop();
 				delete pw;
 				iter = thd_vec_.erase(iter);
