@@ -11,6 +11,7 @@
 #include <atomic>
 #include <vector>
 #include <list>
+#include <memory>
 
 class TaskData
 {
@@ -18,10 +19,6 @@ public:
 	int data;
 };
 
-static long long get_cur_time()
-{
-	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-}
 
 typedef std::chrono::system_clock::time_point task_tm;
 
@@ -142,6 +139,11 @@ public:
 		return thread_id_;
 	}
 
+	int get_task_size()
+	{
+		return task_size_;
+	}
+
 	task_tm get_last_active_ms()
 	{
 		return last_active_ms_;
@@ -165,7 +167,7 @@ typedef WorkerThread* pWorkerThread;
 class ThreadPool
 {
 public:
-	typedef std::list<pWorkerThread> thread_vec;
+	typedef std::list<std::shared_ptr<WorkerThread> > thread_vec;
 	ThreadPool(int min_thread_num, int max_thread_num, int max_queue_size) :
 		min_thread_num_(min_thread_num)
 		, max_thread_num_(max_thread_num)
@@ -186,7 +188,7 @@ public:
 	{
 		if (!is_runing_)
 		{
-			printf("threadpool has stop\n");
+			printf("thread pool has stop\n");
 			return false;
 		}
 		check_min_threads();
@@ -195,25 +197,33 @@ public:
 
 	bool handle_task(TaskData& t)
 	{
-		bool is_handled = false;
 		std::unique_lock<std::mutex> guard(thread_lock_);
+
+		std::shared_ptr<WorkerThread> phandleThd = NULL;
+		int task_num = max_queue_size_ + 1;
 		for (thread_vec::iterator iter = thd_vec_.begin();
 			iter != thd_vec_.end(); ++iter)
 		{
-			pWorkerThread pw = *iter;
+			std::shared_ptr<WorkerThread> pw = *iter;
 			if (NULL == pw)
 			{
 				continue;
 			}
+
 			if (pw->is_full())
 			{
 				continue;
 			}
-			is_handled = pw->push(t);
-			break;
+
+			int cur_size = pw->get_task_size();
+			if (task_num > cur_size)
+			{
+				phandleThd = pw;
+				task_num = cur_size;
+			}
 		}
 
-		if (is_handled)
+		if (phandleThd && phandleThd->push(t))
 		{
 			return true;
 		}
@@ -222,11 +232,11 @@ public:
 		if (thd_size < max_thread_num_)
 		{
 			int thd_id = thd_size + 1;
-			WorkerThread* pw = new WorkerThread(thd_id, max_queue_size_);
+			std::shared_ptr<WorkerThread> pw = std::make_shared<WorkerThread>(thd_id, max_queue_size_);
 			pw->start();
 			thd_vec_.push_back(pw);
 			pw->push(t);
-			printf("create thread %d\n", thd_id);
+			printf("create thread %d refcount:%d\n", thd_id, pw.use_count());
 			return true;
 		}
 		return false;
@@ -240,7 +250,7 @@ public:
 		for (thread_vec::iterator iter = thd_vec_.begin();
 			iter != thd_vec_.end(); ++iter)
 		{
-			pWorkerThread pw = *iter;
+			std::shared_ptr<WorkerThread> pw = *iter;
 			if (pw)
 			{
 				pw->stop();
@@ -249,10 +259,10 @@ public:
 		for (thread_vec::iterator iter = thd_vec_.begin();
 			iter != thd_vec_.end(); ++iter)
 		{
-			pWorkerThread pw = *iter;
+			std::shared_ptr<WorkerThread> pw = *iter;
 			if (pw)
 			{
-				delete pw;
+				pw.reset();
 			}
 		}
 	}
@@ -266,10 +276,10 @@ private:
 		{
 			for (int i = thd_size + 1; i <= min_thread_num_; ++i)
 			{
-				WorkerThread* pw = new WorkerThread(i, max_queue_size_);
+				std::shared_ptr<WorkerThread> pw = std::make_shared<WorkerThread>(i, max_queue_size_);
 				pw->start();
 				thd_vec_.push_back(pw);
-				printf("create thread %d\n", i);
+				printf("create thread %d refcount:%d\n", i, pw.use_count());
 			}
 			return true;
 		}
@@ -296,7 +306,7 @@ public:
 				++iter;
 				continue;
 			}
-			pWorkerThread pw = *iter;
+			std::shared_ptr<WorkerThread> pw = *iter;
 			if (pw && pw->is_empty())
 			{
 				long long unlive_ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - pw->get_last_active_ms()).count();
@@ -304,7 +314,7 @@ public:
 				{
 					printf("shrink_threads %d unlive_ms:%lld\n", pw->get_thread_id(), unlive_ms);
 					pw->stop();
-					delete pw;
+					pw.reset();
 					iter = thd_vec_.erase(iter);
 					continue;
 				}
@@ -338,7 +348,7 @@ int main()
 	int max_queue_size = 10;
 	ThreadPool tp(min_thread_num, max_thread_num, max_queue_size);
 	tp.start();
-	for (int i = 0; i < 999; ++i)
+	for (int i = 0; i < 10; ++i)
 	{
 		TaskData t;
 		t.data = i;
