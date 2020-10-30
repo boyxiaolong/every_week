@@ -24,7 +24,9 @@ public:
 	}
 };
 
+std::mutex task_lock_;
 
+std::condition_variable con_;
 typedef std::chrono::system_clock::time_point task_tm;
 
 class WorkerThread
@@ -157,9 +159,8 @@ public:
 private:
 	std::queue<TaskData> tasks_;
 	std::atomic<bool> thread_runing_;
-	std::mutex task_lock_;
+
 	std::mutex thread_lock_;
-	std::condition_variable con_;
 	int max_queue_size_;
 	std::thread* thd_ = NULL;
 	int thread_id_;
