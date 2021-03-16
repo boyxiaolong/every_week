@@ -1,0 +1,80 @@
+#include <list>
+#include <vector>
+
+class MyHashMap {
+public:
+	struct hash_info
+	{
+		int real_key;
+		int value;
+	};
+	typedef std::list<hash_info> map_keys;
+	/** Initialize your data structure here. */
+	MyHashMap() {
+		max_size_ = 10 << 6 + 1;
+		map_keys_vec_.resize(max_size_);
+	}
+
+	/** value will always be non-negative. */
+	void put(int key, int value) {
+		int hash = hash_val(key);
+		hash_info info;
+		info.real_key = key;
+		info.value = value;
+		map_keys& tmplist = map_keys_vec_[hash];
+		for (map_keys::iterator iter = tmplist.begin(); iter != tmplist.end(); ++iter)
+		{
+			if (iter->real_key == key)
+			{
+				iter->value = value;
+				return;
+			}
+		}
+
+		tmplist.push_back(info);
+	}
+
+	/** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
+	int get(int key) {
+		int hash = hash_val(key);
+		map_keys& tmplist = map_keys_vec_[hash];
+		if (tmplist.empty())
+		{
+			return -1;
+		}
+		for (map_keys::iterator iter = tmplist.begin(); iter != tmplist.end(); ++iter)
+		{
+			if (iter->real_key == key)
+			{
+				return iter->value;
+			}
+		}
+
+		return -1;
+	}
+
+	/** Removes the mapping of the specified value key if this map contains a mapping for the key */
+	void remove(int key) {
+		int hash = hash_val(key);
+		map_keys& tmplist = map_keys_vec_[hash];
+		if (tmplist.empty())
+		{
+			return;
+		}
+		for (map_keys::iterator iter = tmplist.begin(); iter != tmplist.end(); ++iter)
+		{
+			if (iter->real_key == key)
+			{
+				tmplist.erase(iter);
+				return;
+			}
+		}
+	}
+
+	int hash_val(int key) {
+		return key % max_size_;
+	}
+
+	std::vector<map_keys> map_keys_vec_;
+	int max_size_;
+};
