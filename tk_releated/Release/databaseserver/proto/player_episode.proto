@@ -1,0 +1,21 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+
+message EpisodeDB
+{
+  protomsg.EpisodeDatas data = 1;
+}
+
+message player_episode
+{
+  uint64 id = 1; //唯一ID
+  EpisodeDB episode = 2;
+}
+
+message player_episode_set
+{
+	repeated player_episode set = 1;
+}

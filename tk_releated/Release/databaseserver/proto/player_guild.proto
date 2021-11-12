@@ -1,0 +1,29 @@
+syntax = "proto3";
+import "msg_common_guild.proto";
+package db;
+
+message guild_assist_set
+{
+	repeated protomsg.GuildAssistItem items	= 1;
+	uint32 day_contribution					= 2;
+    uint32 day_assisted_count               = 3;
+    int64 next_cure_assist_time         = 4;
+}
+
+message guild_tech_donate_data
+{
+	protomsg.GuildTechDonateInfo tech_donate_data = 1;	// 公会科技捐献记录
+}
+
+message player_guild
+{
+	uint64 id = 1;
+	guild_assist_set assist_data	= 2;	// 公会帮助记录
+	guild_tech_donate_data tech_donate_data = 3;	// 公会科技捐献记录
+	uint32 use_anonymous_add_gift = 4; // 是否使用匿名添加联盟礼物
+}
+
+message player_guild_set
+{
+	repeated player_guild set = 1;
+}

@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "msg_common_guild.proto";
+package db;
+
+message guild_derby_reward
+{
+  repeated uint32 reward_ids = 1;
+}
+
+message player_guild_derby
+{
+  uint64 id = 1; //唯一ID
+  uint32 season_id = 2;
+  uint32 accept_count = 3;
+  uint32 buy_count = 4;
+  guild_derby_reward rewards = 5;
+  protomsg.GuildDerbyPlayerTaskInfo task_info = 6;
+}
+
+message player_guild_derby_set
+{
+	repeated player_guild_derby set = 1;
+}

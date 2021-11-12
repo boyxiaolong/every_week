@@ -1,0 +1,107 @@
+syntax = "proto3";
+package protomsg;
+
+import "msg_common.proto";
+
+// TD宝箱
+message TDBox
+{
+    int64 next_time = 1;    // 下次开启时间
+    uint32 count    = 2;    // 抽取免费箱子次数
+}
+
+// TD卡牌
+message TDCard
+{
+    uint32 card_id          = 1;    // 卡牌id
+    uint32 level            = 2;    // 卡牌等级
+    uint32 fragments_number = 3;    // 碎片数量
+}
+
+
+
+// -------------------------------------------------------------------------------
+enum TDStatus
+{
+    Lock    = 0;    // 未开启
+    Open    = 1;    // 已开启
+    Finish  = 2;    // 已完成
+}
+
+
+// 关卡信息
+message TDPass
+{
+    uint32 pass_id   = 1;           // 关卡id
+    int32 top_star = 2;             // 最高星级
+    int32 last_reward_star = 3;     // 上次领奖时星级
+    TDStatus status = 4;            // 关卡状态
+    int64 open_time   = 5;          // 开启时间
+    uint32 chapter_id = 6;          // 章节id
+}
+
+// 章节信息
+message TDChapter
+{
+    uint32 chapter_id           = 1;    // 章节id
+    repeated TDPass pass_info   = 2;    // 关卡信息
+    TDStatus status             = 3;
+    uint32 top_pass_id          = 4;    // 最新章节id(最近开启的)
+    int64 open_time             = 5;    // 本章节开启时间
+}
+
+message TDCardGroup
+{
+    uint32 group_id = 1;
+    repeated uint32 cards = 2;
+}
+
+// 总信息(客户端使用)
+message TDData
+{
+    TDBox box               = 1;    // 宝箱
+    repeated TDCard cards   = 2;    // 卡牌列表
+    repeated TDChapter chapter_info  = 3;
+    uint32 top_chapter_normal_id   = 4;    // 普通模式最新章节id(最近开启的)
+    uint32 top_chapter_hard_id   = 5;    // 挑战模式最新章节id(最近开启的)
+    repeated TDCardGroup card_group = 6;
+}
+
+// 总信息(数据库使用)
+message TDSaveData
+{
+    TDData  td_data = 1;
+    repeated KillMonsterData kill_data  = 2; // 杀怪统计
+    repeated TrainArmyData train_data = 3;  // 训练统计
+}
+
+enum BoxType
+{
+    kBoxType_Normal = 0;    // 普通
+    kBox_Advanced   = 1;    // 高级
+    kBox_Activity   = 2;    // 活动
+}
+
+enum ChapterType
+{
+    kAll    = 0;    // 全部
+    kOne    = 1;    // 指定
+}
+
+message CardGroupInfo
+{
+    uint32 group_id         = 1;
+    repeated uint32 card_id = 2;
+}
+
+message KillMonsterData
+{
+    uint32 monster_level = 1;
+    uint32 kill_number = 2;
+}
+
+message TrainArmyData
+{
+    uint32 type = 1;
+    uint64 number = 2;
+}

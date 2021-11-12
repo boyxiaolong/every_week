@@ -1,0 +1,26 @@
+syntax = "proto3";
+package db;
+
+message region_data
+{
+	uint64 region_id = 1;
+	uint32 world_id = 2;
+  uint32 force_id = 3;
+}
+
+message relation_region
+{
+	repeated region_data region = 1;
+}
+
+message player_map
+{
+	uint64 id = 1;
+	uint64 cur_region_id = 2;
+	relation_region relation_regions = 3;
+}
+
+message player_map_set
+{
+	repeated player_map set = 1;
+}

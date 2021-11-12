@@ -1,0 +1,17 @@
+syntax = "proto3";
+package db; 
+
+message guild_derby_season
+{
+	uint64 id = 1;
+	uint32 season_id = 2;
+	int64 begin_time = 3;
+	int64 apply_end_time = 4;
+	int64 end_time = 5;
+	uint32 status = 6;
+}
+
+message guild_derby_season_set
+{
+	repeated guild_derby_season set = 1;
+}

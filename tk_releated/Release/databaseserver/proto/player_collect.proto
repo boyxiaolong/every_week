@@ -1,0 +1,40 @@
+syntax = "proto3";
+import "msg_common.proto";
+package db;
+
+// 历史总共采集量
+message history_collect
+{
+	protomsg.CurrencyType type = 1;
+	uint64 value			= 2;
+	int64 last_collect_time = 3;
+}
+
+message collector_set
+{		
+	repeated protomsg.CollectInfo collectors	= 1;
+	repeated history_collect histories = 2;
+}
+
+message map_history_collect
+{
+	protomsg.CurrencyType type = 1;
+	uint64 value			= 2;
+}
+
+message map_collector_set
+{
+	repeated map_history_collect histories = 2;
+}
+
+message player_collect
+{
+	uint64 id = 1;
+	collector_set data	= 2;
+	map_collector_set map_collect_data	= 3;
+}
+
+message player_collect_set
+{
+	repeated player_collect set = 1;
+}

@@ -1,0 +1,141 @@
+syntax = "proto3";
+package protomsg;
+
+// 成就状态
+enum AchievementStatus
+{
+	kAchievementStatus_Open 	= 0;		// 开启状态
+	kAchievementStatus_Complete = 1;		// 完成状态
+}
+
+// 成就数据
+message AchievementData
+{
+	uint32	id			= 1;				// 成就ID
+	uint32	sub_id		= 2;				// 当前成就子ID
+	int32 	status		= 3;				// 状态
+	int64	value		= 4;				// 当前进度值
+	int64	last_time	= 5;				// 上一次完成时间
+	uint32	confirm_sub	= 6;				// 已确认的成就子ID
+}
+
+// 成就条件类型
+enum AchievementCheckerType
+{
+	kAchievementCheckerType_None						= 0;
+	
+	kAchievementCheckerType_BattlePower					= 3101;		// {战力类型}达到{0}
+	kAchievementCheckerType_UpgradeBuildingLevel		= 3102;		// 所有可升级建筑的等级均不低于{0}级
+	kAchievementCheckerType_BuildingCount				= 3103;		// 判断拥有{建筑id}为{0}级有{0}个
+	kAchievementCheckerType_BuildingLevel				= 3104;		// 判定建筑ID，达到{0}等级
+	kAchievementCheckerType_TechLevel					= 3105;		// 判定科技ID，达到{0}等级
+	kAchievementCheckerType_SpeedUpTime					= 3106;		// 使用{加速类型}，达到{0}分钟
+	kAchievementCheckerType_GrowUpTime					= 3107;		// 使用{增产类型}，达到{0}分钟
+	kAchievementCheckerType_CityResource				= 3108;		// 内城收获任意资源总和达到{0}
+	kAchievementCheckerType_CollectResource				= 3109;		// 判定采集{资源}达到，达到{0}量
+	kAchievementCheckerType_GuildPoint					= 3110;		// 通过总/联盟建筑建造/联盟帮助/科技捐献，累计获得{0}联盟个人积分
+	kAchievementCheckerType_TechPoint					= 3111;		// 累计捐献联盟科技点数达到{0}
+	kAchievementCheckerType_TechDailyPoint				= 3112;		// 单日捐献联盟科技点数达到{0}
+	kAchievementCheckerType_TechDonateCount				= 3113;		// 进行联盟科技捐献{0}次
+	kAchievementCheckerType_GuildHelpCount				= 3114;		// 进行联盟帮助{0}次
+	kAchievementCheckerType_TaskCount					= 3115;		// 累计完成{任务类型}，达到{0}个
+	kAchievementCheckerType_TaskDailyCount				= 3116;		// 单日完成{任务类型}，达到{0}个
+
+	kAchievementCheckerType_ArmyCount					= 3201;		// 兵种数量达到{0}
+	kAchievementCheckerType_HeroQualityCount			= 3202;		// 判定拥有{品质}的英雄{0}个
+	kAchievementCheckerType_HeroAwakenCount				= 3203;		// 判定拥有觉醒{品质}的英雄{0}个
+	kAchievementCheckerType_HeroCount					= 3204;		// 判定拥有英雄达到{0}个数
+	kAchievementCheckerType_HeroLevel					= 3205;		// 判定升级{英雄}达到{0}级
+	kAchievementCheckerType_HeroLevelCount				= 3206;		// 判定拥有{等级}的英雄{0}个
+	kAchievementCheckerType_HeroStarCount				= 3207;		// 判定拥有{0}星英雄{0}个
+	kAchievementCheckerType_ArmyLevelCount				= 3208;		// 判定拥有{等级}的兵种{0}个
+	kAchievementCheckerType_HeroSkillLevel				= 3209;		// {技能ID}升至等级{0}
+	kAchievementCheckerType_GuildHolyLandCount			= 3210;		// 所在联盟同时占领着{圣地等级}{0}个
+	kAchievementCheckerType_BeatMonsterCount			= 3211;		// 参与击败{怪物类型}等级{1}{0}次
+	kAchievementCheckerType_GuildHonorRewardCount		= 3212;		// 领取{1}阶联盟荣誉宝箱{0}次
+	kAchievementCheckerType_GuildGiftCount				= 3213;		// 领取{0}次联盟礼物
+	kAchievementCheckerType_ArmyTrainingCount			= 3214;		// 累计训练{类型}部队{0}
+
+	kAchievementCheckerType_Task						= 3301;		// 完成{0}任务
+	kAchievementCheckerType_ExpeStar					= 3302;		// 累计在远征中获得{0}颗星的评价
+	kAchievementCheckerType_KillCount					= 3303;		// 累计击杀{0}个战斗单位
+	kAchievementCheckerType_DeadCount					= 3304;		// 累计阵亡{0}个战斗单位
+	kAchievementCheckerType_CureCount					= 3305;		// 累计治疗{0}个战斗单位
+	kAchievementCheckerType_BeatPlayerCount				= 3306;		// 累计击败其他玩家{0}次
+	kAchievementCheckerType_PlunderResource				= 3307;		// 一次性掠夺其他玩家城市{0}的资源
+	kAchievementCheckerType_BattleWinCount				= 3308;		// 战斗成功{0}次
+	kAchievementCheckerType_BattleFailCount				= 3309;		// 战斗失败{0}次
+	kAchievementCheckerType_ScoutCount					= 3310;		// 侦查玩家{0}次
+	kAchievementCheckerType_DefendWinCount				= 3311;		// 在自己的城市成功防守其它玩家的进攻{0}次
+	kAchievementCheckerType_BeatGuildCount				= 3312;		// 在所属联盟的领土上击败其他联盟的玩家{0}次
+	kAchievementCheckerType_BeatCampCastleCount			= 3313;		// 攻陷{0}座其他势力风格的玩家城市
+	kAchievementCheckerType_BeatCampArmyCount			= 3314;		// 击败{0}支其他势力风格的玩家部队
+	kAchievementCheckerType_ExpeLevel					= 3315;		// 远征已通关到{0}
+	
+	kAchievementCheckerType_PhotoCount					= 3401;		// 累计拥有永久头像{0}个
+	kAchievementCheckerType_PhotoFrameCount				= 3402;		// 累计拥有永久头像框{0}个
+	kAchievementCheckerType_FaceCount					= 3403;		// 累计拥有永久表情{0}个
+	kAchievementCheckerType_HeroPointResetCount			= 3404;		// 累计重置英雄属性{0}次
+	kAchievementCheckerType_ChangeCampCount				= 3405;		// 累计更换{0}次势力
+	kAchievementCheckerType_ChangeNameCount				= 3406;		// 累计更换{0}次昵称
+	kAchievementCheckerType_ImmgrateCount				= 3407;		// 累计迁城{0}次
+	kAchievementCheckerType_CarriageResource			= 3408;		// 累计援助盟友的资源量达到{0}
+	kAchievementCheckerType_CarriageSinjuredCount		= 3409;		// 累计因城堡增援盟友城市而重伤的战斗单位数量达到{0}
+	kAchievementCheckerType_BuyCount					= 3410;		// 累计在内城商店{商店ID}购买{道具ID}{0}个
+	kAchievementCheckerType_BuyMaxCount					= 3411;		// 一次性在内城商店{商店ID}购买{道具ID}{0}个
+	kAchievementCheckerType_ShopRefreshCount			= 3412;		// 一次性在内城商店{商店ID}刷新{0}次
+	kAchievementCheckerType_ItemUseCount				= 3413;		// 累计使用{道具ID}{0}个
+	kAchievementCheckerType_ItemMaxUseCount				= 3414;		// 一次性使用{道具ID}{0}个
+	kAchievementCheckerType_CastleResource				= 3415;		// 单次从城内获得的{资源}数量达到{0}
+	kAchievementCheckerType_CollectMapResource			= 3416;		// 单支部队装载{0}资源并成功回到城市
+	kAchievementCheckerType_ShieldTime					= 3417;		// 累计使用{0}小时的和平护盾
+	kAchievementCheckerType_ScoutRewardCount			= 3418;		// 累计领取{0}个地图探索奖励(山洞、村庄)
+	kAchievementCheckerType_RecruitCount				= 3419;		// 累计在警察局开启{0}个搜查令
+	kAchievementCheckerType_RecruitMaxCount				= 3420;		// 拥有超过{0}把高级搜索令后在警察局使用全部开启
+	kAchievementCheckerType_GuildShopBuyCount			= 3421;		// 累计在联盟商店购买{道具ID}{0}个
+	kAchievementCheckerType_BuildingTypeCount			= 3422;		// 累计建造{建筑类型}{0}个
+	kAchievementCheckerType_BuildingRoadCount			= 3423;		// 累计建造{道路ID}{0}个
+	kAchievementCheckerType_TaskChapter					= 3424;		// 主线章节已通关到{0}
+	kAchievementCheckerType_PlunderResourceHome			= 3425;		// 一次性掠夺其他玩家城市{0}的资源到Home
+	
+	kAchievementCheckerType_EquipmentCount				= 3501;		// 累计获得{品质}{星级}装备{0}件
+	kAchievementCheckerType_EquipmentHeroCount			= 3502;		// 装备{星级}{0}件的英雄有为{0}个
+	kAchievementCheckerType_FaceUseCount				= 3503;		// 累计发出{0}次表情
+}
+
+// 联盟积分增加类型
+enum GuildPointAddType
+{
+	kGuildPointAddType_Total			= 0;			// 总
+	kGuildPointAddType_Build			= 1;			// 联盟建筑建造
+	kGuildPointAddType_Help				= 2;			// 联盟帮助
+	kGuildPointAddType_TechDonate		= 3;			// 科技捐献
+}
+
+// 增产加速类型
+enum GrowUpType
+{
+	kGrowUpType_None					= 0;
+	kGrowUpType_Food					= 12;			// 食物
+	kGrowUpType_Wood					= 13;			// 木材
+	kGrowUpType_Steel					= 14;			// 钢材
+	kGrowUpType_Oil						= 15;			// 石油
+}
+
+// 战斗力类型
+enum BattlePowerType
+{
+	kBattlePowerType_Total				= 0;			// 总
+	kBattlePowerType_Building			= 1;			// 建筑
+	kBattlePowerType_Tech				= 2;			// 科技
+	kBattlePowerType_Army				= 3;			// 部队
+	kBattlePowerType_Hero				= 4;			// 英雄
+}
+
+// 建筑类型
+enum BuildingType
+{
+	kBuildingType_None					= 0;
+	kBuildingType_Functional			= 1;			// 功能性的
+	kBuildingType_Decorate				= 2;			// 装饰性的
+}

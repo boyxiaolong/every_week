@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+import "myoption.proto";
+import "msg_common_pompeii.proto";
+
+package db;
+
+
+message PompeiiGuildResultList {
+    repeated protomsg.PompeiiGuildResult result = 1;
+}
+
+
+
+
+message pompeii_record_data {
+    uint64 id = 1;
+    PompeiiGuildResultList result_list = 2;
+}
+
+message pompeii_record_data_set {
+    repeated pompeii_record_data set = 1;
+}
+
+
+
+

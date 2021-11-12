@@ -1,0 +1,13 @@
+syntax = "proto3";
+package db; 
+
+message ban_account
+{
+	uint64 id = 1;
+	int64 ban_end_time = 2;
+}
+
+message ban_account_set
+{
+	repeated ban_account set = 1;
+}

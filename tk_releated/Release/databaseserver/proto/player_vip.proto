@@ -1,0 +1,15 @@
+syntax = "proto3";
+package db;
+
+message player_vip
+{
+	uint64 id = 1;
+	uint32 vip_level = 2;
+	int32 has_exp_reward = 3;
+	int32 has_gift_reward = 4;	
+}
+
+message player_vip_set
+{
+	repeated player_vip set = 1;
+}

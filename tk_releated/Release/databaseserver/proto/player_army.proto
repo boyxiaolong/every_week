@@ -1,0 +1,34 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+
+message UseFeatureSpecial
+{
+  uint32 troop_type = 1; //特色兵类型
+  uint32 special_id = 2; // 特色兵种组id
+  int64 use_special_time = 3;// 使用特色兵的时间
+}
+
+message Army
+{
+  repeated protomsg.ArmyInfoData infos = 1;
+  repeated protomsg.TrainWorkInfo works = 2;
+  uint64 update_train_time = 3; //更新训练时间
+  uint64 train_count = 4;     //训练数
+  repeated uint32	unlock_feature_special_ids	=	5;			//已解锁的特色兵种id
+  repeated UseFeatureSpecial curr_use_feature_special_ids = 6; //目前选择使用的特殊兵种组id，一种特色兵类型下，只能选择使用一种特色兵
+  int64 last_use_feature_special_time = 7;//选择特色兵中的时间
+}
+
+message player_army
+{
+  uint64 id = 1; //唯一ID
+  Army army = 2;
+}
+
+message player_army_set
+{
+	repeated player_army set = 1;
+}

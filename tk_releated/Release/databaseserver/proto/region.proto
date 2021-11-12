@@ -1,0 +1,24 @@
+syntax = "proto3";
+package db;
+
+message EntityIdAllcator
+{
+  uint32 entity_type = 1; 
+  uint64 allcate_entity_id = 2; 
+}
+
+message EntityIdAllcatorData
+{
+  repeated EntityIdAllcator data = 1;
+}
+
+message region
+{
+  uint64 id = 1; // id 
+  EntityIdAllcatorData entity_id_allcator = 2; 
+}
+
+message region_set
+{
+	repeated region set = 1;
+}

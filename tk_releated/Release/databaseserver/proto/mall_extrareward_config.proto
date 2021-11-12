@@ -1,0 +1,17 @@
+syntax = "proto3"; 
+
+package db; 
+message mall_extrareward_config
+{
+	uint64 id = 1;
+	string comment = 2;
+	uint32 goods_id = 3;
+	uint32 mall_key1 = 4;
+	uint32 mall_key2 = 5;
+	string reward = 6;
+}
+
+message mall_extrareward_config_set
+{ 
+	repeated mall_extrareward_config set = 1;
+}

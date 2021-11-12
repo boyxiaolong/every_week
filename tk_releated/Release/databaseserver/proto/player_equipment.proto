@@ -1,0 +1,22 @@
+syntax = "proto3";
+package db;
+
+import "myoption.proto";
+import "msg_common.proto";
+
+message EquipmentInfos
+{
+  repeated protomsg.EquipmentInfo infos = 1;
+  uint32 generate_id = 2;
+}
+
+message player_equipment
+{
+  uint64 id = 1; //唯一ID
+  EquipmentInfos equipment = 2;
+}
+
+message player_equipment_set
+{
+	repeated player_equipment set = 1;
+}

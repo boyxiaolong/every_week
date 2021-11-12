@@ -1,0 +1,28 @@
+syntax = "proto3";
+package db;
+import "msg_common_activity.proto";
+
+
+message applier_set
+{
+  repeated protomsg.ImmigrateApplyInfo appliers = 1;
+}
+
+message approver_set
+{
+	map<uint64, int64> ids = 1;
+}
+
+message kingdom_immigration
+{
+  uint64 id = 1; // id 
+  uint32 pioneer_quota = 2; 
+  applier_set appliers = 3;
+  approver_set approvers = 4;
+  int64 refresh_time = 5;
+}
+
+message kingdom_immigration_set
+{
+	repeated kingdom_immigration set = 1;
+}

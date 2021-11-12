@@ -1,0 +1,31 @@
+syntax = "proto3";
+package db;
+import "msg_common_city.proto";
+
+message building_set
+{
+  repeated protomsg.BuildingInfo buildings = 1;
+}
+
+message theme_set
+{
+	repeated protomsg.CityThemeInfo infos = 1;	// 
+  uint32 main_theme = 2;    // 当前布局索引
+  bool forbid_copy  = 3;
+}
+
+message player_city
+{
+	uint64 id = 1;
+  building_set buildings = 2;
+  protomsg.BuildQueueInfo queue = 4;
+  protomsg.StrategyInfo strategy = 5;
+  protomsg.CityRoadInfo road = 6;
+	protomsg.CityContainerInfo container		= 7;	// 装饰建筑，道路收纳容器
+	theme_set themes = 8;	// 
+}
+message player_city_set
+{
+	repeated player_city set = 1;
+}
+

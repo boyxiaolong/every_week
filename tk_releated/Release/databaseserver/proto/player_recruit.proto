@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message player_recruit
+{
+	uint64 id = 1;
+	protomsg.NormalRecruitData normal_recruit_data  = 2;
+  protomsg.AdvancedRecruitData advanced_recruit_data = 3;
+}
+
+message player_recruit_set
+{
+	repeated player_recruit set = 1;
+}

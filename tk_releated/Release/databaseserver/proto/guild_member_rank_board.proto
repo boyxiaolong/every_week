@@ -1,0 +1,20 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+
+message member_rank_board_data_set
+{
+	repeated protomsg.GuildMemberRankBoard set = 1;
+}
+
+
+message guild_member_rank_board
+{
+	uint64 id = 1;
+	member_rank_board_data_set data = 2;
+}
+
+message guild_member_rank_board_set
+{
+	repeated guild_member_rank_board set = 1;
+}

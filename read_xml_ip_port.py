@@ -43,6 +43,6 @@ def cat_xml(bin_dir, res_dir):
             myfile.write(new_str)
             myfile.close()
 
-rootdir = r'D:\auto_explore_dir\bin\Release_1'
-res_dir = r'D:\auto_explore_dir\bin\Release_2'
+rootdir = r'D:\auto_explore_dir\bin\Release'
+res_dir = r'D:\auto_explore_dir\bin\Debug'
 cat_xml(rootdir, res_dir)

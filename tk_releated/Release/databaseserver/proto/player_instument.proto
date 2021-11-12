@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message Instument
+{
+    repeated protomsg.InstumentInfoData infos  = 1;
+    protomsg.InstumentReserchWorkInfo work      = 2;
+}
+
+message player_instument
+{
+    uint64 id           = 1;    // 唯一ID
+    Instument instument = 2;
+}

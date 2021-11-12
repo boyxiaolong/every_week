@@ -1,0 +1,27 @@
+syntax = "proto3";
+import "myoption.proto";
+import "google/protobuf/any.proto";
+package db;
+
+message guild_activity_data
+{
+  uint32 activity_id = 1;
+  int64 start_time = 2;
+  google.protobuf.Any activity_info = 3;   //»î¶¯ÄÚÈÝ
+}
+
+message guild_activity_datas
+{
+ repeated guild_activity_data datas = 2;
+}
+
+message guild_activity
+{
+  uint64 id = 1; // id 
+  guild_activity_datas activities = 2;
+}
+
+message guild_activity_set
+{
+	repeated guild_activity set = 1;
+}

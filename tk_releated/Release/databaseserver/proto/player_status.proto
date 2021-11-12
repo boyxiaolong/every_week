@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "msg_common.proto";
+package db;
+
+message player_status
+{
+	uint64 id = 1;
+	protomsg.StatusData statuses = 2;
+    int32 is_used_protect = 3;
+}
+message player_status_set
+{
+	repeated player_status set = 1;
+}

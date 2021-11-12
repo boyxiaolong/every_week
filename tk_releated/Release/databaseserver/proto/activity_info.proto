@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common_activity.proto";
+package db;
+
+message activity_info
+{
+  uint64 id = 1; // id 
+  protomsg.ActivityInfo info = 2;
+}
+
+message activity_info_set
+{
+	repeated activity_info set = 1;
+}

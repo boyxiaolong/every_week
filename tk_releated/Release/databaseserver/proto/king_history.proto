@@ -1,0 +1,14 @@
+syntax = "proto3";
+package db; 
+import "msg_common.proto";
+
+message king_history
+{
+	uint64 id = 1;
+	protomsg.KingRecord data = 2;
+}
+
+message king_history_set
+{
+	repeated king_history set = 1;
+}

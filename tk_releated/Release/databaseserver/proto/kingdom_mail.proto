@@ -1,0 +1,25 @@
+syntax = "proto3";
+package db;
+import "msg_common.proto";
+import "msg_common_mail.proto";
+
+message kingdom_mail_content
+{
+  repeated protomsg.KingdomMailContent contents = 1;
+}
+
+message kingdom_mail
+{
+  uint64 id = 1;
+  uint32 type = 3; //全服邮件类型
+  kingdom_mail_content content = 5;
+  protomsg.ResourceSet ress = 7; //资源
+  int64 create_time = 8;
+  protomsg.KingdomMailSender sender = 9;
+  string param = 10;
+}
+
+message kingdom_mail_set
+{
+	repeated kingdom_mail set = 1;
+}

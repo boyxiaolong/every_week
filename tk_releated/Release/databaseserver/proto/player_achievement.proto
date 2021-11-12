@@ -1,0 +1,29 @@
+syntax = "proto3";
+import "msg_common.proto";
+import "msg_common_achievement.proto";
+package db;
+
+message achievement_data
+{
+  repeated protomsg.AchievementData data = 1;	// 成就信息
+}
+
+message achievement_flag_data
+{
+  repeated protomsg.AchievementFlagData data = 1;	// 成就信息
+}
+
+message player_achievement
+{
+	uint64 id = 1;								// 玩家ID
+	int32 level = 2;							// 等级
+	int32 exp = 3;								// 经验
+	achievement_data data = 4;					// 成就信息
+	int32 reward_level = 5;						// 已领取过奖励的最高等级
+	achievement_flag_data flag_data = 6;		// 成就墙信息
+}
+
+message player_achievement_set
+{
+	repeated player_achievement set = 1;
+}

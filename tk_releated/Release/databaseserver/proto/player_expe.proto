@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "myoption.proto";
+
+package db;
+
+
+message DbPlayerExpeLevelInfo {
+    int32 level_id = 1;    // 关卡id
+    int32 top_star = 2;    // 最高星级
+    int32 last_reward_star = 3;    // 上次领奖时星级
+}
+
+
+message DbPlayerExpeData {
+    map<int32, DbPlayerExpeLevelInfo> pass_level_info = 1;    // 已通关信息
+    int64 reward_reset_time = 2;    // 奖励信息重置时间
+    repeated uint32 unlock_id = 3;    // 已解锁章节id
+    repeated uint32 story_reward_id = 4;    // 已领取的剧情奖励id
+}
+
+
+
+
+message player_expe
+{
+    uint64 id = 1;
+    DbPlayerExpeData data = 2;
+    DbPlayerExpeData hard_data = 3;
+}
+
+message player_expe_set
+{
+    repeated player_expe set = 1;
+}
+
+
+
+

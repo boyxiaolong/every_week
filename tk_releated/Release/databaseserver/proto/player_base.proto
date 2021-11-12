@@ -1,0 +1,101 @@
+syntax = "proto3";
+package db;
+import "msg_common.proto";
+
+message OtherCurrency
+{
+    repeated uint64 currencies  = 1;
+}
+
+message RookieGuide
+{
+    uint32 rookie_guide_id                      = 1;
+    uint32 rookie_guide_status                  = 2;
+    repeated uint32 rookie_guide_speical_ids    = 3;
+    uint32 rookie_guide_max_indent_id           = 4;
+}
+
+message ClientLocalData
+{
+    repeated string datas   = 1;
+}
+
+message NoobMail
+{
+    repeated uint64 datas   = 1;
+}
+
+message FoundData
+{
+    uint64 region_id    = 1;
+    uint32 count        = 2;
+}
+
+message PlayerMiscData
+{
+    int64 first_join_guild_time                 = 1;    // 第一次加入公会时间戳
+    uint64 kill_count                           = 2;
+    uint64 collection_count                     = 4;    // 采集数量
+    protomsg.KillArmyCountInfo kill_army_count  = 5;    // 击杀详情
+    protomsg.BattleStatistics battle_statistics = 6;    // 战斗统计
+    protomsg.BuildPoint build_point             = 7;    // 建筑积分
+
+    int32 monster_lv                            = 8;
+    int32 is_quarter                            = 9;
+    uint32 camp_id                              = 10;
+    uint32 original_camp_id                     = 11;   // 初始阵营ID
+    uint32 open_mist                            = 12;   // 历史解锁迷雾块数
+
+    uint32 kingdom_id                           = 13;   // 所在王国ID（若与当前王国不一致，则更新，并更新进入时间)
+    int64 enter_kingdom_time                    = 14;   // 进入王国时间
+
+    uint32 born_state                           = 15;   // 出生省份
+    map<uint32, uint32> today_tasks             = 16;   // 当天已完成各类任务数量
+    uint32 original_language                    = 17;   // 创建角色时的原始语言
+    int64 clean_mist_time                       = 18;   // 清除所有迷雾时间
+    bool is_mist_cleaned                        = 19;   // 是否开启了所有迷雾
+    repeated FoundData found_pass_counts        = 20;   // 发现关卡数量
+    repeated FoundData found_temple_counts      = 21;   // 发现奇观数量
+}
+
+message DisplayPhotoData
+{
+    repeated uint32 heads   = 1;
+    repeated uint32 frames  = 2;
+}
+
+message player_base
+{
+    uint64 id                           = 1;
+    string name                         = 2;
+    uint32 level                        = 3;
+    uint32 exp                          = 4;
+    uint32 ap                           = 5;    // 行动力
+    int32 language                      = 6;
+    uint32 area                         = 7;
+    uint64 gold                         = 9;
+    uint64 emoney                       = 10;
+    int64 register_time                 = 12;
+    int64 last_login_time               = 13;
+    int64 last_logout_time              = 14;
+    int64 total_online_time             = 15;
+    ClientLocalData client_local_data   = 16;
+    int64 game_id                       = 17;
+    uint64 announce_id                  = 18;
+    OtherCurrency currencies            = 19;
+    uint64 power                        = 20;
+    string head                         = 21;
+    DisplayPhotoData displayphoto       = 22;
+    PlayerMiscData misc                 = 23;
+    int64 last_ap_add_time              = 24;   // 行动力
+    NoobMail noob_mail                  = 25;
+    uint32 login_days                   = 26;
+    int32 evaluation                    = 27;
+    uint32 create_account_day           = 28;
+    OtherCurrency safe_currencies       = 29;
+}
+
+message player_base_set
+{
+    repeated player_base set    = 1;
+}

@@ -1,0 +1,46 @@
+syntax = "proto3"; 
+
+package db; 
+message mall_config
+{
+	uint64 id = 1;
+	uint32 pcid = 2;
+	string comment = 3;
+	uint32 type = 4;
+	uint32 ui_type = 5;
+	uint32 sub_type = 6;
+	string prev_goods = 7;
+	uint32 goods_gruop = 8;
+	string name = 9;
+	string desc = 10;
+	string ad_pic = 11;
+	uint32 discontinue = 12;
+	uint32 open_end_type = 13;
+	string open_end_conditions1 = 14;
+	string open_end_conditions2 = 15;
+	string open_end_conditions3 = 16;
+	uint32 reset = 17;
+	uint32 limit_time = 18;
+	string buy_conditions1 = 19;
+	string buy_conditions2 = 20;
+	uint32 currency_type = 21;
+	uint32 discount = 22;
+	uint32 price = 23;
+	uint32 label = 24;
+	uint32 bg_color = 25;
+	string button_icon = 26;
+	uint32 daily_hero = 27;
+	uint32 place = 28;
+	uint32 duration = 29;
+	uint32 price_item = 30;
+	uint32 mall_extrareward = 31;
+	uint32 order = 32;
+	string reward = 33;
+	uint32 badge = 34;
+	uint32 mistaken_goods_id = 35;
+}
+
+message mall_config_set
+{ 
+	repeated mall_config set = 1;
+}

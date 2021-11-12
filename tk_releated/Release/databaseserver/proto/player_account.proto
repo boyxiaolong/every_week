@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "myoption.proto";
+
+package db;
+
+message player_account
+{
+	option (table_count)	= 10;
+
+	uint64 id = 1;
+  uint64 account = 2;
+	uint32 db_id = 3;
+  uint32 continent_id = 4;
+  uint32 kingdom_id = 5;
+}
+message player_account_set
+{
+	repeated player_account set = 1;
+}

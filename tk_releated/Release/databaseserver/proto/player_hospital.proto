@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message Hospital
+{
+  repeated protomsg.ArmyInfo army_info = 1;
+  protomsg.CureWorkInfo work = 2;
+  uint32 last_alarm_cap = 3;
+  protomsg.HospitalStatisticsData statistics = 4;
+}
+
+message player_hospital
+{
+  uint64 id = 1; //唯一ID
+  Hospital hospital = 2;
+}
+
+message player_hospital_set
+{
+	repeated player_hospital set = 1;
+}

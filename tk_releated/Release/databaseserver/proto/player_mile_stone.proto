@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common_task.proto";
+package db;
+
+message player_mile_stone
+{
+	uint64 id = 1;
+	protomsg.MileStonePlayerTaskData task_data  = 2;
+  protomsg.MileStonePlayerRewardInfoList reward_data = 3;
+}
+
+message player_mile_stone_set
+{
+	repeated player_mile_stone set = 1;
+}

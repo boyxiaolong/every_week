@@ -1,0 +1,69 @@
+syntax = "proto3";
+package protomsg;
+
+enum LifeLineConditionType
+{
+    kUnknown                = 0;
+    kServerTime             = 1;
+    kPlayerCreateAccount    = 2;
+    kAddHero                = 3;
+    kTaskComplete           = 6;
+    kHeroUpgraded           = 7;
+    kDelay                  = 8;
+}
+
+enum LifeLineStatus
+{
+    kUnvalid    = 0;
+    kEnd        = 1;    // 已结束
+    kReady      = 2;    // 准备中
+    kOverlay    = 3;    // 覆盖
+    kRun        = 4;    // 进行中
+}
+
+// 已完成节点
+message LifeLineSelected
+{
+    uint32 node_id      = 1;
+    uint32 select_index = 2;    // 玩家选择 无选择节点为0
+    int64 start_time    = 3;    // 开始时间
+    int64 end_time      = 4;    // 完成时间
+}
+
+// LifeLine事件数据
+message LifeLineIncidentData
+{
+    uint32 incident_id                      = 1;
+    uint32 node_id                          = 2;    // 事件当前节点
+    LifeLineStatus status                   = 3;    // 当前状态
+    repeated LifeLineSelected select_record = 4;    // 已完成节点 情况  key = finish_node_id
+    int64 start_time                        = 5;    // 开始时间
+    int64 end_time                          = 6;    // 完成时间
+    uint32 priority                         = 7;    // 事件优先级，用于排队
+}
+
+// 延迟触发LifeLine事件
+message LifeLineDelayData
+{
+    uint32 incident_id  = 1;
+    int64 end_time      = 2;
+    uint32 node_id      = 3;
+    uint32 priority     = 4;    // 事件优先级，用于排队
+}
+
+message LifeLineData
+{
+    uint64 npc_id                                       = 1;
+    string npc_data                                     = 2;
+    LifeLineIncidentData run_incident_data              = 3;    // 运行状态
+    repeated LifeLineIncidentData ready_incident_data   = 4;    // 准备状态
+    repeated LifeLineIncidentData end_incident_data     = 5;    // 结束状态
+    repeated LifeLineDelayData delay_data               = 6;
+}
+
+message LifelineRewardMailContent
+{
+    uint64 npc_id       = 1;
+    uint32 incident_id  = 2;
+    uint32 mail_type    = 3;
+}

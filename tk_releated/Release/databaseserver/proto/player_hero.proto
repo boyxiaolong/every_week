@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+
+message Heroes
+{
+  repeated protomsg.HeroInfo infos = 1;
+}
+
+message Presbyters
+{
+  repeated protomsg.Presbyter infos = 1;
+}
+
+message player_hero
+{
+  uint64 id = 1; //唯一ID
+  Heroes heroes = 2;
+
+  Presbyters presbyters = 10;
+}
+
+message player_hero_set
+{
+	repeated player_hero set = 1;
+}

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "myoption.proto";
+import "msg_common.proto";
+
+package db;
+
+message GlobalHeroData {
+    repeated protomsg.GlobalHeroPointDatas base = 1;
+}
+
+message global_hero_point {
+    uint64 id = 1;
+    GlobalHeroData data = 2;
+}
+
+message global_hero_point_set {
+    repeated global_hero_point set = 1;
+}
+
+

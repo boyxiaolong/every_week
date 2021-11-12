@@ -1,0 +1,27 @@
+syntax = "proto3";
+package db; 
+import "msg_common.proto";
+
+message claimed_guild_gift_info
+{
+	uint64 unique_id   = 1; // 唯一的自增
+  protomsg.RewardData reward  = 2; // 已经领取的奖励内容
+}
+
+message claimed_guild_gift_info_set
+{
+  repeated claimed_guild_gift_info set = 1;
+}
+
+message guild_gift_member
+{
+	uint64 id = 1; // player id
+	claimed_guild_gift_info_set guild_gift = 2;
+	claimed_guild_gift_info_set normal_gift = 3;
+	claimed_guild_gift_info_set rare_gift = 4;
+}
+
+message guild_gift_member_set
+{
+	repeated guild_gift_member set = 1;
+}

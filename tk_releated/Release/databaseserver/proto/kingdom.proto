@@ -1,0 +1,15 @@
+syntax = "proto3";
+package db;
+
+message kingdom
+{
+  uint64 id = 1; // id 
+  uint64 allcate_entity_id = 2; 
+  uint32 kill_barbarians_global_lv = 3;
+  uint32 kill_barbarians_global_count = 4;
+}
+
+message kingdom_set
+{
+	repeated kingdom set = 1;
+}

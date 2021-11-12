@@ -1,0 +1,16 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+
+message guild_shop
+{
+	uint64 id = 1;
+	protomsg.GuildShopItemAllInfo guild_items = 2;
+	protomsg.GuildShopAllLogInfo add_guild_item_logs = 3;
+	protomsg.GuildShopAllLogInfo buy_guild_item_logs = 4;
+}
+
+message guild_shop_set
+{
+	repeated guild_shop set = 1;
+}

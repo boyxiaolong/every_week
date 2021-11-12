@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+
+message Items
+{
+  repeated protomsg.ItemInfo infos = 1;
+}
+
+message player_item
+{
+  uint64 id = 1; //唯一ID
+  Items items = 2;
+  int32 guarantee = 3;	// 特惠宝箱保底
+  int32 total_guarantee = 4;	// 特惠宝箱总的使用次数
+}
+
+message player_item_set
+{
+	repeated player_item set = 1;
+}

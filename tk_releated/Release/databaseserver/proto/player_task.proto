@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "msg_common_task.proto";
+package db;
+
+message player_task
+{
+	uint64 id = 1;
+	protomsg.ChapterData chapter = 2;		// 主线章节
+	protomsg.BranchData branch	= 3;		// 支线任务信息
+	protomsg.DailyData daily	= 4;			// 每日活跃任务
+}
+
+message player_task_set
+{
+	repeated player_task set = 1;
+}

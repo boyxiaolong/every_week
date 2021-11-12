@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message Technology
+{
+  repeated protomsg.TechInfoData infos = 1;
+  protomsg.ReserchWorkInfo work = 2;
+}
+
+message player_technology
+{
+  uint64 id = 1; //唯一ID
+  Technology technology = 2;
+}

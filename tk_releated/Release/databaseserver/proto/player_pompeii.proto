@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "myoption.proto";
+
+package db;
+
+
+message DbPlayerPompeiiData {
+    int32 season_id = 1;
+}
+
+
+
+
+message player_pompeii
+{
+    uint64 id = 1;
+    DbPlayerPompeiiData data = 2;
+}
+
+message player_pompeii_set
+{
+    repeated player_pompeii set = 1;
+}
+
+
+
+

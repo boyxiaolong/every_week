@@ -1,0 +1,290 @@
+syntax = "proto3";
+package protomsg;
+
+// 任务类型
+enum TaskType
+{
+	kTaskTypeNone			= 0;
+	kTaskTypeMain			= 1;		// 主线任务
+	kTaskTypeBranch		= 2;		// 分支任务
+	kTaskTypeDaily		= 3;		// 日常任务
+	kTaskTypeActivity	= 4;		// 活动任务
+	kTaskTypeGuildActivity = 5;	// 公会活动任务
+	kTaskTypeGuildDerby = 6;	// 公会德比任务
+	kTaskTypeHonor		= 7;	// 荣誉勋章(通行证)任务
+}
+
+// 任务数据
+message TaskData
+{
+	uint32	task_id			= 1;				// 任务ID
+	uint32	status			= 2;				// 任务状态, 参见TaskStatus
+	uint64	value				= 3;				// 当前进度值
+	uint64	accept_time	= 4;				// 接任务时间戳
+}
+
+// 主线章节数据
+message ChapterData
+{
+	uint32 chapter_id = 1;							// 章节ID
+	bool is_reward		= 2;							// 是否已经领奖
+	repeated TaskData tasks	= 3;				// 所有任务信息
+}
+
+// 支线任务数据
+message BranchData
+{
+	repeated uint32 accept_branches = 1;		// 已接受的支线(已完成，或正在执行)
+	repeated TaskData tasks	= 2;		// 当前支线任务
+}
+
+// 每日活跃任务数据
+message DailyData
+{
+	uint32	date		= 1;		// 日期，YYYYMMDD格式
+	uint32	score		= 2;		// 每日活跃点数
+	repeated TaskData tasks	= 3;		// 任务信息
+}
+
+// 任务状态
+enum TaskStatus
+{
+  kTaskStatusNone		= 0;
+  kTaskStatusExecute	= 1;		// 正在执行
+  kTaskStatusAward		= 2;    // 任务完成，等待玩家领取奖励
+  kTaskStatusComplete	= 3;		// 任务彻底完成
+}
+
+enum TaskConditionType
+{
+	kTaskCondition_None			= 0;
+	kTaskCondition_QualityHeroCount				= 1;		// 判定拥有{品质}的英雄{0}个, 英雄品质|个数
+	kTaskCondition_HeroCount							= 2;		// 判定拥有英雄达到{0}个数,	数量
+	kTaskCondition_HeroLevel							= 3;		// 判定升级{英雄}达到{0}级, Id|等級
+	kTaskCondition_LevelHeroCount					= 4;		// 判定拥有{等级}的英雄{0}个	等級|数量
+	kTaskCondition_LevelArmyCount					= 5;		// 判定拥有{等级}的兵种{0}个	等级|数量
+	kTaskCondition_BattlePower						= 6;		// 判定总战力达到{0}	值
+	kTaskCondition_BuildingLevel					= 7;		// 判定{建筑ID}，达到{0}等级
+	kTaskCondition_CollectResource				= 8;		// 判定采集{资源}达到，达到{0}量
+	kTaskCondition_TechLevel							= 9;		// 判定{科技ID}，达到{0}等级
+	kTaskCondition_JoinGuild							= 10;		// 判断玩家是否加入联盟 1:加入， 0 ： 未加入
+	kTaskCondition_CompleteChapter				= 11;		// 判断完成{章节id}
+	kTaskCondition_CityStrategyLevel			= 12;		// 激活内城流派{0}阶
+	kTaskCondition_AnyHeroStar						= 13;		// 判定玩家拥有任意{0}星英雄	
+	kTaskCondition_StrategyBuilding				= 14;		// 判定玩家是否拥有流派建筑	1：是，0：否
+	kTaskCondition_AnyTechLevel						= 15;		// 判定解锁参数表中任意一个{多个科技ID}科技达到{}级， 科技ID1|科技ID2|...|等级
+	kTaskCondition_AwakenHeroCount				= 16;		// 拥有{0}个觉醒英雄
+	kTaskCondition_ExpeditionPassCount		= 17;		// 在远征中完成{0}个关卡 	
+	kTaskCondition_LevelBuildingCount			= 18;		// 判断拥有{建筑id}为{0}级有{0}个
+	kTaskCondition_ResourceBuildingLevel	= 19;		// 拥有最大等级为{0}级的任意资源建筑
+	kTaskCondition_StarHeroCount					= 20;		// 判断拥有{0}星英雄{0}个
+	kTaskCondition_TechCount							= 21;		// 判断拥有{0}个科技
+	kTaskCondition_OpenMistCount					= 22;		// 判断玩家已经解锁了{0}块迷雾
+	kTaskCondition_WearQualityEquipmentCount			= 23;		// 穿戴{0}件{品质}的装备
+	kTaskCondition_VipLevel								= 25;		// 判断玩家vip等级到达{0}以上
+	kTaskCondition_HadAddHeroPoint				= 27;		// 判断玩家是否给英雄加过属性点(仕航：若英雄重置点数后不再加点，也视为未加过点)
+	kTaskCondition_HasCityTheme						= 28;		// 判断玩家是否保存过内城编辑
+	kTaskCondition_HadRename							= 29;		// 判断玩家是否修改过名字
+	kTaskCondition_AchievementComplete		= 30;		// 判断玩家成就{id}完成的进度{0}, 目标参数仅供显示
+	kTaskCondition_MaxBattlePower					= 31;		// 判断玩家历史最高战斗力达到{0}
+	kTaskCondition_FoundTempleCount				= 32;		// 判断玩家探索迷雾解锁了奇观{0}个
+	kTaskCondition_FoundPassCount					= 33;		// 判断玩家探索迷雾解锁了关卡{0}个
+
+	kTaskCondition_Session_Begin									= 1000;
+	kTaskCondition_Session_TechUpgradeTimes				= 1001;		// 判定在活动期间完成{0}次科技研究
+	kTaskCondition_Session_ItemUseTimes						= 1002;		// 判定在活动期间使用{道具ID}，达到{0}次
+	kTaskCondition_Session_AccelateMiniutes				= 1003;		// 判定在活动期间使用加速功能，达到{0}分钟
+	kTaskCondition_Session_GuildAssistTimes				= 1004;		// 判定在活动期间公会帮助，达到{0}次
+	kTaskCondition_Session_SpendEmoney						= 1005;		// 判定在活动期间消耗钻币达到{0}
+	kTaskCondition_Session_KillEnemy							= 1006;		// 判定活动期间击杀敌军玩家{等级}部队数量{0}个
+	kTaskCondition_Session_LoginDayCount					= 1007;		// 判定活动期间累积登陆{0}天
+	kTaskCondition_Session_TrainingArmy						= 1008;		// 判定活动期间训练{等级}部队{0}个
+	kTaskCondition_Session_UpgradeHeroSkillTimes	= 1009;		// 判定活动期间升级英雄技能{0}次
+	kTaskCondition_Session_KillBarbarians					= 1011;		// 判定在活动期间击败{ID}-{ID}野蛮人{0}个
+	kTaskCondition_Session_IncreaseBattlePower		= 1012;		// 判定在活动期间战力提升{0}
+	kTaskCondition_Session_BuildingUpgradeTimes		= 1013;		// 判定在活动期间内升级任意建筑{0}次
+	kTaskCondition_Session_ActivityScore					= 1014;		// 判定活动{activity_id}总积分达到{0}
+	kTaskCondition_Session_ActivityStageScore			= 1015;		// 判定活动{activity_stage_id}分阶段活动积分达到{0}
+	kTaskCondition_Session_ActivityTrainScore			= 1016;		// 判定在活动期间部队训练获得积分{0}
+	kTaskCondition_Session_ActivityBarbarianScore	= 1017;		// 判定在活动期间击败怪物获得积分{0}
+	kTaskCondition_Session_ActivityMapCollectScore	= 1018;		// 判定在活动期间采集{类型}资源获得积分{0}
+	kTaskCondition_Session_ActivityBattlePowerScore	= 1019;		// 判定在活动期间{类型}提升战力获得积分{0}
+	kTaskCondition_Session_ActivityKillEnemyScore		= 1020;		// 判定在活动期间消灭敌军获得积分{0}
+	kTaskCondition_Session_DailyScore							= 1021;		// 判定在活动期间每日活跃积分达到{0}
+	kTaskCondition_Session_HeroActiveSkillTimes		= 1023;		// 判断在活动期间英雄使用{0}次主动技能
+	kTaskCondition_Session_MapCollectCount				= 1024;		// 判断在活动期间采集任意资源总和达到{0}
+	kTaskCondition_Session_CityCollectCount				= 1025;		// 判断在活动期间内城收获任意资源总和达到{0}
+	kTaskCondition_Session_BarbarianFortCount			= 1026;		// 判断在活动期间玩家消灭任意等级野蛮人城寨{0}次
+	kTaskCondition_Session_GuildShopBuyCount			= 1027;		// 判断在活动期间联盟商店购买数量{0}
+	kTaskCondition_Session_CityShopBuyCount				= 1028;		// 判定在活动期间购买指定商店{}物品达到{}个
+	kTaskCondition_Session_CommandCenterHero			= 1029;		// 判定玩家是否在指挥所中配置武将
+	kTaskCondition_Session_JoinGuildMarch					= 1030;		// 判定玩家是否有参与过集结进攻
+	kTaskCondition_Session_AttackTemple						= 1031;		// 判定玩家是否攻击过奇观
+	kTaskCondition_Session_RecruitTimes						= 1032;		// 判定玩家招募次数, 招募等级|次数 (招募等级为0，表示任意等级)
+	kTaskCondition_Session_CreateRoleTime					= 1033;		// 判定建立角色倒计时{0}秒, 倒计时结束就完成
+	kTaskCondition_Session_GuildTechDonateTimes		= 1035;		// 活动期间联盟捐献{0}次
+	kTaskCondition_Session_CureTroopCount					= 1036;		// 活动期间医院治疗伤兵{0}个
+	kTaskCondition_Session_VillageAwardCount			= 1038;		// 领取村庄奖励次数{0}个
+	kTaskCondition_Session_TrainTroopCount				= 1040;		// 判断活动期间训练任意部队{0}个
+	kTaskCondition_Session_MapCollectTypeCount		= 1041;		// 判定在活动期间采集{类型}资源{0}单位
+	kTaskCondition_Session_GuildGiftClaimCount		= 1042;		// 判断在活动期间领取{次数}联盟礼物
+	kTaskCondition_Session_IncreaseBuildingPower	= 1043;		// 建筑战力提升{0}
+	kTaskCondition_Session_IncreaseTechPower			= 1044;		// 科技战力提升{0}
+	kTaskCondition_Session_IncreaseArmyPower			= 1045;		// 部队战力提升{0}
+	kTaskCondition_Session_AccelateTypeMinutes		= 1046;		// 使用{}类型加上{0}分钟		// 类型见item.proto UseItemTarget
+	kTaskCondition_Session_CityCollectResource		= 1049;		// 内城{资源类型}收集达到{0}
+	kTaskCondition_Session_SpendAP								= 1053;		// 消耗{0}点体力
+	kTaskCondition_Session_ReenforceMemberCount		= 1054;		// 增援盟友{0}次
+	kTaskCondition_Session_JoinGuildMarchTimes		= 1055;		// 活动期间参与集结{0}次
+	kTaskCondition_Session_MapCollectMineCount		= 1057;		// 采空{0}个资源田
+	kTaskCondition_Session_KillEnemyCount					= 1058;		// 判断活动期间内玩家击杀任意{0}个玩家战斗单位
+	kTaskCondition_Session_PlunderResourceCount		= 1059;		// 判断活动期间内掠夺玩家任意资源{0}单位
+	kTaskCondition_Session_TypeArmyTrainCount			= 1060;		// 判断活动期间内玩家训练{等级}及以上的{类型}部队{0}个
+	kTaskCondition_Session_RecruitQualityHeroCount	= 1061;	// 判断活动期间内玩家招募{品质}英雄{0}个
+	kTaskCondition_Session_SpendCurrency					= 1062;		// 判断活动期间内玩家花费{货币类型}数量{0}
+	kTaskCondition_Session_SendGuildGiftCount			= 1063;		// 判断活动期间内玩家给联盟发放{礼物id}{0}个
+	kTaskCondition_Session_UpgradeEquipmentTimes	= 1064;		// 判断活动期间内升级装备{0}次
+	kTaskCondition_Session_CarrageResources				= 1065;		// 判定活动期间援助盟友{}任意资源
+	kTaskCondition_Session_HeroAddExp							= 1066;		// 判断活动期间内玩家英雄获得经验{0}
+	kTaskCondition_Session_CureLevelTroopCount		= 1068;		// 判断活动内玩家治疗{等级}以上部队{0}个
+	kTaskCondition_Session_ActivityOpenDayCount		= 1069;		// 判断活动{活动ID}开启第{0}天 Activity表ID|天数
+	kTaskCondition_Session_MultiItemUseTimes			= 1070;		// 判断多个{道具id}一共使用{0}次 道具1|道具2|...|次数
+	kTaskCondition_Session_StartTrainTimes				= 1071;		// 判断开始训练{兵种类型}{0}次		 兵种类型|次数			
+	kTaskCondition_Session_RecruiteHeroCount			= 1072;		// 判断活动期间内招募英雄达到{0}个	数量
+	kTaskCondition_Session_BuyMallTimes						= 1073;		// 判断活动期间内购买{类型}的礼包{0}次 类型1|类型2|..|次数, 类型为mall表的type字段
+	kTaskCondition_Session_SpendResources					= 1075;		// 判断活动期间内总资源消耗达到{0} 木、粮、铁、石油
+	kTaskCondition_Session_AccumulateDailyScore		= 1076;		// 判定在活动期间每日活跃积分累积达到{0}（可跨天）
+
+	kTaskCondition_GuildActivity_KillBarbarian				= 2001;   //公会击杀野蛮人	
+	kTaskCondition_GuildActivity_KillBarbarianFort		= 2002;   //公会击杀野蛮人城寨	
+}
+
+
+//------------------------------------------里程碑任务相关 ------------------------------------------
+
+enum MileStoneContidionType
+{
+	kMileStoneCondition_None			= 0;
+	kMileStoneCondition_KillBarbarianCount			= 1; //全服击杀丧尸（野蛮人）数量X个Y级以上丧尸
+	kMileStoneCondition_GuildMemberCount				= 2; //成员超过X人的联盟数量到达Y个
+	kMileStoneCondition_CastleLevelCount				= 3; //主城达到X级的玩家超过Y人
+	kMileStoneCondition_TempleFirstCaptureCount = 4; //里程碑结束时联盟首占过的Y级城最大个数
+	kMileStoneCondition_PassFirstCaptureCount = 5;   //里程碑结束时联盟首占过的Y级关卡最大个数
+	kMileStoneCondition_TempleCaptureCount   = 6;    //里程碑结束时联盟占领中的Y级城个数
+	kMileStoneCondition_PassCaptureCount   = 7;      //里程碑结束时联盟占领中的Y级关卡个数
+	kMileStoneCondition_OpenMist					= 8; //全服探索X个迷雾
+	kMileStoneCondition_BuildFort					= 9; //全服建造X个要塞
+	kMileStoneCondition_KillBarbarianFortCount = 10; //联盟击杀X个Y级以上首脑
+	kMileStoneCondition_ProduceArmy = 11;     //全服训练X个Y级（T几）兵
+	kMileStoneCondition_GuildPowerRank = 12; //联盟战力排名前X名
+	kMileStoneCondition_FinishMist = 13; //个人完成所有迷雾探索
+	kMileStoneCondition_GuildCaptureTempleRank = 14; //城市占领联盟前X名
+}
+
+enum MileStoneConditionStatus
+{
+	kMileStoneConditionStatus_NotOpen = 0;		//未开启
+	kMileStoneConditionStatus_Open = 1;				//开启
+	kMileStoneConditionStatus_Finish = 2;     //结束
+}
+
+message MileStoneBaseData
+{
+	uint32 mile_stone_id = 1;
+	int64 begin_time = 3;
+	int64 end_time = 4;
+}
+
+message MileStoneTaskBaseData
+{
+	uint32 task_id = 1;
+	uint64 count = 5;     //任务完成度
+}
+
+message MileStoneGuildData
+{
+	repeated MileStoneTaskBaseData task	= 3;		// 当前直线任务
+}
+
+message MileStonePlayerTaskData
+{
+	repeated MileStoneTaskBaseData task	= 3;		// 当前直线任务
+}
+
+message MileStoneGuildCompleteInfo
+{
+	uint64 guild_id = 1;
+	uint64 value = 2;
+}
+
+message MileStoneGuildCompleteAllInfo
+{
+	repeated protomsg.MileStoneGuildCompleteInfo guild_info = 7;
+}
+
+message MileStonePlayerRewardInfo
+{
+	uint32 mile_stone_id = 1;
+  bool is_complete = 2;			//是否任务完成
+  bool is_get_reward = 3;		//是否已经领取任务奖励
+  int64 end_time = 4;				//任务结束时间
+	uint64 value = 5;					//数量
+	uint64 my_value = 6;			//我的数量
+	uint32 rank = 7;
+}
+
+message MileStonePlayerRewardInfoList
+{
+	repeated MileStonePlayerRewardInfo list = 1;
+}
+
+//里程碑的奖励信息
+message MileStoneData
+{
+	uint32 mile_stone_id = 1;
+  bool is_complete = 2;	 //里程碑是否完成
+  int64 end_time = 4;    //任务结束时间
+	uint64 value = 5;			 //数量
+	uint32 rank = 6;
+}
+
+message MileStoneRankGuildInfo
+{
+	uint64 guild_id = 1;
+	string guild_name	= 2;
+	string guild_short_name = 3;
+	uint32 guild_icon	= 4;	// 公会图标
+	uint64 value = 5;
+
+	uint64	guild_master_id		  = 6;		// 玩家/会长ID
+	string	guild_master_name   = 7;		// 玩家/会长名字
+	string	guild_master_head   = 8;		// 玩家/会长头像
+
+	int64 update_time = 9;    //更新时间
+	uint32 rank = 10;
+}
+
+message MileStoneRankList
+{
+	repeated MileStoneRankGuildInfo list = 1;
+}
+
+//里程碑事件类型
+enum MileStoneEventType
+{
+	kMileStoneEventType_None = 0;
+	kMileStoneEventType_Temple = 1; //奇观
+	kMileStoneEventType_Pass = 2; //关卡
+	kMileStoneEventType_BarbarianFort = 3;//城寨
+	kMileStoneEventType_Mist = 4;//迷雾
+}
+
+//里程碑事件类型
+enum MileStoneRewardTarget
+{
+	kMileStoneRewardTarget_All = 0;
+	kMileStoneRewardTarget_Condition = 1; //条件
+	kMileStoneRewardTarget_Rank = 2; //排行榜
+}
+
+//------------------------------------------里程碑任务相关 ------------------------------------------

@@ -1,0 +1,51 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common_map.proto";
+import "msg_common_radar.proto";
+package db;
+
+message player_march
+{
+  uint64 id = 1;
+}
+
+message player_marchs
+{
+  repeated uint64 marchs = 1;
+}
+
+message player_castle
+{
+  uint64 id = 1;
+}
+
+enum map_player_status
+{
+  kMapPlayerStatusNormal = 0;
+  kMapPlayerStatusRemove = 1;
+}
+
+message map_player_queue
+{
+	repeated protomsg.VirtualQueueData data = 1;		// 虚拟队列信息
+}
+
+message map_player
+{
+  uint64 id = 1; // id 
+  protomsg.MapPlayerBaseData base_data = 2;
+  protomsg.EffectData      effect_data = 3;
+  player_castle            castle      = 4;
+  player_marchs            march       = 5;
+  protomsg.MapBuildingData building_data = 6;
+  protomsg.MapMiscData     misc         = 7;
+
+  uint32 status                         = 10;
+  protomsg.PlayerPresbyter presbyter_data = 11;
+  map_player_queue		   queue_data	= 12;
+}
+
+message map_player_set
+{
+	repeated map_player set = 1;
+}

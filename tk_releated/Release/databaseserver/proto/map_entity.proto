@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "google/protobuf/any.proto";
+package db;
+
+message entity_data
+{
+    map<uint32, google.protobuf.Any> datas  = 1;
+}
+
+message entity_owner_data
+{
+    uint32 owner_type   = 1;
+    uint64 owner_id     = 2;
+    uint32 force_id     = 3;
+}
+
+message map_entity
+{
+    uint64 id           = 1;    // id
+    uint32 entity_type  = 2;
+
+    entity_data data    = 3;
+}
+
+message map_entity_set
+{
+    repeated map_entity set = 1;
+}

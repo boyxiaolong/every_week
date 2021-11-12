@@ -1,0 +1,46 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+import "msg_common_task.proto";
+
+message OfficialInfos
+{
+  repeated protomsg.GuildOfficialInfo officials = 1;    // 公会官员任命信息
+}
+
+message GuildLabelDbData
+{
+  uint64 generator_id = 1;
+  protomsg.GuildLabelData data = 2;
+}
+
+message assist_detail_set
+{
+	repeated protomsg.GuildAssistDetail details	= 1;
+}
+
+message guild_data
+{
+	uint64 id = 1;
+	string name = 2;
+  string short_name = 3;
+  uint32 icon = 4;
+  uint32  join_type = 5;
+  protomsg.GuildJoinCondition join_condition = 6;
+  string bulletin = 7;
+  int64 last_active_time = 8;
+  int32 language = 9;
+  OfficialInfos officials = 10;
+  string welcome = 11;  // 欢迎邮件
+  protomsg.GuildStoreInfo store = 12;
+  protomsg.GuildStoreHistory store_history = 13;
+  GuildLabelDbData label = 14;
+  assist_detail_set	assists = 15;
+  protomsg.GuildFacilityInfo facility = 16;
+  protomsg.MileStoneGuildData mile_stone_data = 17;
+}
+
+message guild_data_set
+{
+	repeated guild_data set = 1;
+}

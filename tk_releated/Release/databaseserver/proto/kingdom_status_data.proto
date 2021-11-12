@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "myoption.proto";
+import "msg_common.proto";
+
+package db;
+
+
+message KingdomStatusData {
+    protomsg.KingdomInfoBase base = 1;
+    protomsg.KingdomInfoExtend extend = 2;
+}
+
+
+
+
+message kingdom_status_data {
+    uint64 id = 1;
+    KingdomStatusData data = 2;
+}
+
+message kingdom_status_data_set {
+    repeated kingdom_status_data set = 1;
+}
+
+
+
+

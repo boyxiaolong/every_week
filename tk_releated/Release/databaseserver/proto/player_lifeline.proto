@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common_lifeline.proto";
+package db;
+
+message LifeLineDataData
+{
+    repeated protomsg.LifeLineData life_line_data = 1;
+}
+message player_lifeline
+{
+    uint64 id = 1;
+    LifeLineDataData life_line_data = 2;
+}
+
+message player_lifeline_set
+{
+	repeated player_lifeline set = 1;
+}

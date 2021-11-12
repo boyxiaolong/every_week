@@ -1,0 +1,25 @@
+syntax = "proto3";
+package db;
+
+enum charge_status
+{
+	kChargeStatusWait = 0;	
+	kChargeStatusEnd  = 1;	
+	kChargeStatusError= 2;	
+}
+
+message charge_record
+{
+	uint64 id						= 1;
+	string charge_sn		= 2;
+	uint64 record_time	= 3;
+	uint64 player_id		= 4;
+	uint64 pc_id			= 5;
+	string gift_info	= 6;
+	uint32 status			= 7;
+	uint32 errcode		= 8;
+}
+message charge_record_set
+{
+	repeated charge_record set = 1;
+}

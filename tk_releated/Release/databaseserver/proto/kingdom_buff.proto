@@ -1,0 +1,34 @@
+syntax = "proto3";
+import "msg_common.proto";
+import "myoption.proto";
+
+package db;
+
+
+message KingdomBuffRecordList {
+    repeated protomsg.KingdomBuffActiveRecord active_record = 1;
+}
+
+
+message KingdomBuffData {
+    uint32 cur_buff_id = 1;
+    uint64 expire_time = 2;
+    uint64 cd_time = 3;
+}
+
+
+
+
+message kingdom_buff {
+    uint64 id = 1;
+    KingdomBuffData data = 2;
+    KingdomBuffRecordList record_list = 3;
+}
+
+message kingdom_buff_set {
+    repeated kingdom_buff set = 1;
+}
+
+
+
+

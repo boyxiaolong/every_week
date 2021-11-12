@@ -1,0 +1,753 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_task.proto";
+//import "google/protobuf/any.proto";
+
+// 公会职务
+enum GuildPosition
+{
+  kGuildPositionNone			= 0;    // 未加入公会
+  kGuildPositionMember		= 1;    // 普通成员
+	kGuildPositionSenior		= 2;
+  kGuildPositionLeader		= 3;    // 长老
+  kGuildPositionViceMaster	= 4;	// 副会长
+  kGuildPositionMaster		= 5;    // 公会会长
+}
+
+// 公会加入类型
+enum GuildJoinType
+{
+  kGuildJoinTypeAllow		= 0;      // 任何人都可以加入（默认）
+  kGuildJoinTypeApply		= 1;      // 申请批准才可以加入
+  kGuildJoinTypeCount		= 2;
+}
+
+// 公会申请者信息
+message ApplicantData
+{
+	uint64 player_id	= 1;	
+	SearchPlayerInfo data = 2;
+	int64 expired_time = 3;	// 过期时间
+}
+
+message GuildApplyRecord
+{
+	uint64 guild_id	= 1;
+	int64		expired_time = 2;
+}
+
+// 公会加入条件
+message GuildJoinCondition
+{	
+	uint64 require_battle_power = 1;
+}
+
+// 公会参数
+message GuildParam
+{	
+	string name				= 1;		// 公会名称
+	string short_name = 2;		// 简称
+	uint32 icon				= 3;		// 图标
+	string bulletin		= 4;		// 公告
+	GuildJoinType join_type	= 5;	// GuildJoinType枚举
+	GuildJoinCondition condition = 6;	// 加入条件
+	int32 language = 7;
+}
+
+// 玩家个人公会基础信息
+message PlayerGuildInfo
+{
+	uint64 player_id	= 1;
+	uint64 guild_id		= 2;
+	GuildPosition position		= 3;
+	string guild_name	= 4;
+	string guild_short_name = 5;
+	uint32 guild_icon	=  6;	// 公会图标
+	int64	join_time	= 7;
+	int32 language = 8;		// 公会语言
+	repeated GuildApplyRecord applying_guilds = 9;	// 正在申请公会ID列表		
+	GuildOfficial official = 10;	// 官位
+}
+
+// 公会成员信息
+message GuildMemberData
+{
+	uint64 player_id	= 1;				// 玩家ID
+	GuildPosition position	= 5;	// 职务, GuildPosition
+	uint64 join_time	= 6;				// 入会时间戳
+	bool   is_online	= 7;				// 是否在线
+	int64  last_login_time	= 8;	// 最后一次上线时间
+	SearchPlayerInfo data = 9;	
+}
+
+enum GuildEventType
+{
+	kGuildEventTypeNone = 0;	
+	kGuildEventTypeJoin = 1;	 // 新加入玩家
+	kGuildEventTypeLeave = 2;	 // 玩家离开工会
+	kGuildEventTypeKickout = 3;	 // 踢出玩家
+	kGuildEventTypePromote = 4;	 // 玩家升职
+	kGuildEventTypeDemote = 5;	 // 玩家降职
+}
+
+// 公会简要信息
+message GuildBriefData
+{
+	uint64	guild_id	= 1;						// 公会ID
+	string	name			= 2;						// 公会名字
+	string  short_name = 3;						// 简称
+	uint32  icon			= 4;						// 公会图标
+	GuildJoinType	join_type	= 5;			// 加入类型, MsgGuildJoinType
+	uint32	member_count= 6;					// 当前成员人数
+	GuildJoinCondition condition = 7;	// 加入条件
+	int32 language = 8;								// 语言
+	uint64 master_id	= 9;						// 盟主ID
+	string master_name = 10;					// 盟主名字
+	string master_head = 11;					// 盟主头像
+	string kingdom_name= 12;					// 王国名字
+	uint64 total_power = 13;					// 公会总战力	
+	uint32 territory_count = 14;			// 领土：要塞
+	uint32 member_count_limit = 15;		// 联盟成员人数上限
+	uint32 gift_level	= 16;						// 联盟礼物等级
+}
+
+// 公会搜索范围类型
+enum GuildSearchRangeType
+{
+	kGuildSearchRangeKingdom	= 0;	// 王国内搜索
+	kGuildSearchRangeWorld		= 1;	// 世界范围内搜索
+}
+
+// 公会搜索条件
+message GuildSearchCondition
+{
+	GuildSearchRangeType range_type = 1;	// 搜索范围
+	uint64 guild_id		= 2;					// 直接通过ID找指定公会
+	string name				= 3;					// 公会名字/简称
+}
+
+enum GuildRankType
+{
+	kGuildRankTypePower			= 0;//联盟战力排行榜
+}
+
+// 公会被邀请者信息
+message GuildInviteeData
+{
+	uint64 player_id	= 1;				// 玩家ID
+	SearchPlayerInfo info = 2;
+	repeated uint64 invited_guild_ids = 3; // 已邀请公会列表
+}
+
+// 玩家基础信息
+message SearchPlayerInfo
+{
+	uint64 account		= 1;
+	string name				= 2;				// 名字
+	string head				= 3;				// 头像
+	uint64 battle_power = 4;			// 战力
+	uint64 kill_count		= 5;			// 击杀数
+	uint32 castle_level = 6;			// 主堡等级
+	uint32 camp_id			= 7;			// 势力ID
+	int32	language			= 8;			
+}
+
+message SearchPlayer
+{
+	uint64 player_id	= 1;
+	SearchPlayerInfo data = 2;
+}
+
+enum GuildQuitReason  
+{
+	kGuildQuitReasonNormal	= 0;		// 主动退出
+	kGuildQuitReasonDismiss	= 1;		// 公会解散
+	kGuildQuitReasonPM			= 2;		// 被PM踢出公会
+
+	kGuildQuitReasonLongTimeOffline		= 101;		// 长时间未上线
+	kGuildQuitReasonLowBattlePower		= 102;			// 战力太低
+	kGuildQuitReasonLowContribution		= 103;		// 贡献太少
+	kGuildQuitReasonLowActivity				= 104;					// 不参加联盟活动
+	kGuildQuitReasonBreakRule					= 105 ;					// 破坏联盟规则
+	kGuildQuitReasonCriticalOpinion		= 106;		// 过激言论
+
+}
+
+// 公会官员
+enum GuildOfficial
+{
+	kGuildOfficialNone				= 0;
+	kGuildOfficialConsultant	= 1;	// 顾问
+	kGuildOfficialWarMars			= 2;	// 战神
+	kGuildOfficialEmbassador	= 3;	// 使节
+	kGuildOfficialSaintess		= 4;	// 圣女
+	kGuildOfficialInfantryMars= 5;	// 步兵战神
+	kGuildOfficialCavalryMars	= 6;	// 骑兵战神
+	kGuildOfficialArcherMars	= 7;	// 弓兵战神
+	kGuildOfficialFlyerMars		= 8;	// 飞兵战神
+}
+
+// 公会官员任命信息
+message GuildOfficialInfo
+{
+	GuildOfficial official	= 1;	// 官位
+	uint64 player_id				= 2;	// 玩家ID
+	int64	time							= 3;	// 任命时间
+}
+
+
+message MailPlayerData
+{
+  uint64 player_id  = 1;    // 玩家ID
+  string name       = 2;    // 名字
+  string head       = 3;    // 头像
+}
+
+message GuildConfirmDetailInfo
+{
+	string uuid	= 1;
+	int64 expired_time = 2;									// 过期时间
+	repeated MailPlayerData pendings = 3;		// 未决玩家
+	repeated MailPlayerData agrees = 4;			// 已同意玩家
+	repeated MailPlayerData rejects = 5;		// 拒绝玩家
+	MailPlayerData sender = 6;							// 发送者
+}
+
+// 公会确认邮件有效期
+enum ConfirmMailTimeLength
+{
+	kConfirmMailTimeLength10Minutes = 0;
+	kConfirmMailTimeLength30Minutes = 1;
+	kConfirmMailTimeLength8Hours = 2;
+	kConfirmMailTimeLength24Hours = 3;
+}
+
+// 联盟内成员排行榜
+enum MemberRankBoardType
+{
+	kMemberRankBoardTypeNone         = 0;
+	kMemberRankBoardTypeScience      = 1;
+	kMemberRankBoardTypeBuild        = 2;		// 建筑
+	kMemberRankBoardTypeHelp         = 3;		// 帮助
+	kMemberRankBoardTypeSupport      = 4;		// 援助
+}
+
+// 公会成员排行榜数据
+message MemberRankInfo
+{
+	uint64 player_id	= 1;
+	int64	score				= 2;
+	int64 update_time = 3;
+}
+
+// 公会成员排行榜
+message GuildMemberRankBoard
+{
+	MemberRankBoardType type = 1;					// 排行榜类型
+	repeated MemberRankInfo infos = 2;
+	int64 season_end_time		= 3;					// 赛季结束，结算时间
+}
+
+// 联盟排行榜
+enum GuildRankBoardType
+{
+	kGuildRankBoardTypeNone  = 0;
+	kGuildRankBoardTypePower = 1;
+}
+
+enum CountFilterCompareType
+{
+	kCompareTypeNone         = 0;
+	kCompareTypeEqual        = 1;
+	kCompareTypeLess         = 2;
+	kCompareTypeLessEqual    = 3;
+	kCompareTypeGreater      = 4;
+	kCompareTypeGreaterEqual = 5;
+}
+
+message CountFilter
+{
+  CountFilterCompareType type = 1;
+	uint32 count                = 2;
+}
+
+// 公会排行信息筛选器
+message GuildRankInfoFilter
+{
+  uint32 top_count       = 1; // 0 = 取全榜， x = 满足条件的最多数量
+  CountFilter flag_count = 2; //旗帜数
+  CountFilter fort_count = 3; //要塞数
+}
+
+// 公会排行榜数据
+message GuildRankInfo
+{
+  MapGuildData guild_data = 1;
+  int64	score             = 2;
+}
+
+// 公会排行榜数据
+message GuildRankBoard
+{
+	GuildRankBoardType type = 1; // 排行榜类型
+	repeated GuildRankInfo infos = 2;
+}
+
+message GuildResourceInfo
+{
+	uint32			type = 1;								// GuildCurrencyType
+	uint64			value = 2;
+	int64				update_time = 3;
+}
+
+// 公会仓库信息
+message GuildStoreInfo
+{
+	repeated GuildResourceInfo resources = 1;
+	int64 last_resource_field_time			 = 2; // 上次资源点资源决算时间
+}
+
+// 公会操作类型
+enum GuildActionType
+{
+	kGuildActionType_None			= 0;
+	kGuildActionType_Build		= 1;			// 建筑联盟矿、要塞……
+	kGuildActionType_Search		= 2;			// 科技研发
+	kGuildActionType_ConfirmMail = 3;		// 发送确认邮件
+	kGuildActionType_Outfire = 4;		    // 灭火
+}
+
+message GuildStoreActionInfo
+{
+	GuildActionType type	= 1;	// 操作类型
+	repeated uint32 params= 2;	// 建筑类型、科技ID……
+	int64	time						= 3;	// 时间
+	uint64 player_id			= 4;	// 操作玩家ID
+	string player_name		= 5;	// 操作玩家名字
+	string player_head		= 6;	// 头像
+	repeated GuildResourceInfo resources = 7; // 消耗的公会资源
+}
+
+enum GuildBehaviorActionCostResourceType
+{
+	kGuildBehaviorActionCostResourceType_None			= 0;
+	kGuildBehaviorActionCostResourceType_Build		= 1;			// 建筑联盟矿、要塞……
+	kGuildBehaviorActionCostResourceType_Search		= 2;			// 科技研发
+	kGuildBehaviorActionCostResourceType_ConfirmMail = 3;		// 发送确认邮件
+	kGuildBehaviorActionCostResourceType_Outfire = 4;		    // 灭火
+	kGuildBehaviorActionCostResourceType_GuildShop = 5;		  // 联盟商店
+}
+
+enum GuildBehaviorActionGetResourceType
+{
+	kGuildBehaviorActionGetResourceType_None			= 0;
+	kGuildBehaviorActionGetResourceType_Build		= 1;			// 建筑联盟矿、要塞……
+	kGuildBehaviorActionGetResourceType_Collect		= 2;	  // 联盟采集
+	kGuildBehaviorActionGetResourceType_Assist = 3;				// 联盟帮助
+	kGuildBehaviorActionGetResourceType_Gm = 4;				    // 联盟帮助
+	kGuildBehaviorActionGetResourceType_GuildResource = 5; // 联盟资源点
+	kGuildBehaviorActionGetResourceType_GuildGift = 6;     // 联盟礼物
+	kGuildBehaviorActionGetResourceType_GuildScienceConstruct = 7;     // 联盟科技捐献
+}
+
+message GuildResourceBehaviorActionInfo
+{
+	uint32 type = 1;		// 操作类型
+	uint64 player_id		= 2;		// 操作玩家ID
+	uint64 param1			  = 3;		// 参数1
+	uint64 param2			  = 4;		// 参数2
+}
+
+message GuildGetResourceBehaviorActionInfo
+{
+	uint32 type = 1;		// 操作类型
+	uint64 player_id		= 2;		// 操作玩家ID
+	uint64 param1			  = 3;		// 参数1
+	uint64 param2			  = 4;		// 参数2
+	uint64 param3			  = 5;		// 参数2
+	uint64 param4			  = 6;		// 参数2
+	uint64 param5			  = 7;		// 参数2
+}
+
+// 公会仓库操作历史
+message GuildStoreHistory
+{
+	repeated GuildStoreActionInfo actions = 1;
+}
+
+message GuildBuildingListData
+{
+  uint64 entity_id   = 1; //地图entity_id
+  vector2d position = 2; // 位置
+  uint32 config_id = 4;
+
+	bool has_space = 11; //是否还有空间
+
+	GuildBuildingData building = 12;
+}
+
+message GuildCollectListData
+{
+	uint64 remain_resource_count = 1;
+  uint64 total_speed = 2;// 总采集速度
+	uint32 config_id = 3;
+	uint64 entity_id   = 4; //地图entity_id
+}
+
+message QueryGuildBuildingListInfo
+{
+  repeated GuildBuildingListData buildings = 1;
+	uint32 flag_count = 2; //旗帜数
+	uint32 fort_count = 3; //要塞数
+	uint32 collect_count = 4; // 資源中心数
+	repeated GuildCollectListData collects = 5;
+}
+
+//灭火类型
+enum OutfireType
+{
+  kOutfireTypeNone			= 0;
+  kOutfireTypDiamond		= 1;    //钻石灭火
+  kOutfireTypeIntegral		= 2;  //公会积分灭火
+}
+
+enum LabelType
+{
+ kLabelTypeNone = 0;
+ kLabelTypePersonal = 1;
+ kLabelTypeGuild = 2;
+}
+
+message GuildLabelBaseData
+{
+  uint64 id = 1;  //标签的自增ID
+	uint32 lable_id = 2; //标签的配置ID 
+	vector2d pos = 3; //标签的位置
+	string content = 4; //标签的内容
+	uint64 player_id = 5;
+	string name = 6;
+	uint64 region_id = 7;
+}
+
+message GuildLabelData
+{
+  repeated GuildLabelBaseData datas = 1;//标签的数据 
+}
+
+// 公会帮助类型
+enum AssistType
+{
+	kAssistTypeNone		= 0;
+	kAssistTypeBuilding	= 1;
+	kAssistTypeScience	= 2;
+	kAssistTypeHospital = 3;
+}
+
+// 公会帮助项目
+message GuildAssistItem
+{
+	AssistType	type		= 1;		// 帮助类型
+	uint32	id				= 2;		// 建筑动态ID/科技ID
+	uint32	level			= 3;		// 等级
+	uint32	param			= 4;		// 额外参数(建筑类型)
+}
+
+// 公会交互帮助具体信息
+message GuildAssistDetail
+{
+	uint64	player_id					= 1;	// 请求帮助的玩家ID
+	GuildAssistItem	item				= 2;
+	repeated uint64	complete_assists	= 3;	// 已完成帮助玩家ID列表
+	repeated uint64	wait_assists		= 4;	// 待完成帮助玩家ID列表
+		
+	uint32	max_times					= 5;	// 最多帮助次数	
+	int64	expired_time				= 6;	// 超时时间
+}
+
+message MapGuildData
+{
+  uint64         guild_id   = 1; // id 
+  string         guild_name = 2;
+  string         guild_short_name = 3;
+	uint32         guild_icon = 4;
+	
+	uint32         kingdom_id = 10;
+	uint32         force_id 	= 11;
+}
+
+message MapGuildMember
+{
+  uint64 player_id        = 1;
+  GuildPosition  position = 2;
+}
+
+message MapGuildInfo
+{
+  uint64 id                       = 1; // id
+  MapGuildData guild_data         = 2;
+  repeated MapGuildMember members = 3;
+  repeated protomsg.EffectInfo effects = 4;
+}
+
+message MapGuildSet
+{
+  repeated MapGuildInfo set = 1;
+}
+
+message GuildResourceFieldInfo
+{
+	uint32 type			= 1;			// 类型 GuildResourceFieldType
+	repeated uint32 ids = 2;
+}
+
+message GuildResourceFieldCount
+{
+	uint32 type			= 1;			// 类型 GuildResourceFieldType
+	uint32 count		= 2;
+}
+
+message TempleGuildData
+{
+	uint64 temple_id = 1;
+	uint32 temple_buff_type = 2;
+}
+
+message StrongholdGuildData
+{
+	uint64 stronghold_id = 1;
+	uint32 stronghold_buff_type = 2;
+}
+
+// 公会建筑设施信息
+message GuildFacilityInfo
+{
+  uint32 flag_count					= 1;	// 旗帜数量
+  uint32 guild_fort_count		= 3;	// 公会要塞数量
+  
+  repeated TempleGuildData temples		= 4;	// 有效奇观ID集合
+  repeated uint64	passes		= 5;	// 关卡ID集合
+  repeated GuildResourceFieldInfo fields = 6; // 资源点信息
+  
+  uint32 guild_collect_count		= 7;	// 联盟资源中心数量
+  
+  repeated StrongholdGuildData strongholds = 8; // 据点集合
+}
+
+message GuildFacilityData
+{
+	uint64	guild_id				= 1;
+	GuildFacilityInfo info	= 2;
+}
+
+
+//公会物品信息
+message GuildShopItemInfo
+{
+	uint32 item_id = 1;
+	uint64 item_count = 2;
+}
+
+//所有可以购买的公会信息
+message GuildShopItemAllInfo
+{
+  repeated GuildShopItemInfo guild_items = 1;
+}
+
+//公会商店日志信息
+message GuildShopLogInfo
+{
+	string player_name = 1;
+	string head = 2;
+	uint32 item_id = 3;
+	uint64 item_count = 4;
+	int64 buy_time = 5;
+}
+
+//所有可以购买的公会信息
+message GuildShopAllLogInfo
+{
+  repeated GuildShopLogInfo log_infos = 1;
+}
+
+enum GuildGiftType
+{
+  kGuildGiftTypeGuild  = 0;
+  kGuildGiftTypeNormal = 1;
+  kGuildGiftTypeRare   = 2;
+}
+
+// 联盟水晶礼物
+message GuildGiftBaseInfo
+{
+  int32 level         = 1; // 礼物等级
+  int64 points        = 2; // 礼物点数
+  int64 key_points    = 3; // 礼物钥匙点数
+	int32 cur_box_level = 4; // 当前公会礼物等级
+}
+
+message GuildGiftSource
+{
+  string player_name = 1;
+  uint32 goods_id    = 2;
+}
+
+// 联盟礼物
+message GuildGiftInfo
+{
+  uint64 unique_id                = 1; // 礼包唯一id
+  uint32 gift_id                  = 2;
+  bool  is_claimed                = 3; // 是否领取
+  int64 expired_time              = 4; // 过期时间
+  RewardData reward               = 5; // 已经领取的奖励内容
+  GuildGiftSource source          = 6; // 礼包来源(只有稀有礼包有)
+}
+
+//联盟礼物信息
+message GuildGiftData
+{
+  GuildGiftBaseInfo      gift_base_info    = 1; // 公会基础
+  repeated GuildGiftInfo guild_gift_infos  = 2; // 水晶联盟礼物
+  repeated GuildGiftInfo normal_gift_infos = 3; // 普通联盟礼物
+  repeated GuildGiftInfo rare_gift_infos   = 4; // 稀有联盟礼物
+	bool use_anonymous_add_gift              = 5; // 使用匿名发送礼物
+}
+
+// 玩家在公会仓库未领取资源信息
+message PlayerGuildResourceInfo
+{
+	repeated Resource resources = 1;	
+	repeated GuildResourceFieldCount  field_count = 2;	// 各类资源点数量
+	int64 last_update_time = 3;					// 上次更新时间	
+	int64 last_collect_time = 4;				// 上次收取时间
+}
+
+
+// 联盟科技信息
+message GuildTechInfo
+{
+  uint32 level        = 1;
+  int64 points        = 2; // 科技点数
+}
+
+message GuildTechSkillInfo
+{
+  int64 energy      = 1; // 充能进度条
+  int64 cd_end_time = 2; // 技能cd结束时间
+}
+
+// 联盟捐献信息
+message GuildTechDonateInfo
+{
+  int32 adv_donate_cnt        = 1; // 今日已经捐献的次数（宝石的）
+  int32 nor_donate_left_cnt   = 2; // 普通可捐献次数
+  int64 nor_donate_start_time = 3; // 恢复次数的起始时间
+}
+
+// 联盟科技数据
+message GuildTechData
+{
+  map<int32, GuildTechInfo> tech_infos            = 1; // key = 科技id
+  int32 recommand_tech_id                         = 2; // 推荐科技id
+  int64 daily_val                                 = 3; // 今日捐献值
+  int32 research_tech_id                          = 4; // 当前研究得科技id
+  int64 research_complete_time                    = 5; // 研究完成时间
+  map<int32, GuildTechSkillInfo> tech_skill_infos = 6; // key = 科技id
+  bool recommand_recharge                         = 7; // 是否推荐充能技能
+  int32 using_skill_tech_id                       = 8; // 当前激活的技能
+  int64 skill_end_time                            = 9; // 当前技能失效时间
+}
+
+// 联盟buff
+message GuildBuffEffectInfo
+{
+  uint64 guild_id                            = 1;
+  repeated protomsg.EffectInfo effects       = 2; 
+}
+
+
+// 联盟德比开始
+////////////////////////////////////////////////////////
+
+enum GuildDerbyTaskStatus
+{
+	kGuildDerbyTaskStatusNone = 0;		//未接受状态
+	kGuildDerbyTaskStatusAccept = 1;  //已接受状态
+}
+
+enum GuildDerbySeasonStatus
+{
+	kGuildDerbySeasonStatusNone = 0;	 //
+	kGuildDerbySeasonStatusApply = 1;  //报名状态
+	kGuildDerbySeasonStatusBegin = 2;  //开始状态
+	kGuildDerbySeasonStatusEnd = 3;    //结束状态
+}
+
+//公会德比可接任务信息
+message GuildDerbyAccpptTaskInfo
+{
+  uint32 id  = 1; //自增唯一ID
+	uint32 task_id = 2;
+	int64  expired_time = 3;	//到期时间
+	int64  accept_time = 4;		//可领取任务时间
+	int64  auto_refresh_time = 5; //自动刷新时间
+}
+
+//公会德比玩家信息
+message GuildDerbyPlayerInfo
+{
+	uint64 player_id		=	1;
+	string player_name	=	2;
+	string player_head  = 3; //头像
+	uint32 player_score = 4;
+	uint32 accept_count = 5;
+	uint32 finish_count = 6;
+}
+
+//公会德比公会信息
+message GuildDerbyGuildInfo
+{
+	uint64 guild_id         = 4;    // 公会ID
+  string guild_name       = 5;    // 公会名字
+  string guild_short_name = 6;    // 公会简称
+  uint32 guild_icon       = 7;    // 公会图标
+	uint32 guild_score			= 8;		// 公会分数
+	int64  refresh_time			= 9; //分数更新时间
+}
+
+//公会德比玩家任务信息
+message GuildDerbyPlayerTaskInfo
+{
+	uint32 id  = 1; //自增唯一ID
+	protomsg.TaskData task_data = 2;
+	int64  expired_time = 5; //到期时间
+}
+
+message GuildDerbyAutoRefreshInfo
+{
+	uint32 quality = 1;
+	bool is_open = 2;
+	int64 update_time = 3;
+}
+
+message GuildDerbyAutoRefreshInfos
+{
+	repeated GuildDerbyAutoRefreshInfo infos = 1;
+}
+
+//公会德比报名玩家信息
+message GuildDerbyApplyPlayerInfo
+{
+	uint64 player_id = 1;
+	string name = 2;
+	string head = 3;
+	uint32 castle_level = 4; //主堡等级
+	int64 last_logout_time = 5; //上次下线时间
+	bool is_online = 6;  //是否在线
+	bool is_lock = 7; //是否已经被锁定
+}
+
+
+
+// 联盟德比结束
+////////////////////////////////////////////////////////

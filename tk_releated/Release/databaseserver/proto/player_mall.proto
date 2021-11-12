@@ -1,0 +1,25 @@
+syntax = "proto3";
+import "msg_common_mall.proto";
+package db;
+
+message player_mall
+{
+	uint64 id = 1;
+	protomsg.MallCommonData common_data = 2;
+	protomsg.MallFirstChargeData first_charge = 3;
+	protomsg.MallEverydayHeroData everyday_hero = 4;
+	protomsg.MallChooseGiftData choose_gift = 5;
+	protomsg.MallTotalChargeData total_charge = 6;
+	protomsg.MallMoneySellData money_sell = 7;	
+	protomsg.MallTimeCardData 	time_card 	= 8;	
+	protomsg.MallGrowthFundData growth_fund = 9;
+    protomsg.MallPopOutGiftData pop_out_gift = 10;
+	protomsg.MallOpenGoodsData open_goods_data = 11;
+	protomsg.MallMysteryData mystery_data = 12;	
+    protomsg.MallPiggySavings piggy_savings = 13;	
+}
+
+message player_mall_set
+{
+	repeated player_mall set = 1;
+}

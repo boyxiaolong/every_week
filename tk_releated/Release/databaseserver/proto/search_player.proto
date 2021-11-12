@@ -1,0 +1,14 @@
+﻿syntax = "proto3";
+import "msg_common_guild.proto";
+package db;
+
+message search_player
+{
+  uint64 id = 1; //唯一ID
+  protomsg.SearchPlayerInfo data = 2;
+}
+
+message search_player_set
+{
+	repeated search_player set = 1;
+}

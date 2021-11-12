@@ -1,0 +1,26 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common_mail.proto";
+import "google/protobuf/any.proto";
+package db;
+
+message player_mail
+{
+	option (table_count)	= 10;
+  uint64 id = 1; //唯一ID
+  uint32 mail_type = 2;      //邮件类型
+  uint64 send_id = 3;   //发送ID
+  string send_name = 4; //发送名字
+  uint64 receive_id = 5;//接收ID
+  google.protobuf.Any content = 7;   //邮件内容
+  protomsg.MailRes ress = 8; //邮件物品
+  int64 create_time = 9; //创建时间
+  uint32 read_flag = 10;
+  uint32 save_flag = 11;
+  uint32 label_type = 12;
+}
+
+message player_mail_set
+{
+	repeated player_mail set = 1;
+}

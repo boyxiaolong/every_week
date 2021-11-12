@@ -1,0 +1,20 @@
+syntax = "proto3";
+package db; 
+
+message guild_derby
+{
+	uint64 id = 1;
+	uint32 season_id = 2;
+	uint64 group_id = 3;
+	string guild_name = 4;
+	string guild_short_name = 5;
+	uint32 guild_icon = 6;
+	uint32 level = 8;
+	uint32 score = 9;
+	int64  refresh_time			= 10; //分数更新时间
+}
+
+message guild_derby_set
+{
+	repeated guild_derby set = 1;
+}

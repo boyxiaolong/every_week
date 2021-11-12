@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message map_guild
+{
+  uint64 id = 1; // id 
+  protomsg.StatusData statuses = 2;
+}
+
+message map_guild_set
+{
+	repeated map_guild set = 1;
+}

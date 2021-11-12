@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "myoption.proto";
+package db;
+
+message player_mail_data
+{
+  uint64 id = 1; //唯一ID
+  uint64 kingdom_mail_id = 2;           //已经领取的全服邮件ID
+  int64  king_mail_refresh_time = 3;    //发送国王邮件的刷新时间
+}
+
+message player_mail_data_set
+{
+	repeated player_mail_data set = 1;
+}

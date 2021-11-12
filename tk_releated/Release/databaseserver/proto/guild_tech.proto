@@ -1,0 +1,45 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+
+message member_donate_info
+{
+  int64 daily_value = 1;
+  int64 daily_update_time = 2;
+  int64 weekly_value = 3;
+}
+
+message member_donate_info_set
+{
+  map<uint64, member_donate_info> infos = 1;
+}
+
+message guild_tech_info_set
+{
+  map<int32, protomsg.GuildTechInfo> tech_infos = 1;
+}
+
+message guild_tech_skill_info_set
+{
+  map<int32, protomsg.GuildTechSkillInfo> skill_infos = 1;
+}
+
+message guild_tech
+{
+  uint64 id                                = 1;
+  int32 cur_researching_tech_id            = 2;
+  int32 recommend_tech_id                  = 3;
+  guild_tech_info_set tech_info_set        = 4;
+  member_donate_info_set donate_info_set   = 5;
+  int64 last_day_refresh_time              = 6;
+  int64 research_complete_time             = 7;
+  int32 using_skill_tech_id                = 8;
+  int64 skill_end_time                     = 9;
+  guild_tech_skill_info_set skill_info_set = 10;
+  int32 is_recommend_skill                 = 11;
+}
+
+message guild_tech_set
+{
+  repeated guild_tech set = 1;
+}

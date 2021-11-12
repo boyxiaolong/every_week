@@ -1,0 +1,23 @@
+syntax = "proto3";
+package db; 
+import "msg_common.proto";
+
+message king_data_misc
+{
+	protomsg.KingsHistory  kings_history = 1;
+}
+
+message king_data
+{
+	uint64 id = 1;
+  protomsg.KingdomBasicInfo basic_info = 2;
+  protomsg.KingGiftRecords gift_history = 3;
+  protomsg.KingGiftInfos gift_infos = 4;
+  protomsg.PlayerKingdomTitleInfos titles = 5;
+	king_data_misc misc = 6;
+}
+
+message king_data_set
+{
+	repeated king_data set = 1;
+}

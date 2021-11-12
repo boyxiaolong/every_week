@@ -1,0 +1,29 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+
+message member_data
+{
+	uint64 player_id	= 1;	// 玩家ID
+	protomsg.GuildPosition position		= 5;	// 职务, GuildPosition
+	uint64 join_time	= 6;	// 入会时间戳
+	int64  last_login_time	= 7;	// 最后一次上线时间
+	protomsg.PlayerGuildResourceInfo guild_resources = 8;		// 未领取公会资源
+	int64 last_logout_time = 9;
+}
+
+message member_data_set
+{
+	repeated member_data set = 1;
+}
+
+message guild_member
+{
+	uint64 id = 1;
+  member_data_set data = 2;
+}
+
+message guild_member_set
+{
+	repeated guild_member set = 1;
+}

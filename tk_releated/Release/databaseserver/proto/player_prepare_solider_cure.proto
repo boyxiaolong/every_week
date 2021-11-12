@@ -1,0 +1,21 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message PrepareSoliderCure
+{
+  uint64 wounded_count = 1;
+  protomsg.PrepareCureWorkInfo work_info = 2;
+}
+
+message player_prepare_solider_cure
+{
+  uint64 id = 1; //唯一ID
+  PrepareSoliderCure info = 2;
+}
+
+message player_prepare_solider_cure_set
+{
+	repeated player_prepare_solider_cure set = 1;
+}

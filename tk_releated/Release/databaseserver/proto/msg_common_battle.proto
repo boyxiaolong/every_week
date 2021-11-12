@@ -1,0 +1,592 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_map.proto";
+import "msg_common.proto";
+import "google/protobuf/any.proto";
+
+//////////////////////////////////////////////////////////////////////////
+///  战斗模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message BRHeroSimple
+{
+	uint32 hero_id = 1;				
+
+	uint32 hero_level = 2;
+}
+
+message BRHeroMail
+{
+	uint32 hero_id = 1;				
+
+	uint32 hero_level = 2;
+	// 战斗增加的经验
+	uint32 exp = 3;
+	// 星级别
+	uint32 star = 4;
+}
+
+message BRArmyData
+{
+	BRHeroSimple hero1 = 1;
+	BRHeroSimple hero2 = 2;
+
+	repeated TroopData heal_troops = 9;	// 治疗兵团
+
+	repeated TroopData init_troops = 10;	// 兵团
+
+	repeated TroopData current_troops = 11;	// 剩余（存活）兵团
+
+	repeated TroopData slight_wood_troops = 12;	// 轻伤兵团
+
+	repeated TroopData dead_troops = 13;	// 死亡兵团
+
+	string player_name = 14;
+
+	repeated TroopData sinjured_wood_troops = 15;	// 重伤兵团
+
+
+	uint64 entity_id = 30;
+	uint64 player_id = 31;
+}
+
+message BRResource
+{
+	repeated Resource resource = 1;
+	BRHeroSimple hero1 = 2;
+	BRHeroSimple hero2 = 3;
+	string player_name = 4;
+	uint64 player_id = 5;
+}
+
+enum BRExtraType
+{
+	kBRExtraType_None = 0;
+	kBRExtraType_Player = 1; // BRExtraPlayer
+	kBRExtraType_Barbarians = 2; // BRExtraBarbarians
+	kBRExtraType_Castle = 3; // BRExtraCastle
+	kBRExtraType_BarbarianFort = 4; // BRExtraBarbarianFort
+	kBRExtraType_GuildBuildingFort = 5; // BRExtraGuildBuildingFort
+	kBRExtraType_GuildBuildingFlag = 6; // BRExtraGuildBuildingFlag
+	kBRExtraType_Temple = 7; // BRExtraTemple
+	kBRExtraType_Pass = 8; // BRExtraPass
+	kBRExtraType_StrongHold = 9; // BRExtraStrongHold
+	kBRExtraType_Monster = 10;		// 怪物类型 BRExtraMonster
+	kBRExtraType_PompeiiBuild = 11; //庞贝的复仇建筑类型
+	kBRExtraType_PompeiiMonster = 12; // 庞贝普通怪
+	kBRExtraType_PompeiiBoss = 13; // 庞贝BOSS
+}
+
+message BRExtraPlayer
+{
+	uint64 player_id = 1;
+	string player_name = 2;
+	uint64 guild_id = 3;
+	string guild_name = 4;
+	string head = 6;
+	string guild_short_name = 7;
+}
+
+message BRExtraCastle
+{
+	uint64 player_id = 1;
+	string player_name = 2;
+	uint64 guild_id = 3;
+	string guild_name = 4;
+	string head = 6;
+	string guild_short_name = 7;
+}
+
+message BRExtraMonster
+{
+	uint32 monster_csv_id = 1;		// 对应monster.xlsx的id
+	EntityType entity_type = 2;
+}
+
+message BRExtraBarbarians
+{
+	// 怪物配置id
+	uint32 barbarians_id = 8;
+}
+
+// 野蛮人城寨
+message BRExtraBarbarianFort
+{
+	uint32 id = 1;  // 野蛮人城寨配置id
+}
+
+// 联盟要塞
+message BRExtraGuildBuildingFort
+{
+	uint32 config_id = 1;
+	EntityOwnerData owner = 2;
+}
+
+// 联盟旗帜
+message BRExtraGuildBuildingFlag
+{
+	uint32 config_id = 1;
+	EntityOwnerData owner = 2;
+}
+
+// 据点
+message BRExtraStrongHold
+{
+	uint32 config_id = 1;
+	EntityOwnerData owner = 2;
+}
+
+// 关卡
+message BRExtraPass
+{
+	uint32 config_id = 1;
+
+	uint64 guild_id = 4;
+	string guild_name = 5;
+	uint32 guild_icon = 6;
+	string guild_short_name = 7;
+}
+
+// 奇观
+message BRExtraTemple
+{
+	uint32 config_id = 1;
+
+	uint64 guild_id = 4;
+	string guild_name = 5;
+	uint32 guild_icon = 6;
+	string guild_short_name = 7;
+}
+
+// 战报邮件对象
+message BREntity
+{
+	vector2d position = 5; // 对应position_rgion_id
+
+	uint32 power = 7;
+
+	BRExtraType extra_type = 8;
+
+	google.protobuf.Any extra_any = 9;
+
+	// 初始兵量
+	uint32 init_army = 11;
+	// 治疗兵量
+	uint32 heal_army = 12;
+	// 死亡兵量
+	uint32 dead_army = 13;
+	// 重伤兵量
+	uint32 sinjured_army = 14;
+	// 轻伤兵量
+	uint32 slight_army = 15;
+	// 剩余兵量
+	uint32 remain_army = 16;
+	// 警戒塔兵量
+	uint32 tower_army = 17;
+
+	BRHeroMail hero1 = 21;
+	BRHeroMail hero2 = 22;
+
+	// 击杀奖励
+	protomsg.ResourceSet kill_reward = 26;
+	// 掠夺资源
+	repeated BRResource plunder_reward = 27;
+
+	// entity_id
+	uint64 entity_id = 28;
+
+	uint64 position_region_id = 29;	// regin_id
+}
+
+message BRTroopSample
+{
+	int64 time = 1;
+	uint32 remain_troop_num = 2;	// 剩余兵力
+}
+
+message BRTroopDelta
+{
+	int64 time = 1;
+	int32 troop_num_delta = 2;	// 变化兵力 正数是加，负数是减
+	string player_name = 3;
+	string head = 4;
+}
+
+// 庞贝的复仇建筑
+message BRExtraPompeiiBuild
+{
+	uint32 config_id = 1;
+
+	uint64 guild_id = 4;
+	string guild_name = 5;
+	uint32 guild_icon = 6;
+	string guild_short_name = 7;
+}
+
+// 庞贝普通怪
+message BRExtraPompeiiMonster
+{
+	uint32 config_id = 1; // monster_csv_id
+}
+
+// 庞贝boss
+message BRExtraPompeiiBoss
+{
+	uint32 config_id = 1; // monster_csv_id
+}
+
+enum BattleDetailAOrB
+{
+	kBattleDetailAOrB_None = 0;
+	kBattleDetailAOrB_a = 1;			// 1代表a,
+	kBattleDetailAOrB_b = 2;	// 2代表b,
+	kBattleDetailAOrB_a_friend = 3;	// 3代表a的队友,
+	kBattleDetailAOrB_b_friend = 4; // 4代表b的队友
+	kBattleDetailAOrB_a_and_b_enemy = 5; // 5代表a,和,b的敌人.比如怪物,关卡等
+}
+
+// 简单的详细战报信息
+message BattleDetailLogSimple
+{
+    string log_guid = 1;		// 战报guid
+	int64 server_expire_time = 2;	// 在服务器存储的时间戳.(小于这个时间给服务器请求,大于这个时间戳給技术部请求).单位秒
+    BattleDetailAOrB a_or_b = 3;			
+	uint64 region_id = 4;		// region_id
+}
+
+// 战报
+message BattleReport
+{
+	// 战斗日志id
+	uint32 battle_log_id = 1;
+	BREntity entity1 = 2;
+	BREntity entity2 = 3;
+
+	vector2d position = 5;		// 对应position_region_id
+	int64 start_time = 6; 
+	int64 end_time = 7; 
+
+	uint32 battle_type = 10;
+
+	BattleVictoryType victor = 11;// 0平局 1赢 2输
+
+	BattleDetailLogSimple detail_log_simple = 12; // 简单的详细战报信息
+	string report_url = 13;						// 战报的url.动态部分.静态部分暂时是https://statics.igg.com/storage/.注意这个需要作为客户端的配置项
+	bool hide_detail = 14;
+	uint64 position_region_id = 15;				// 战斗发生的地方的region_id
+}
+
+// 战报邮件对象
+message BREntityDetail
+{
+	HeroInfo hero1 = 21;
+	HeroInfo hero2 = 22;
+	repeated BRArmyData army = 23;
+	EffectData effect = 24;
+	uint64 entity_id = 28;
+}
+
+message BattleReportDetail
+{
+	BREntityDetail entity_a = 2;
+	BREntityDetail entity_b = 3;
+}
+
+message BattleMailBytes
+{
+	bytes battle_mail = 1;  // 对应 message BattleMail
+}
+
+// 战斗邮件
+message BattleMail
+{
+	repeated BattleReport battle_report = 1;
+
+	repeated BRTroopSample troop_num_sample = 8;
+
+	repeated BRTroopDelta troop_delta = 9;
+
+	BattleVictoryType victor = 11;// 0平局 1赢 2输
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+///  战斗模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  战报模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+enum BattleDetailLogActionType
+{
+	kBattleDetailLogActionType_None = 0;
+
+	kBattleDetailLogActionType_NormalAtk = 1;				// 普攻 BattleDetailLogNormalAtk
+	kBattleDetailLogActionType_CounterAtk = 2;				// 反击 BattleDetailLogCounterAtk
+	kBattleDetailLogActionType_UseRage = 3;					// 使用怒气技能 BattleDetailLogUseRage
+	kBattleDetailLogActionType_UseDirect = 4;				// 使用主动技能 BattleDetailLogUseDirect
+	kBattleDetailLogActionType_StatusEffect = 6;			// 受到状态影响 BattleDetailLogStatusEffect
+	kBattleDetailLogActionType_MultiStrikeBuff = 7;			// 受到夹击buff 通用
+	kBattleDetailLogActionType_RageParpare = 8;				// 准备释放怒气技能 通用
+	kBattleDetailLogActionType_NormalNag = 9;				// 普攻触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_BeenTaunt = 10;				// 受到嘲讽 通用
+	kBattleDetailLogActionType_CounterNag = 11;				// 反击触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_RageNag = 12;				// 释放怒气触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_OnDamageNag = 13;			// 受到伤害触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_HpHighNagSkill = 14;			// 生命值高于百分比触发效果  BattleDetailNagSkillBuff
+	kBattleDetailLogActionType_HpLowerNagSkill = 15;		// 生命值低于百分比触发效果 BattleDetailNagSkillBuff
+	kBattleDetailLogActionType_WatchTowerDamage = 16;		// 警戒塔受到伤害 通用
+	kBattleDetailLogActionType_ShieldMinDamage = 17;		// 护盾吸收伤害
+	kBattleDetailLogActionType_MultiStrikeNag = 18;			// 被夹击触发buff BattleDetailNagSkillBuff
+	kBattleDetailLogActionType_DisperseDamage = 19;			// 引爆伤害 BattleDetailLogDisperseDamage
+	kBattleDetailLogActionType_GoodStatusNag = 21;			// 有多少个增溢状态触发被动buff BattleDetailNagSkill
+	kBattleDetailLogActionType_StatusHasNag = 22;			// 身上拥有状态触发buff BattleDetailNagSkillBuff
+	kBattleDetailLogActionType_EnterBattleNag = 23;			// 进入战斗触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_DefenceCityNag = 24;			// 驻防时触发被动效果 BattleDetailNagSkill
+	kBattleDetailLogActionType_AtkCityNag = 25;				// 攻城时触发被动效果 BattleDetailNagSkill
+	kBattleDetailLogActionType_GuildMarchNag = 26;			// 集结时触发被动效果 BattleDetailNagSkill
+	kBattleDetailLogActionType_SingleMarchNag = 27;			// 纯兵种触发被动效果 BattleDetailNagSkill
+	kBattleDetailLogActionType_MixArmyNag = 28;				// 混兵触发被动效果 BattleDetailNagSkill
+	kBattleDetailLogActionType_OnDamage = 29;				// 受到伤害 BattleDetailLogOnDamage
+	kBattleDetailLogActionType_OnHeal = 30;					// 回复生命 BattleDetailLogNormalContent
+	kBattleDetailLogActionType_AddRage = 31;				// 添加怒气 通用
+	kBattleDetailLogActionType_MinRage = 32;				// 减少怒气 通用
+	kBattleDetailLogActionType_AddStatus = 33;				// 添加状态 通用
+	kBattleDetailLogActionType_OnFriendSkillEffect = 34;	// 受到友军的技能效果 BattleDetailLogOnFriendSkillEffect
+	kBattleDetailLogActionType_BanSkill = 35;				// 被沉默无法释放技能 通用
+	kBattleDetailLogActionType_BanNormalAtk = 36;			// 被禁手.无法普攻 通用
+	kBattleDetailLogActionType_RageNextNag = 37;			// 怒气下回合触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_StatusDeleteNag = 38;		// 状态消失触发技能  BattleDetailStatusDeleteNag
+	kBattleDetailLogActionType_TrapNag = 39;				// 陷阱触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_Addbuff = 40;				// 添加buff 通用
+	kBattleDetailLogActionType_OnHealNag = 41;				// 受到治疗触发技能 BattleDetailNagSkill
+	kBattleDetailLogActionType_UnGoodStatusNag = 42;		// 有多少个减溢状态触发被动buff BattleDetailNagSkill
+	kBattleDetailLogActionType_SecondHeroNag = 43;			// 担任副将触发buff BattleDetailNagSkill
+	kBattleDetailLogActionType_CollectNag = 44;				// 采集触发buff BattleDetailNagSkill
+	kBattleDetailLogActionType_InGuildField = 45;			// 联盟领地内触发buff BattleDetailNagSkill
+	kBattleDetailLogActionType_OutGuildField = 46;			// 联盟领地外触发buff BattleDetailNagSkill
+	kBattleDetailLogActionType_CleanUnGoodStatus = 47;		// 减益状态被移除 BattleDetailSkillInfo
+	kBattleDetailLogActionType_StatusNormalNag = 48;		// 状态触发技能通用  BattleDetailSkillInfo
+	kBattleDetailLogActionType_AddMarch = 49;				// 部队加入 通用 {heroId,troop_num}
+	kBattleDetailLogActionType_CastleAddArmyTrain = 50;		// 训练的士兵加入 通用 {heroId,troop_num}
+	kBattleDetailLogActionType_CastleAddArmyHeal = 51;		// 医疗的士兵加入 通用 {heroId,troop_num}
+	kBattleDetailLogActionType_LeaveMarch = 52;				// 部队离开  通用 {heroId,troop_num}
+	kBattleDetailLogActionType_GarrisonHeroChange = 53;			// 驻防英雄变更  通用 {mainHeroId,secondHeroId}
+	kBattleDetailLogActionType_LeaderChange = 54;			// 队长变更  BattleDetailLeaderChange
+	kBattleDetailLogActionType_SubOnDamage = 401;	// 子类型 损失生命
+	kBattleDetailLogActionType_SubOnHeal = 402;		// 子类型.回复生命
+	kBattleDetailLogActionType_SubAddRage = 403;	// 子类型.添加怒气
+	kBattleDetailLogActionType_SubMinRage = 404;	// 子类型 减少怒气
+	kBattleDetailLogActionType_BuffChangeGood = 405;	// 子类型 buff修改.好的状态
+	kBattleDetailLogActionType_BuffChangeUnGood = 406;	// 子类型 buff修改.不好的状态
+	kBattleDetailLogActionType_AddShield = 407;	// 子类型 获得能吸收【数量】的护盾
+	kBattleDetailLogActionType_BeenTauntCanNotChangeTarget = 409; // 子类型.受到嘲讽无法更换目标
+
+
+
+}
+
+// 技能来源来信
+enum SkillSourceType
+{
+    kSkillSourceTypeNone = 0;
+    kSkillSourceTypeHero = 1;		// 英雄
+    kSkillSourceTypeTroop = 2;		// 兵种
+    kSkillSourceTypeEquip = 3;		// 装备
+}
+
+
+// 增援伤害
+message BattleDetailPartnerDamage
+{
+	uint64 entity_id = 1;		// 角色id
+	int32 damage = 2;			// 损失兵量
+}
+
+// 伤害
+message BattleDetailDamage
+{
+	int32 damage = 1;			// 损失兵量
+	// 增援对象的伤害统计.
+	repeated BattleDetailPartnerDamage partner_damage = 2;
+}
+
+// 使用技能信息
+message BattleDetailSkillUseInfo
+{
+	uint32 skill_id = 1;  // 对应skills_group.csv里面的id
+	uint32 hero_id = 2;			// 对应hero.csv里面的id
+}
+
+// 技能信息
+message BattleDetailSkillInfo
+{
+	uint32 skill_id = 1;	// 技能id.对应skills.csv里面的id
+	SkillSourceType type = 2;
+	uint32 csv_id = 3;	// 表格id.英雄或者兵种或者装备
+}
+
+// 普攻行为.
+message BattleDetailLogNormalAtk
+{
+	BattleDetailDamage damage = 1;
+}
+
+// 触发技能行为
+message BattleDetailNagSkill
+{
+	BattleDetailSkillInfo skill_info = 1;
+}
+
+// 引爆伤害行为
+message BattleDetailLogDisperseDamage
+{
+
+	BattleDetailDamage damage = 1;		// 伤害
+    uint32 overlap_num = 2;				// 叠加层数
+	uint32 skill_status_id = 3;			// 状态id
+	BattleDetailSkillInfo skill = 4;	// 技能信息
+}
+
+// 反击行为.
+message BattleDetailLogCounterAtk
+{
+	BattleDetailDamage damage = 1;
+}
+
+// 使用怒气技能行为 
+message BattleDetailLogUseRage
+{
+	BattleDetailSkillUseInfo skill_use_info = 1;
+}
+
+// 使用主动技能行为 
+message BattleDetailLogUseDirect
+{
+	BattleDetailSkillUseInfo skill_use_info = 1;
+}
+
+// 受到伤害行为
+message BattleDetailLogOnDamage
+{
+	BattleDetailDamage damage = 1;
+	BattleDetailSkillInfo skill = 2;	// 技能信息
+}
+
+// 受到友军治疗行为
+message BattleDetailLogOnFriendSkillEffect
+{
+    uint64 friend_entity_id = 1;		// 队友的entity_id
+	int32 heal = 2;		// 治疗量
+	uint32 skill_id = 3;	// 技能id.队友skills.csv里面的id
+    BattleDetailLogActionType sub_action_id = 4; // 子类型id
+    BattleDetailSkillInfo skill_info = 5;	// 技能信息
+}
+
+// 状态消失触发技能行为
+message BattleDetailStatusDeleteNag
+{
+	uint32 status_id = 1;	// 状态id
+	BattleDetailAOrB status_entity_type = 2; // 状态拥有者的类型
+	uint64 status_entity_id = 3;// 状态拥有者的entity_id
+	BattleDetailSkillInfo skill_info = 4;// 触发的技能信息
+}
+message BattleDetailNagSkillBuff
+{
+	// 触发原因的entity_id
+	uint64 tri_reason_entity_id = 1;
+
+	// 触发原因的entity类型
+	BattleDetailAOrB tri_reason_entity_a_or_b = 2;
+
+	// 技能信息
+	BattleDetailSkillInfo skill_use_info = 3;
+
+}
+
+// 队长变更
+message BattleDetailLeaderChange
+{
+    uint32 main_hero_id = 1;		// 主将
+	uint32 second_hero_id = 2;		// 副将.可能为0
+	string name = 3;				// 新队长角色名字
+}
+
+// 受到状态影响 
+message BattleDetailLogStatusEffect
+{
+    uint32 status_id = 1;		// 状态id
+	BattleDetailAOrB cast_entity_type = 2;	// 释放状态的玩家类型.有可能是
+	uint64 cast_entity_id = 3;			// 释放状态的玩家entity_id
+    BattleDetailSkillInfo skill_info = 4;	// 这个是由那个技能触发的
+    BattleDetailLogActionType sub_action_type = 5;	// 子类型id
+    BattleDetailDamage damage = 6;		// 伤害
+    repeated int32 value = 7;		// 根据sub_action_type有不同的涵义
+}
+
+// 战报元素
+message BattleDetailItem
+{
+	BattleDetailAOrB a_or_b = 1;			// 1代表a,2代表b,3代表a的队友,4代表b的队友
+	uint32 action_id = 2;			// 行为id(表格id)
+	repeated int32 value = 3;				// 通用数值
+	google.protobuf.Any content = 4;		// 动态字符串
+}
+
+// 回合内的玩家数据
+message BattleDetailRoundPlayerData
+{
+	uint32 src_troop_num = 2;  // 回合开始前初始兵量
+	int32 end_troop_num = 3;  // 回合结束兵量变化.负数损失兵量.正数增加兵量
+}
+
+
+// 单个回合的战报
+message BattleDetailRound
+{
+	BattleDetailRoundPlayerData player_data_a = 1;  // 回合玩家数据
+	BattleDetailRoundPlayerData player_data_b = 2;  // 回合玩家数据
+	uint32 round_time = 3;		// 回合时间.(战斗开始)偏移时间.单位100毫秒.前八位是
+	repeated BattleDetailItem battle_item = 4;  // 战斗数据
+	repeated BattleDetailItem battle_item_head = 5;  // 先解析head的item.
+}
+
+// 战斗双方简单数据
+message BattleDetailPlayerSimpleData
+{
+	uint64 player_id = 1;			// 角色id
+	string player_name = 2;			// 角色昵称
+	uint64 guild_id = 3;				// 公会Id,如果等于0代表没有公会
+	string guild_name = 4;			// 公会昵称
+	uint64 entity_id = 5;			// entity_id
+	bool is_partner = 6;			// 是否可以被增援
+	uint64 main_hero_id = 7;				// 主将英雄id
+	bool is_dead = 8;				// 战斗结束的时候是否死亡
+	EntityType entity_type = 9;		// entity类型
+	int32 cur_troop_num = 10;		// 当前兵力
+	BattleDetailAOrB a_or_b = 11;	// 1代表a,2代表b,3代表a的队友,4代表b的队友
+}
+
+// 一整份战报
+message BattleDetailLog
+{
+	string log_guid = 1;			// 战报唯一标识
+	uint64 battle_time = 2;		// 战斗开始时间,单位100毫秒
+	BattleDetailPlayerSimpleData simple_player_a = 3; // 简单角色数据
+	BattleDetailPlayerSimpleData simple_player_b = 4; // 简单角色数据
+	map<uint64, BattleDetailPlayerSimpleData> relation_entity = 5; // 关联的entity,第三方.里面存放战斗双方的队友或者增援对象
+	int32 not_atk_sec = 6;			// 没有战斗的秒数
+	BattleType battle_type = 7;		// 战斗类型
+	uint64 leader_entity_id_a = 8;	// a的队长id
+	uint64 leader_entity_id_b = 9;	// b的队长id
+	BattleReportDetail report_detail = 10;  // 邮件详细
+	bool is_detail_log_full = 11;  // 战报行为日志是否满了
+	repeated BattleDetailRound round_data = 100; // 战斗回合数据
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  战报模块 结束
+//////////////////////////////////////////////////////////////////////////

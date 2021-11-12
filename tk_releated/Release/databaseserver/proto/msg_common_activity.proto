@@ -1,0 +1,334 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_task.proto";
+import "msg_common.proto";
+import "google/protobuf/any.proto";
+
+enum ActivityStatus
+{
+  kActivityStatuNone   = 0;
+  kActivityStatuExecute	= 1;		// 正在执行
+  kActivityStatuAward		= 2;    // 活动结束，等待玩家领取奖励
+  kActivityStatuEnd		= 3;      // 活动彻底结束
+}
+
+enum ActivityType
+{
+  kActivityTypeNone   = 0;
+  kActivityTypeSingleStage   = 1; // (任务类)单阶段活动
+  kActivityTypeMultiStage   = 2; // (任务类)分阶段活动
+  kActivityTypeDrop = 3; // 掉落类活动
+  kActivityTypeLogin = 4; // (任务类)玛克辛和萨姆活动（次日登陆送英雄）
+  kActivityTypeExchange = 5; // 兑换活动
+  kActivityTypeBead = 6; // 点灯活动
+  kActivityTypeTurntable = 8; // 限时抽奖(转盘)活动
+  kActivityTypeCleanDay = 9; //清洁日
+  kActivityTypeAbsoluteDomain = 12; //绝对领域
+  kActivityTypeAnswerQuestion = 13; // 知识广场
+  kActivityTypeGuildDerby = 14; //公会德比
+  kActivityTypeRetained = 16;
+}
+
+message ActivityBaseInfo
+{
+  uint32 activity_id = 1; //活动ID
+  uint64 time_begin = 2;  //开始时间
+  uint64 time_end = 3;    //结束时间
+  ActivityStatus status = 4;//活动状态
+  uint64 period = 5; // 第几期
+}
+
+//活动信息
+message ActivityInfo   
+{
+    ActivityBaseInfo master = 1; //主活动
+    repeated ActivityBaseInfo sub = 2;  //子活动
+}
+
+message ActivityInfos
+{
+    repeated ActivityInfo activity = 1;
+}
+
+enum ActivityOperatorType
+{
+  kActivityOperatorTypeNone   = 0;
+  kActivityOperatorTypeForceStop	= 1;		// 强制关闭
+  kActivityOperatorTypeStart  = 2;        // 开启活动
+  kActivityOperatorTypeStop	= 3;          // 改结束时间型关闭
+}
+
+//留存活动
+
+message RetainedActivityLotteryedItem
+{
+    uint32 lotterye_cnt = 1; //抽奖次数
+    uint32 lottery_id = 2; // 中奖 id 
+}
+
+enum  RetainedActivityFinalAwardState
+{
+    kFinalAwardStatenotUnlock = 0;  //大奖未解锁
+    kFinalAwardStateReceive = 1;   //大奖未领取
+    kFinalAwardStateAlreadyReceive = 2; //大奖已经领取
+}
+
+// 把基本信息和奖励列表区别开，奖励列表走通用通知
+message PlayerActivityRetainedInfo
+{   
+    uint32 remaining_lottery_cnt = 1; // 剩余抽奖次数
+    uint32 lotteryed_cnt = 2;        //抽过多少次 
+    RetainedActivityFinalAwardState final_reward_state = 3; //大奖状态
+    uint32	activity_id		= 4; // 主活动id
+}
+
+
+// 服务器存库结构
+message RetainedActivityInfo
+{
+    PlayerActivityRetainedInfo  Retained_info = 1;
+    repeated RetainedActivityLotteryedItem  lotteryed_list = 4 ; //中奖列表
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+///  玩家部分 开始
+//////////////////////////////////////////////////////////////////////////
+
+enum ActivityComponentType
+{
+  kActivityComponentTypeNone = 0;
+  kActivityComponentTypeScore = 1;
+}
+
+
+message PlayerActivityBaseInfo
+{
+  uint32 activity_id = 1; // 活动ID
+  uint32 sub_id = 2; // 子活动ID
+  repeated TaskData tasks	= 3; // 所有任务信息
+  uint64 score = 4; // 积分
+}
+
+message PlayerActivityInfo
+{
+  PlayerActivityBaseInfo master = 1;  // 主活动
+  repeated PlayerActivityBaseInfo sub	= 2; // 子活动
+}
+
+message PlayerActivityRewarded
+{
+  uint32 activity_id = 1; // 活动ID
+  repeated uint32 indexes	= 2;
+}
+
+message PlayerActivityTaskInfo
+{
+  PlayerActivityInfo data = 1;
+  PlayerActivityRewarded rewarded = 2;
+}
+
+message DropData
+{
+  uint32 id = 1;
+  uint32 drop_count = 2;
+}
+
+message PlayerActivityDropInfo
+{
+  uint32 activity_id = 2; // 活动ID
+  repeated DropData datas	= 3;
+  uint64 score = 4; // 积分
+}
+
+message ExchangeData
+{
+  uint32 id = 1;
+  uint32 count = 2;
+}
+
+message PlayerActivityExchangeInfo
+{
+  uint32 activity_id = 2; // 活动ID
+  repeated ExchangeData datas	= 3;
+}
+
+message ExchangeRequestData
+{
+  uint32 id = 1;
+  uint32 count = 2;
+}
+
+// 转盘抽奖类型
+enum TurntableDrawType
+{
+ kTurntableDrawType_Single = 0;  //单抽
+ kTurntableDrawType_Five = 1; //5连抽
+ kTurntableDrawType_Energy = 2; //能量满抽
+}
+
+message PlayerActivityTurntableInfo
+{
+  uint32 activity_id = 2; // 活动ID
+  uint32 total_count = 3; // 总抽奖次数
+  uint32 daily_count = 4; // 当天抽奖次数
+  uint32 daily_single_count = 5; // 当天单抽次数
+  int32 energy = 6; // 能量值
+  repeated uint32 stage_reward = 7; // 已领取的阶段奖励(阶段奖励对应的抽奖次数)
+}
+
+message PlayerActivityBeadInfo
+{
+  uint32 activity_id = 2; // 活动ID
+  bool final_reward = 3;  // 最终大奖是否已领取
+  uint32 group = 4; // 任务组
+  repeated int32 reward = 5; // 已领取的奖励(索引)
+  PlayerActivityBaseInfo task_data = 6; // 任务相关信息
+}
+
+message PlayerGuildActivityBaseInfo
+{
+  uint32 activity_id = 1; // 活动ID
+  repeated TaskData tasks	= 3; // 所有任务信息
+}
+
+message PlayerActivityCleanDayInfo
+{
+  uint32 activity_id = 2; // 活动ID
+  uint32 score = 3; //击杀野蛮人分数
+
+  protomsg.PlayerGuildActivityBaseInfo task_info = 4;
+  repeated uint32 reward_ids = 5;
+}
+
+
+// 知识广场状态
+enum AnswerQuestionComplteState
+{
+    kAnswerQuestionComplteState_None    = 0;    // 未开始
+    kAnswerQuestionComplteState_Giveup  = 1;    // 放弃
+    kAnswerQuestionComplteState_Finish  = 2;    // 完成
+    kAnswerQuestionComplteState_Going   = 3;    // 进行中
+}
+
+//答案状态
+enum AnswerQuestionAnwserState
+{
+    AnswerQuestionAnwserState_None    = 0;    // 未开始
+    AnswerQuestionAnwserState_Correct  = 1;   // 正确
+    AnswerQuestionAnwserState_Error  = 2;     // 错误
+}
+
+
+message QuestionBankInfoAnswersInfo
+{
+  uint32 answers_id = 1;
+  uint32  answers_content=2;
+}
+
+message QuestionBankHelpInfo
+{
+    uint64 player_id  = 1;
+    uint32 questions_id = 2;
+}
+// 
+message QuestionBankInfo
+{
+    uint32 questions_id  = 1;    // 问题id
+    repeated QuestionBankInfoAnswersInfo answers_info = 2;    // 有多个答案
+    AnswerQuestionAnwserState is_correct    = 3;    // 0代表 未开始，1代表正确，2代表错误
+}
+
+message SendRewardAnswerQuestioninfo
+{
+   uint32 correct_cnt = 1 ; //正确数量
+   bool  is_correct = 2;   //是否发奖励
+}
+
+message PlayerAnswerQuestionInfo
+{
+    uint32 cur_questions_id                    = 1;
+    repeated QuestionBankInfo question_bank     = 2;
+    AnswerQuestionComplteState complete_state   = 3;
+    uint32 correct_cnt                          = 4;
+    uint32 help_cnt                              = 5; 
+    uint64 refresh_time                          = 6;
+    repeated SendRewardAnswerQuestioninfo   reward_status  = 7;
+    repeated QuestionBankHelpInfo   help_info = 8;
+    
+
+}
+
+message ActivityPeriodData
+{
+  uint32  activity_id = 1;
+  uint64  period = 2;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  玩家部分 结束
+//////////////////////////////////////////////////////////////////////////
+
+message GuildScoreInfo
+{
+  uint32 score = 1;
+}
+
+message GuildAddScoreAction
+{
+  uint32 score = 2;
+}
+
+message GuildActivityDoAction
+{
+  uint32 activity_id = 1;
+  uint64 guild_id = 2;
+  google.protobuf.Any action = 3;   //活动行为
+}
+
+//活动对象类型
+enum ActivityObjectType
+{
+  kActivityObjectType_None = 0;
+  kActivityObjectType_Person = 1; //个人
+  kActivityObjectType_Guild = 2;  //公会
+  kActivityObjectType_Kingdom = 3;    //国家
+}
+
+//清扫日奖励对象
+enum ActivityCleanRewardType
+{
+  kActivityCleanRewardType_None = 0;
+  kActivityCleanRewardType_Person = 1;   //个人
+  kActivityCleanRewardType_Guild = 2;    //公会
+}
+
+message GuildActivityCleanDayInfo
+{
+  uint64 start_time = 1; // 活动开始时间（服务器用）
+  uint32 activity_id = 2; // 活动ID
+  uint32 score = 3; //击杀野蛮人分数
+}
+
+message GuildActivitys
+{
+  repeated GuildActivityCleanDayInfo clean_day_infos = 1;
+}
+
+message ImmigrateApplyInfo
+{
+  PlayerLordInfo lord   = 1;
+  int64 expired_time    = 2;
+}
+
+message ImmigrateKingdomInfo
+{
+	KingdomStatus status = 1;             // 王国状态
+  uint64  battle_power_limitation     = 2;  // 移民战力限制
+  int64 server_start_time             = 3;  // 开服时间
+  uint32  pioneer_quota               = 4;  // 先锋王国高战移民名额
+  repeated uint64 pioneer_approvers   = 5;  // 先锋王国特许移民高战玩家ID列表
+	PlayerKingdomTitleInfo king         = 6;  // 国王信息
+}
+

@@ -1,0 +1,16 @@
+syntax = "proto3";
+import "msg_common_rank.proto";
+package db;
+
+message global_activity_rank_board_history
+{
+  uint64 id = 1; //唯一ID
+  uint32 rank_id = 2;
+  uint64 period  = 3;
+  protomsg.RankBoardHistory data = 10;
+}
+
+message global_activity_rank_board_history_set
+{
+	repeated global_activity_rank_board_history set = 1;
+}

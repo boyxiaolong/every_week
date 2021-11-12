@@ -1,0 +1,45 @@
+syntax = "proto3";
+import "msg_common.proto";
+import "msg_common_radar.proto";
+package db;
+
+message PlayerRadarData
+{
+	repeated protomsg.RadarData data = 1;		// 雷达信息
+}
+
+message PlayerRadarVillageData
+{
+	repeated protomsg.RadarVillageData data = 1;		// 村庄信息
+}
+
+message PlayerRadarFinishData
+{
+	repeated uint32 radar_type = 1;				// 已完成的雷达信息
+}
+
+message PlayerRadarCastleData
+{
+	uint64				region_id	= 1;
+	protomsg.vector2d 	position	= 2;			// 位置
+}
+
+message player_radar
+{
+	uint64 id 							= 1; 		// 玩家ID
+	int32 level							= 2;		// 等级
+	int32 exp							= 3;		// 经验
+	int32 daily_count					= 4;		// 已分配的每日雷达数量
+	int64 zero_time						= 5;		// 刷新0点时间
+		
+	PlayerRadarData radar_data			= 6; 		// 所有雷达信息
+	PlayerRadarVillageData village_data	= 7;		// 虚拟队列信息
+	PlayerRadarFinishData finish_data	= 8;		// 所有已完成的雷达信息
+	PlayerRadarCastleData castle_data	= 9;		// 城堡数据
+	
+}
+
+message player_radar_set
+{
+	repeated player_radar set 		= 1;
+}

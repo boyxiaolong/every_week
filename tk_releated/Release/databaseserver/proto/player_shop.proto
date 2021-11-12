@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "msg_common_shop.proto";
+package db;
+
+message ShopDbData
+{
+  repeated protomsg.ShopData datas = 1;
+}
+
+message player_shop
+{
+  uint64 id = 1; //唯一ID
+  ShopDbData shop_data = 2; //商店数据
+}
+
+message player_shop_set
+{
+	repeated player_shop set = 1;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "msg_common_task.proto";
+package db;
+
+message mile_stone_task
+{
+  uint64 id = 1; // id 
+  uint32 task_status = 2;
+	int64 begin_time = 3;
+	int64 end_time = 4;
+	uint64 count = 5;				//任务完成度
+	uint32 is_complete = 6; //任务是否完成
+	protomsg.MileStoneGuildCompleteAllInfo guild_info = 7;
+	protomsg.MileStoneRankList rank_list = 8;
+}
+
+message mile_stone_task_set
+{
+	repeated mile_stone_task set = 1;
+}

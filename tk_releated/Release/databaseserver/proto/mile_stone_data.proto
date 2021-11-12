@@ -1,0 +1,26 @@
+syntax = "proto3";
+import "myoption.proto";
+import "google/protobuf/any.proto";
+package db;
+
+message MileStoneCastleBaseData
+{
+  uint32 level = 1;
+  uint64 count = 2;
+}
+
+message MileStoneCastleData
+{
+  repeated MileStoneCastleBaseData castle_data = 1;
+}
+
+message mile_stone_data
+{
+  uint64 id = 1; // id 
+  google.protobuf.Any data = 2;   //里程碑统计数据
+}
+
+message mile_stone_data_set
+{
+	repeated mile_stone_data set = 1;
+}

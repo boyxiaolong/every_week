@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+import "myoption.proto";
+import "msg_common_pompeii.proto";
+
+package db;
+
+
+message pompeii_player_data {
+    uint64 id = 1;
+    protomsg.PompeiiPlayerScoreInfo score_info = 2;
+}
+
+message pompeii_player_data_set {
+    repeated pompeii_player_data set = 1;
+}
+
+
+
+

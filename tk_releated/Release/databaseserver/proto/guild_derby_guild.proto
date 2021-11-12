@@ -1,0 +1,58 @@
+syntax = "proto3";
+import "msg_common_guild.proto";
+package db; 
+
+
+message guild_derby_member
+{
+	uint64 player_id		=	1;
+	string player_name	=	2;
+	string player_head  = 3; //头像
+	uint32 player_score = 4;
+	uint32 accept_task_id = 5;
+	uint32 accept_count = 6;
+	uint32 finish_count = 7;
+}
+
+message guild_derby_task
+{
+	uint32 id  = 1; //自增唯一ID
+	uint32 task_id = 2;
+	int64  expired_time = 3;			//到期时间
+	int64  accept_time = 4;				//可领取任务时间
+	uint64 accept_player_id = 5;	//领取的玩家ID
+	int64  auto_refresh_time = 6; //自动刷新任务时间
+}
+
+message guild_derby_members
+{
+	repeated guild_derby_member members = 1;
+}
+
+message guild_derby_can_accept_task
+{
+	repeated guild_derby_task tasks = 1;
+}
+
+message guild_derby_be_accept_task
+{
+	repeated guild_derby_task tasks = 1;
+}
+
+message guild_derby_guild
+{
+	uint64 id = 1;
+	uint32 season_id = 2;
+	uint32 generate_task_id = 7;
+	uint32 level = 8;
+	uint32 score = 9;
+	guild_derby_members members = 10;
+	guild_derby_can_accept_task can_accept_tasks = 11;
+	guild_derby_be_accept_task  be_accept_tasks = 12;
+	protomsg.GuildDerbyAutoRefreshInfos auto_refresh = 13;
+}
+
+message guild_derby_guild_set
+{
+	repeated guild_derby_guild set = 1;
+}

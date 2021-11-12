@@ -1,0 +1,28 @@
+syntax = "proto3";
+import "myoption.proto";
+import "google/protobuf/any.proto";
+package db;
+
+message player_activity_info
+{
+  uint32 activity_id = 2;
+  uint64 start_time = 3;
+  google.protobuf.Any datas = 10;
+  map<uint32, google.protobuf.Any> component = 11;
+}
+
+message player_activity_data
+{
+  repeated player_activity_info infos  = 1; //玩家活动信息
+}
+
+message player_activity
+{
+  uint64 id = 1; // id 
+  player_activity_data activities = 2;
+}
+
+message player_activity_set
+{
+	repeated player_activity set = 1;
+}

@@ -1,0 +1,32 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+
+message guild_gift_info
+{
+  uint64 unique_id   = 1; // 唯一的自增
+  uint32 gift_id     = 2;
+  int64 expired_time = 3; // 过期时间
+  int64 create_time  = 4;
+  protomsg.GuildGiftSource source = 5;
+}
+
+message gift_info_set
+{
+  repeated guild_gift_info set = 1;
+}
+
+message guild_gift
+{
+  uint64 id                            = 1; // guild id
+  protomsg.GuildGiftBaseInfo base_info = 2;
+  uint64 max_gift_unique_id            = 3;
+  gift_info_set guild_gift_set         = 4;
+  gift_info_set normal_gift_set        = 5;
+  gift_info_set rare_gift_set          = 6;
+}
+
+message guild_gift_set
+{
+  repeated guild_gift set = 1;
+}

@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "myoption.proto";
+
+package db;
+
+
+// 匹配信息
+message PompeiiPairingInfo {
+    uint64 blue_guild_id = 1;
+    uint64 red_guild_id = 2;
+    int32 regist_round = 3;
+    bool is_end = 4;
+    bool is_reward = 5;
+    uint64 region_id = 6;
+    repeated uint64 in_player = 7;
+    repeated uint64 out_player = 8;
+}
+
+
+
+
+message pompeii_pairing_data {
+    uint64 id = 1;
+    PompeiiPairingInfo pairing_info = 2;
+}
+
+message pompeii_pairing_data_set {
+    repeated pompeii_pairing_data set = 1;
+}
+
+
+
+

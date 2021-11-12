@@ -1,0 +1,19 @@
+syntax = "proto3";
+package db;
+
+
+message face_set
+{
+	repeated uint32 face_id = 1;
+}
+
+message player_march_face
+{
+	uint64 id = 1;
+	face_set face = 2;
+}
+
+message player_march_face_set
+{
+	repeated player_march_face set = 1;
+}

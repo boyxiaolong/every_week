@@ -1,0 +1,8 @@
+syntax = "proto3";
+package protomsg;
+
+message ChatPlayerData
+{
+  string head = 1;
+  uint32 castle_lv = 2;
+}

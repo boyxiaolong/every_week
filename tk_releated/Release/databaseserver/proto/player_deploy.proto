@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common.proto";
+package db;
+
+message Deploy
+{
+  repeated protomsg.DeployInfo infos = 1;
+}
+
+message player_deploy
+{
+  uint64 id = 1;
+  Deploy info = 2;
+}
+
+message player_deploy_set
+{
+	repeated player_deploy set = 1;
+}

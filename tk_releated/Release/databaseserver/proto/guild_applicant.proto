@@ -1,0 +1,20 @@
+syntax = "proto3";
+package db; 
+import "msg_common_guild.proto";
+
+
+message appianct_data
+{
+	repeated protomsg.GuildApplyRecord records = 2;
+}
+
+message guild_applicant
+{
+	uint64 id = 1;
+  appianct_data data = 2;
+}
+
+message guild_applicant_set
+{
+	repeated guild_applicant set = 1;
+}

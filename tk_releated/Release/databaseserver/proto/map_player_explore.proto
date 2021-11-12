@@ -1,0 +1,15 @@
+syntax = "proto3";
+import "myoption.proto";
+import "msg_common_map.proto";
+package db;
+
+message map_player_explore
+{
+  	uint64 id = 1; // id 
+		protomsg.PlayerExploreInfo     data         	= 2;
+}
+
+message map_player_explore_set
+{
+	repeated map_player_explore set = 1;
+}

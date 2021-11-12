@@ -1,0 +1,1226 @@
+syntax = "proto3";
+package protomsg;
+
+
+message NetAddress
+{
+    uint32 port = 1;
+    string ip   = 2;
+}
+
+message ServerAddressInfo
+{
+    uint32 server_type  = 1;
+    uint32 kingdom_id   = 3;
+    uint32 server_id    = 4;
+}
+
+enum CurrencyType
+{
+    kCurrencyTypeNone           = 0;
+    kCurrencyTypeEmoney         = 1;    // 钻石
+    kCurrencyTypeOil            = 2;    // 石油
+    kCurrencyTypeFood           = 3;    // 食物
+    kCurrencyTypeWood           = 4;    // 木材
+    kCurrencyTypeSteel          = 5;    // 钢材
+    kCurrencyTypeBuildingCost   = 6;    // 建筑cost值
+    kCurrencyTypePersonalPoint  = 7;    // 联盟个人积分
+    kCurrencyTypeExpeCoin       = 8;    // 远征币
+    kCurrencyTypeVipExp         = 9;    // vip经验值
+    kCurrencyTypeHeroToken      = 10;   // 英雄信物
+
+}
+
+enum GuildCurrencyType
+{
+    kGuildCurrencyTypeNone          = 0;
+    kGuildCurrencyTypeOil           = 2;    // 石油
+    kGuildCurrencyTypeFood          = 3;    // 食物
+    kGuildCurrencyTypeWood          = 4;    // 木材
+    kGuildCurrencyTypeSteel         = 5;    // 钢材
+    kGuildCurrencyTypeGuildPoint    = 8;    // 联盟积分
+    kGuildCurrencyTypeGiftKey       = 9;    // 联盟礼物钥匙
+    kGuildCurrencyTypeGiftPt        = 10;   // 联盟礼物点数
+}
+
+// 内城属性枚举
+enum CityAttrType
+{
+    kCityAttrTypeNone   = 0;
+}
+
+// 击杀
+message KillArmyCount
+{
+    uint32 rank     = 1;    // 兵阶
+    uint64 count    = 2;    // 数量
+}
+
+message KillArmyCountInfo
+{
+    repeated KillArmyCount kill_count   = 1;    // 击杀详情
+}
+// 战斗统计
+message BattleStatistics
+{
+    uint64 max_power    = 1;    // 历史最高战力
+    uint64 battle_win   = 2;    // 战斗胜利次数
+    uint64 battle_fail  = 3;    // 战斗失败次数
+    uint64 death        = 4;    // 阵亡数量
+    uint64 scout_count  = 5;    // 侦查次数
+}
+
+// 成就墙数据
+message AchievementFlagData
+{
+    uint32 id       = 1;    // 成就ID
+    uint32 sub_id   = 2;    // 成就子ID
+    int64 time      = 3;    // 时间
+}
+
+message PlayerLordInfo
+{
+    uint64 player_id                        = 1;
+    string name                             = 2;
+
+    string head                             = 4;    // 当前头像|头像框
+    uint64 power                            = 5;    // 战斗力
+
+    uint64 collection_count                 = 8;    // 采集数量
+
+    uint64 guild_id                         = 9;
+    string guild_name                       = 10;
+    string guild_short_name                 = 11;
+    uint64 kill_count                       = 12;   // 击杀数量
+    uint32 guild_icon                       = 13;   // 公会图标
+
+    uint32 camp_id                          = 14;   // 阵营
+
+    repeated AchievementFlagData flag_data  = 15;   // 成就墙数据
+    int32 achievement_level                 = 16;   // 成就等级
+
+    uint32 castle_level                     = 17;   // 主堡等级
+
+    uint64 carriage_count                   = 18;   // 资源援助
+    uint64 guild_help_count                 = 19;   // 联盟帮助
+}
+
+// 玩家基本信息（GM用）
+message PlayerBaseInfo
+{
+    uint64 player_id            = 1;    // 玩家id
+    uint32 kingdom_id           = 2;    // 王国id
+    uint32 db_id                = 3;    // 数据库id
+    string name                 = 4;    // 名称
+    uint32 castle_level         = 5;    // 主堡等级
+    uint32 vip_level            = 6;    // vip等级
+    uint64 emoney               = 7;    // 钻石
+    uint64 oil                  = 8;    // 石油
+    uint64 food                 = 9;    // 食物
+    uint64 wood                 = 10;   // 木材
+    uint64 steel                = 11;   // 钢材
+    uint64 guild_id             = 12;   // 工会id
+    int64 reg_time              = 13;   // 注册时间
+    int64 enter_kingdom_time    = 14;   // 进入王国时间
+    int64 online_time           = 15;   // 在线时长
+}
+
+enum PlayerAttributeType
+{
+    kPlayerAttrNone             = 0;
+    kPlayerAttrCurrency         = 1;    // 货币
+    kPlayerAttrItem             = 2;    // 物品
+    kPlayerAttrHeroExp          = 4;    // 英雄经验
+    kPlayerAttrPower            = 5;    // 战力
+    kPlayerAttrHeroStarExp      = 6;    // 英雄星级经验
+    kPlayerAttrGuildCurrency    = 7;    // 公会货币
+
+    kPlayerAttrAp               = 9;    // 行动力
+    kPlayerAttrHero             = 11;   // 直接给英雄
+    kPlayerAttrGuildGift        = 12;   // 联盟礼物
+    kPlayerAttrDailyScore       = 13;   // 每日活跃度
+    kPlayerAttrArmy             = 14;   // 兵
+    kPlayerAttrWounded          = 15;   // 伤兵
+    kPlayerAttrEquipment        = 16;   // 装备
+    kPlayerAttrMarchFace        = 17;   // 队列表情
+
+    kPlayerAttrHonorExp         = 19;   // 荣誉勋章(通行证)经验
+    kPlayerAttrHonorGoldCard    = 20;   // 荣誉勋章(通行证)金卡
+
+    kPlayerAttrHead             = 22;   // 头像
+    kPlayerAttrFrame            = 23;   // 头像框
+    kPlayerAttrSafeCurrency     = 24;   // 安全货币
+
+
+
+    kPlayerAttrRune             = 99;   // 符文
+
+    kPlayerAttrStatus           = 1003; // 状态
+    kPlayerAttrKillCount        = 2001; // 击杀数
+    kPlayerAttrCollectionCount  = 2002; // 采集数
+
+    kPlayerAttrPompeiiPoint     = 2003; // 庞贝积分
+}
+
+enum PlayerPropertyNoticeType
+{
+    kPlayerPropertyNone         = 0;
+    kPlayerPropertyKingdomTitle = 1;    // 王国头衔
+}
+
+message Resource
+{
+    uint32 res_type = 1;    // PlayerAttributeType类型
+    uint32 sub_type = 2;    // 英雄碎片,装备碎片的id
+    uint64 value    = 3;    // 数量
+}
+
+message RewardData
+{
+    repeated Resource rewards   = 1;
+}
+
+enum LanguageType
+{
+    kLanguageNone       = 0;
+    kLanguageEnglish    = 1;
+    kLanguageChineseCN  = 2;
+    kLanguageChineseTW  = 3;
+    kLanguageFrench     = 4;
+    kLanguageItalian    = 5;
+    kLanguageGerman     = 6;
+    kLanguageSpanish    = 7;
+    // kLanguageDutch			= 7;
+    kLanguageRussian    = 8;
+    kLanguageKorean     = 9;
+    kLanguageJapanese   = 10;
+    // kLanguageHungrian		= 11;
+    kLanguagePortuguese = 12;
+    kLanguageArabic     = 13;
+    // kLanguageNorwegian	= 14;
+    // kLanguagePolish			= 15;
+    kLanguageTurkish    = 16;
+    // kLanguageUkrainian		= 17;
+    // kLanguageRomanian		= 18;
+    // kLanguageBulgarian		= 19;
+    // kLanguageCzech			= 20;
+    // kLanguageDanish			= 21;
+    // kLanguageGreek			= 22;
+    // kLanguageFinnish		= 23;
+    // kLanguageSlovak			= 24;
+    // kLanguageSwedish		= 25;
+    kLanguageVietnamese = 26;
+    kLanguageThai       = 27;
+    // kLanguageCatalan		= 28;
+    // kLanguageHebrew			= 29;
+    kLanguageIndonesian = 30;
+    // kLanguageMalay			= 31;
+    // kLanguageFarsi			= 32;
+}
+
+message ResourceSet
+{
+    repeated Resource res   = 1;
+}
+
+message vector2d
+{
+    int64 x = 1;
+    int64 y = 2;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  效果模块 开始
+//////////////////////////////////////////////////////////////////////////
+enum PlayerExtendAttribute
+{
+    option allow_alias = true;
+
+    kExtendAttrNone                                     = 0;
+    kExtendAttrStart                                    = 100;
+    kExtendLordAttrStart                                = 100;  // 领主效果开始
+
+    kExtendAttrTimeIncRate_Start                        = 100;  // 升级时间速度千分比提高开始
+    kExtendAttrTimeIncRate_Building                     = 101;  // 建筑升级时间速度千分比提高
+    kExtendAttrTimeIncRate_Science                      = 102;  // 科技升级时间速度千分比提高
+    kExtendAttrTimeIncRate_TrainingArmy                 = 103;  // 兵种训练提升速度千分比
+    kExtendAttrTimeIncRate_Cure                         = 104;  // 治疗提升速度千分比
+
+    kExtendAttrCostRate_Build                           = 105;  // 建筑资源折扣千分比 (负值)
+    kExtendAttrCostRate_Science                         = 106;  // 科研资源折扣千分比 (负值)
+
+    kExtendAttrkIncRate_Food                            = 111;  // 粮田产量加成
+    kExtendAttrkIncRate_Wood                            = 112;  // 伐木场产量加成
+    kExtendAttrkIncRate_Steel                           = 113;  // 铁矿产量加成
+    kExtendAttrkIncRate_Oil                             = 114;  // 石油产量加成
+    kExtendAttrkIncRate_Tax                             = 115;  // 税收产量加成
+    kExtendAttrkIncRate_All                             = 116;  // 全资源产量加成
+
+    kExtendAttrkIncRate_StoreCapacity                   = 120;  // 仓库容量上限加成
+    kExtendAttrkIncRate_HospitalCapacity                = 121;  // 医院容量上限提升
+
+    kExtendAttr_CureCost                                = 131;  // 部队医疗消耗
+
+    kExtendAttrkIncRate_MarchArmyCapacity               = 141;  // 部队带兵容量加成
+    kExtendAttrkIncRate_GuildMarchArmyCapacity          = 142;  // 集结带兵容量加成
+    kExtendAttrTimeIncRate_Instument                    = 143;  // 器械所升级时间速度千分比提高
+
+    kExtendLordAttrEnd                                  = 399;  // 领主效果结束
+
+    kExtendEffectAttr_MapStart                          = 400;  // 大地图效果 开始
+
+    kExtendAttrkIncRate_CollectFood                     = 401;  // 粮田采集速度加成
+    kExtendAttrkIncRate_CollectWood                     = 402;  // 伐木场采集速度加成
+    kExtendAttrkIncRate_CollectSteel                    = 403;  // 钢材采集速度加成
+    kExtendAttrkIncRate_CollectOil                      = 404;  // 石油采集速度加成
+    kExtendAttrkIncRate_CollectGem                      = 405;  // 宝石采集速度加成
+    kExtendAttrkIncRate_CollectAll                      = 406;  // 全资源采集加成
+    kExtendAttrkIncRate_CollectIncrease                 = 407;  // 采集后，获得的资源提升X%
+
+    kExtendAttrDec_AP                                   = 408;  // 体力消耗减少固定值
+    kExtendAttrkIncRate_ApRecover                       = 409;  // 体力回复速度提高
+
+
+    kExtendAttrkIncRate_Burden                          = 411;  // 军团负载加成
+    kExtendAttrkIncRate_PeaceShield                     = 412;  // 和平护盾
+    kExtendAttrkIncRate_CollectAllExtra                 = 413;  // 全资源采集速度加成（在计算完采集速度后，再乘以该倍率）
+    kExtendAttrkIncRate_KillBarbariansReward            = 415;  // 消耗体力击杀野蛮人时，额外获得 1
+    kExtendAttrPlunderResourceIncrease                  = 416;  // 掠夺时额外获得资源
+
+    kExtendAttr_AbsoluteDomain                          = 417;  // 末日微光-领土保护状态
+    kExtendAttrkIncRate_KillBarbariansReward2           = 418;  // 消耗体力击杀野蛮人时，额外获得 207
+
+    kExtendAttrkIncRate_HeroExp                         = 420;  // 英雄战斗经验获得加成
+    kExtendAttrkIncRate_ScoutTroopCount                 = 421;  // 被敌方侦查时，情报内的兵量数据提升
+    kExtendAttr_DisableScout                            = 422;  // 无法被侦察
+    kExtendAttr_ScoutScience1                           = 423;  // 侦查科技1
+    kExtendAttr_ScoutScience2                           = 424;  // 侦查科技2
+
+    kExtendAttrkIncRate_CastleReenforceCapacity         = 425;  // 主城的援军容量提升
+
+    kExtendAttrkIncRate_CollectSteelOpen                = 430;  // 开启钢材采集速度
+    kExtendAttrkIncRate_CollectOilOpen                  = 431;  // 开启石油采集速度
+    kExtendAttrkIncRate_CollectGemOpen                  = 432;  // 开启宝石采集速度
+
+    kExtendAttrkIncRate_MarchAttributeEnd               = 499;  // 行军队伍效果 结束
+
+    kExtendBattleAttrTroopAttack_All                    = 500;  // 所有兵种攻击力加成千分比
+    kExtendBattleAttrTroopAttack_Infantry               = 501;  // 步兵攻击力加成千分比
+    kExtendBattleAttrTroopAttack_Cavalry                = 502;  // 骑兵攻击力加成千分比
+    kExtendBattleAttrTroopAttack_Archer                 = 503;  // 弓兵攻击力加成千分比
+    kExtendBattleAttrTroopAttack_Siege                  = 504;  // 器械攻击力加成千分比
+    kExtendBattleAttrTroopAttack_WatchTower             = 505;  // 警戒塔的攻击力加成千分比
+
+    kExtendBattleAttrTroopAttack_All_Abs                = 510;  // 所有兵种攻击力加成绝对值
+    kExtendBattleAttrTroopAttack_Infantry_Abs           = 511;  // 步兵攻击力加成绝对值
+    kExtendBattleAttrTroopAttack_Cavalry_Abs            = 512;  // 骑兵攻击力加成千分比
+    kExtendBattleAttrTroopAttack_Archer_Abs             = 513;  // 弓兵攻击力加成千分比
+
+    kExtendBattleAttrTroopDefence_All                   = 550;  // 所有兵种防御力加成千分比
+    kExtendBattleAttrTroopDefence_Infantry              = 551;  // 步兵防御力加成千分比
+    kExtendBattleAttrTroopDefence_Cavalry               = 552;  // 骑兵防御力加成千分比
+    kExtendBattleAttrTroopDefence_Archer                = 553;  // 弓兵防御力加成千分比
+    kExtendBattleAttrTroopDefence_Siege                 = 554;  // 器械防御力加成千分比
+    kExtendBattleAttrTroopDefence_WatchTower            = 555;  // 警戒塔的防御力加成千分比
+
+    kExtendBattleAttrTroopDefence_All_Abs               = 560;  // 所有兵种防御力加成绝对值
+    kExtendBattleAttrTroopDefence_Infantry_Abs          = 561;  // 步兵防御力加成绝对值
+    kExtendBattleAttrTroopDefence_Cavalry_Abs           = 562;  // 骑兵防御力加成绝对值
+    kExtendBattleAttrTroopDefence_Archer_Abs            = 553;  // 弓兵防御力加成绝对值
+
+    kExtendBattleAttrTroopHp_All                        = 600;  // 所有兵种血量加成千分比
+    kExtendBattleAttrTroopHp_Infantry                   = 601;  // 步兵血量加成千分比
+    kExtendBattleAttrTroopHp_Cavalry                    = 602;  // 骑兵血量加成千分比
+    kExtendBattleAttrTroopHp_Archer                     = 603;  // 弓兵血量加成千分比
+    kExtendBattleAttrTroopHp_Siege                      = 604;  // 器械血量加成千分比
+    kExtendBattleAttrTroopHp_WatchTower                 = 605;  // 警戒塔的生命值加成千分比
+
+    kExtendBattleAttrTroopHp_All_Abs                    = 610;  // 所有兵种血量加成绝对值
+    kExtendBattleAttrTroopHp_Infantry_Abs               = 611;  // 步兵血量加成绝对值
+    kExtendBattleAttrTroopHp_Cavalry_Abs                = 612;  // 骑兵血量加成绝对值
+    kExtendBattleAttrTroopHp_Archer_Abs                 = 613;  // 弓兵血量加成绝对值
+
+    kExtendBattleAttrTroopSpeed_All                     = 650;  // 所有兵种移动速度加成千分比
+    kExtendBattleAttrTroopSpeed_Infantry                = 651;  // 步兵移动速度加成千分比
+    kExtendBattleAttrTroopSpeed_Cavalry                 = 652;  // 骑兵移动速度加成千分比
+    kExtendBattleAttrTroopSpeed_Archer                  = 653;  // 弓兵移动速度加成千分比
+    kExtendBattleAttrTroopSpeed_Siege                   = 654;  // 器械移动速度加成千分比
+
+    kExtendBattleAttrScoutSpeed                         = 670;  // 斥候移动速度加成千分比
+
+    kExtendBattleAttrCarriageSpeed                      = 680;  // 运输速度提升
+
+    kExtendBattleAttrTroopAttackRange_Archer            = 701;  // 弓兵攻击距离加成千分比
+    kExtendBattleAttrTroopAttackRange_Cure              = 702;  // 受到的治疗效果增加
+    kExtendBattleAttrShieldIncrease                     = 703;  // 获得的护盾值上升
+    kExtendBattleAttrCastHealIncrease                   = 704;  // 造成的治疗效果上升
+    kExtendBattleAttrBeCounteredDamageIncrease          = 705;  // 受到的反击伤害增加
+    kExtendBattleAttrBeDamageByNormalAtkIncrease        = 706;  // 受到普攻伤害减少
+
+    kExtendBattleAttrArmyDamageIncrease                 = 801;  // 部队伤害加成千分比提升
+    kExtendBattleAttrArmyDamageDecrease                 = 802;  // 部队伤害减免千分比提升
+    kExtendBattleAttrArmyNormalAtkDamageIncrease        = 803;  // 部队的普通攻击伤害千分比提升
+    kExtendBattleAttrArmyCounterAtkDamageIncrease       = 804;  // 部队的反击伤害千分比提升
+    kExtendBattleAttrArmyRageAtkIncrease                = 805;  // 部队的怒气获取倍率提升%
+
+    kExtendBattleAttrArmyNumberIncrease                 = 806;  // 队伍带兵数量加成
+    kExtendBattleAttrHeroArmyRageIncrease               = 807;  // 武将兵力数量加成
+
+    kExtendBattleAttrWatchTowerAtkIncrease              = 811;  // 警戒塔的伤害加成
+    kExtendBattleAttrWatchTowerToArmyDamageDecrease     = 812;  // 受到警戒塔的伤害减少
+    kExtendBattleAttrArmyToWatchTowerDamageIncrease     = 813;  // 对警戒塔的伤害增加
+    kExtendBattleAttrWatchTowerDamageIncrease           = 814;  // 警戒塔受到的伤害减少
+
+    kExtendBattleAttrDamageToArcherIncrease             = 821;  // 对弓兵的伤害增加
+    kExtendBattleAttrDamageToInfantryIncrease           = 822;  // 对步兵的伤害增加
+    kExtendBattleAttrDamageToCavalryIncrease            = 823;  // 对骑兵的伤害增加
+    kExtendBattleAttrBeDamagedByInfantryDecrease        = 824;  // 受到步兵的伤害减少
+    kExtendBattleAttrBeDamagedByCavalryDecrease         = 825;  // 受到骑兵的伤害减少
+    kExtendBattleAttrBeDamagedByArcherDecrease          = 826;  // 受到弓兵的伤害减少
+
+    kPlayerExtendAttributeTroop125DamageDecRate         = 850;  // 兵种id：125受到技能伤害降低千分比（非普攻、反击伤害）
+    kPlayerExtendAttributeTroop133DamageDecRate         = 851;  // 兵种id：133受到技能伤害降低千分比（非普攻、反击伤害）
+    kPlayerExtendAttributeTroop127DefendIncRate         = 852;  // 兵种id：127获取护甲提升千分比
+    kPlayerExtendAttributeTroop135DefendIncRate         = 853;  // 兵种id：135获取护甲提升千分比
+    kPlayerExtendAttributeTroop126AtkIncRate            = 854;  // 兵种id：126获取攻击力提升千分比
+    kPlayerExtendAttributeTroop134AtkIncRate            = 855;  // 兵种id：134获取攻击力提升千分比
+    kPlayerExtendAttributeTroop122AtkIncRate            = 856;  // 兵种id：122获取攻击力提升千分比
+    kPlayerExtendAttributeTroop130AtkIncRate            = 857;  // 兵种id：130获取攻击力提升千分比
+    kPlayerExtendAttributeTroop128AtkIncRate            = 858;  // 兵种id：128获取攻击力提升千分比
+    kPlayerExtendAttributeTroop136AtkIncRate            = 859;  // 兵种id：136获取攻击力提升千分比
+    kPlayerExtendAttributeTroop156DamageDecRate         = 860;  // 兵种id：156受到技能伤害降低千分比（非普攻、反击伤害）
+    kPlayerExtendAttributeTroop153DefendIncRate         = 861;  // 兵种id：153获取护甲提升千分比
+    kPlayerExtendAttributeTroop154AtkIncRate            = 862;  // 兵种id：154获取攻击力提升千分比
+    kPlayerExtendAttributeTroop151AtkIncRate            = 863;  // 兵种id：151获取攻击力提升千分比
+    kPlayerExtendAttributeTroop158AtkIncRate            = 864;  // 兵种id：158获取攻击力提升千分比
+
+
+    kExtendBattleAttrToBarbariansIncrease               = 901;  // 部队对野蛮人的伤害加成百分比提升
+    kExtendBattleAttrGarrisionAttackIncrease_All        = 902;  // 驻防时，部队攻击力百分比提升
+    kExtendBattleAttrGarrisionDefenceIncrease_All       = 903;  // 驻防时，部队防御百分比提升
+    kExtendBattleAttrGarrisionDamageIncrease            = 904;  // 驻防时，部队伤害加成百分比提升
+    kExtendBattleAttrGarrisionDamageDecrease            = 905;  // 驻防时，部队受到伤害减免百分比提升
+    kExtendBattleAttrAttackCityDamageIncrease           = 906;  // 攻城时，部队伤害加成百分比提升
+    kExtendBattleManualSkillCDDecrease                  = 907;  // 主动技能CD时间减少百分比
+    kExtendBattleBeDamagedBySkillIncrease               = 908;  // 受到的技能伤害增加
+    kExtendBattleDamagedBySkillIncrease                 = 909;  // 造成的技能伤害增加
+    kExtendBattleDamagedToNeutralByNormalAtkIncrease    = 910;  // 对中立单位普攻伤害提升
+    kExtendBattleDamagedToNeutralBySkillIncrease        = 911;  // 对中立单位技能伤害提升
+    kExtendBattleDamagedByNeutralIncrease               = 912;  // 受到中立单位的伤害
+    kExtendBattleDamagedByNeutralByNormalAtkIncrease    = 913;  // 受到中立单位的普攻伤害
+    kExtendBattleDamagedByNeutralBySkillIncrease        = 914;  // 受到中立单位的技能伤害
+    kExtendBattleMonsterId5001DamageInc                 = 915;  // 针对monster表ID=5001的怪物增加对造成的伤害
+    kExtendBattleMonsterId5002DamageInc                 = 916;  // 针对monster表ID=5002的怪物增加对造成的伤害
+
+    kExtendEffectAttr_MapEnd                            = 999;  // 大地图效果 结束
+
+    kExtendGuildAttrStart                               = 1001;
+    kExtendGuildAttr_MemberCapacity                     = 1001; // 公会成员上限增加
+    kExtendGuildAttr_FlagCount                          = 1002; // 公会旗帜数量限制
+    kExtendGuildAttr_AssistTime                         = 1003; // 每次联盟帮助时的加速时间
+    kExtendGuildAttr_BuildingHP                         = 1004; // 联盟建筑耐久度
+    kExtendGuildAttr_BuildingSpeed                      = 1005; // 提升联盟建筑的建筑速度
+    kExtendGuildAttr_StoreCapacity                      = 1006; // 公会仓库存储容量增加
+    kExtendGuildAttr_BuildingCost                       = 1007; // 减少建造联盟建筑的资源消耗
+    kExtendGuildAttr_GuildMarchSpeed                    = 1008; // 提升集结部队的行军速度
+    kExtendGuildAttr_RallyTime                          = 1009; // 减少集结进攻的准备时间
+    kExtendGuildAttr_CityRallyCapacity                  = 1010; // 提升进攻敌方城市时联盟集结部队的容量
+    kExtendGuildAttr_TerritoryTroopAttackIncrease       = 1011; // 联盟领土中作战时的部队攻击力加成
+    kExtendGuildAttr_TerritoryTroopDefenceIncrease      = 1012; // 联盟领土中作战时的部队防御力加成
+    kExtendGuildAttr_TerritoryTroopHPIncrease           = 1013; // 联盟领土中作战时的部队生命值加成
+    kExtendGuildAttr_TerritoryTroopSpeed                = 1014; // 联盟领土中作战时的部队移动速度加成
+    kExtendGuildAttr_BurnSpeed                          = 1015; // 提升敌方建筑的燃烧速度
+    kExtendGuildAttr_GarrisonCapacityIncrease           = 1016; // 联盟建筑驻守上限提升
+    kExtendGuildAttr_GuildFlagBuildingSpeed             = 1017; // 提升联盟哨塔的建造速度
+
+    kExtendHeroAttr_PowerValue                          = 1101; // 英雄力量值展示
+    kExtendHeroAttr_DefenseValue                        = 1102; // 英雄防御值展示
+    kExtendHeroAttr_LifeValue                           = 1103; // 英雄生命值展示
+
+    kExtendGuildAttrEnd                                 = 1500;
+
+    kExtendAttrEnd                                      = 2000;
+}
+
+// Buff信息
+message BuffInfo
+{
+    uint32 id       = 1;
+    uint32 overlay  = 2;
+}
+
+// Effect信息
+message EffectInfo
+{
+    uint32 effect_id    = 1;
+    int64 value         = 2;
+}
+
+enum BattleType
+{
+    kBattleType_None                = 0;
+    // 野蛮人
+    kBattleTypeKillBarbarians       = 1;
+    // 城寨
+    kBattleTypeBarbariansFort       = 2;
+    // 野外PVP
+    kBattleTypeWildPVP              = 3;
+    // 采集点
+    kBattleTypeCollect              = 4;
+    // 打城
+    kBattleTypeCastleSingle         = 5;
+    // 关卡通关
+    kBattleTypePassNpc              = 7;
+    // 关卡争夺
+    kBattleTypePassPlayer           = 8;
+    // 奇观通关
+    kBattleTypeTempleNpc            = 9;
+    // 奇观争夺
+    kBattleTypeTemplePlayer         = 10;
+    // 旗帜
+    kBattleTypeGuildFlag            = 11;
+    // 要塞
+    kBattleTypeGuildCastle          = 12;
+    // 奇观据点
+    kBattleTypeStrongHoldEntity     = 13;
+
+    // 攻打中立怪
+    kBattleTypeGenericMonster       = 14;
+    // 攻打召唤怪
+    kBattleTypeSummonMonster        = 15;
+    // 攻打特殊怪物-副本据点
+    kBattleTypeExpeStronghold       = 16;
+    // 攻打特殊怪物-敌人副本据点
+    kBattleTypeExpeEnemyFort        = 17;
+    // 远征集结部队
+    kBattleTypeExpeGroupMarch       = 18;
+    // 运输队-非战斗NPC
+    kBattleTypeTrafficUnit          = 19;
+    // 庞贝积分建筑
+    kBattleTypePompeiiBuildPoint    = 20;
+    // 庞贝迁城建筑
+    kBattleTypePompeiiBuildRelocate = 21;
+    // 庞贝普通野怪
+    kBattleTypePompeiiMonster       = 22;
+    // 庞贝BOSS
+    kBattleTypePompeiiBoss          = 23;
+    // 庞贝火车站
+    kBattleTypePompeiiTrainStation  = 24;
+    // 雷达系统专属怪
+    kBattleTypePrivateRadarMonster  = 25;
+    // 雷达系统普通怪
+    kBattleTypePublicRadarMonster   = 26;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  效果模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  状态模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message StatusInfo
+{
+    uint32 id       = 1;
+    int64 end_time  = 2;
+}
+
+message StatusData
+{
+    repeated StatusInfo statuses    = 1;
+}
+
+enum NewPlayerProtectType
+{
+    kNewPlayerProtectTypeNone       = 0;
+    kNewPlayerProtectTypeCanceled   = 1;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  状态模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  物品模块 开始
+//////////////////////////////////////////////////////////////////////////
+message ItemInfo
+{
+    uint32 item_id  = 1;    // 物品id
+    uint32 count    = 2;    // 物品数量
+}
+//////////////////////////////////////////////////////////////////////////
+///  物品模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  装备模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message EquipmentInfo
+{
+    uint32 id           = 1;    // 装备动态id
+    uint32 equipment_id = 2;    // 装备id
+    uint32 level        = 3;
+    uint32 hero_id      = 4;    // 穿戴的英雄
+}
+
+enum EquipmentType
+{
+    kEquipmentTypeNone  = 0;
+    kEquipmentTypeGun   = 1;    // 枪
+    kEquipmentTypeVest  = 2;    // 背心
+    kEquipmentTypePack  = 3;    // 背包
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  装备模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  英雄模块 开始
+//////////////////////////////////////////////////////////////////////////
+enum HeroType
+{
+    kHeroTypeNone       = 0;
+    kHeroTypePlayer     = 1;    // 玩家英雄
+    kHeroTypeMonster    = 2;    // 怪物英雄
+}
+
+message SkillInfo
+{
+    uint32 skill_id = 1;    // 技能id
+    uint32 skill_lv = 2;    // 技能等级
+}
+
+enum HeroStateType
+{
+    kHeroStateNormal        = 0;    // 正常状态
+    kHeroStateExpedition    = 1;    // 出征
+}
+
+message HeroInfo
+{
+    uint32 hero_id                      = 1;    // 英雄id
+    uint32 hero_lv                      = 2;    // 英雄等级
+    uint32 star                         = 3;    // 英雄星级
+    repeated SkillInfo skills           = 4;    // 英雄技能
+    uint64 exp                          = 5;    // 经验
+    uint32 small_star                   = 6;    // 英雄小星级
+    uint64 star_exp                     = 7;    // 星级经验
+    HeroKillData kill                   = 8;    // 击杀数据
+    uint64 create_time                  = 9;    // 召唤时间
+
+    uint32 point                        = 10;
+    repeated uint32 hero_points         = 11;
+
+    repeated EquipmentInfo equipment    = 12;   // 装备
+    repeated uint32 talent_buffs        = 13;
+    repeated uint32 talent_skills       = 14;
+
+    uint32 skill_up_range               = 21;
+    uint32 skill_point                  = 22;
+    // tk新增功能
+    uint32 stage_lv                     = 23;   // 阶级等级
+    uint32 small_stage_lv               = 24;   // 阶级下的小等级
+    uint64 power                        = 25;   // 英雄力量
+    uint64 defense                      = 26;   // 英雄防御
+    uint64 life                         = 27;   // 英雄体力
+    uint32 army_number                  = 28;   // 英雄士兵数量
+    uint32 team_number                  = 29;   // 英雄队伍数量
+    uint32 load                         = 30;   // 英雄负重
+}
+
+enum HeroAttributes
+{
+    kHeroAttrNone           = 0;
+    kHeroAttrLv             = 1;    // 英雄等级
+    kHeroAttrStar           = 2;    // 英雄星级
+    kHeroAttrExp            = 3;    // 英雄经验
+    kHeroSkillLv            = 4;    // 英雄技能等级
+    kHeroState              = 5;    // 英雄状态
+    kHeroAttrStarExp        = 6;    // 英雄星级经验
+    kHeroSmallStar          = 7;
+    kHeroAttrPoint          = 8;    // 点数
+    kHeroAttrHeroPoint      = 9;    // 用的点数
+    kHeroAttrHeroEquipment  = 10;   // 英雄装备
+    kHeroSkillPoint         = 11;
+
+    // tk新增功能
+    kHeroAttrStage          = 12;   // 英雄阶级
+    kHeroAttrStageSmallLv   = 13;   // 英雄等级下的小等级
+    kHeroAttrPower          = 14;   // 英雄力量
+    kHeroAttrDefense        = 15;   // 英雄防御
+    kHeroAttrLife           = 16;   // 英雄体力
+    kHeroArmyNumber         = 17;   // 英雄基础兵力
+    kHeroTeamNumber         = 18;   // 英雄队伍基础兵力
+    kHeroLoad               = 19;    // 英雄负重
+}
+
+message HeroExpData
+{
+    uint32 hero_id  = 1;    // 英雄id
+    uint64 exp      = 2;    // 经验
+}
+
+message HeroKillData
+{
+    uint64 kill_army    = 1;    // 击杀数
+    uint64 kill_npc     = 2;    // 击杀野怪数
+}
+
+message Presbyter
+{
+    uint32 hero_id          = 1;
+    uint32 cur_energy       = 2;
+    int64 skill_cd          = 3;
+    SkillInfo direct_skill  = 4;
+}
+
+// 点数
+enum HeroPointsType
+{
+    kHeroPointsNone     = 0;
+    kHeroPointsPower    = 1;    // 力量
+    kHeroPointsDefense  = 2;    // 防护
+    kHeroPointsLife     = 3;    // 体质
+}
+
+message GlobalHeroPointData
+{
+    uint32 type     = 1;
+    uint64 count    = 2;
+}
+
+message GlobalHeroPointDatas
+{
+    uint32 hero_id                              = 1;
+    repeated protomsg.GlobalHeroPointData data  = 2;
+}
+
+enum HeroQualityType
+{
+    kHeroQualityTypeNone    = 0;
+    kHeroQualityGeneral     = 1;    // 普通
+    kHeroQualityExcellent   = 2;    // 优秀
+    kHeroQualityElite       = 3;    // 精英
+    kHeroQualityLegend      = 4;    // 传奇
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  英雄模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  兵种模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+enum ArmyStateType
+{
+    kArmyNormal     = 0;    // 正常状态
+    kArmyExpedition = 1;    // 出征
+}
+
+message ArmyInfo
+{
+    uint32 army_id  = 1;    // 兵种id
+    uint64 count    = 2;    // 兵种数量
+}
+
+message ArmyInfoData
+{
+    repeated ArmyInfo army_info = 1;    // 兵种id
+    ArmyStateType state         = 2;    // 兵种状态
+}
+
+// 训练队列
+message TrainWorkInfo
+{
+    uint32 army_id              = 1;    // 兵种ID
+    uint64 count                = 2;    // 兵种数量
+    int64 start_time            = 3;    // 工作开始时间
+    int64 end_time              = 4;    // 工作到期时间
+    TrainWorkStatus work_status = 5;
+    uint32 old_army_id          = 6;
+    uint32 barrack_id           = 7;    // 兵营id
+    uint64 work_time_length     = 8;
+}
+
+enum TrainWorkStatus
+{
+    kTrainWorkStatusNone        = 0;
+    kTrainWorkStatusWorking     = 1;    // 训练中
+    kTrainWorkStatusNoneDeal    = 2;    // 未收割
+    kTrainWorkStatusUpRank      = 3;    // 进阶中
+    kTrainWorkStatusBusy        = 4;    // 繁忙状态(服务器用)
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  兵种模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+enum GemConversionType
+{
+    kConversionNone             = 0;
+    kConversionTimeBuilding     = 1;    // 建筑时间
+    kConversionTimeScience      = 2;    // 科技时间
+    kConversionTimeTroops       = 3;    // 兵种训练时间
+    kConversionTimeCure         = 4;    // 治疗时间
+    kConversionTimeInstument    = 5;    // 器械时间
+
+    kConversionOil              = 102;  // 界面消费直接购买缺的石油资源
+    kConversionFood             = 103;  // 界面消费直接购买缺的食物资源
+    kConversionWood             = 104;  // 界面消费直接购买缺的木头资源
+    kConversionSteel            = 105;  // 界面消费直接购买缺的钢材资源
+}
+
+enum BattleVictoryType
+{
+    kBVT_Draw   = 0;    // 平
+    kBVT_Win    = 1;    // 赢
+    kBVT_Lose   = 2;    // 输
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  侦查模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  联盟建筑模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+// (联盟)建筑状态
+enum MapBuildingStatus
+{
+    kMapBuildingStatusNone      = 0;
+    kMapBuildingStatusBuild     = 1;    // 建造中
+    kMapBuildingStatusNormal    = 2;    // 正常
+    kMapBuildingStatusBurn      = 3;    // 燃烧中
+    kMapBuildingStatusRepair    = 4;    // 维修中
+}
+
+enum MapBuildingActive
+{
+    kMapBuildingActiveNone  = 0;
+    kMapBuildingActive      = 1;    // 有效
+    kMapBuildingActiveNot   = 2;    // 失效
+}
+
+message BuildPoint
+{
+    uint64 count        = 1;    // 数量
+    uint64 update_time  = 2;    // 时间
+}
+
+message GuildBuildingData
+{
+    MapBuildingStatus building_status   = 1;    // 建筑状态
+    uint64 guild_id                     = 2;
+    MapBuildingActive active            = 3;    // 是否有效
+
+    uint64 build_begin_time             = 4;    // 动态时间
+    uint64 build_end_time               = 5;    // 动态时间
+
+    uint64 construct_time               = 7;    // 建造完成时间
+    int32 construction_value            = 8;    // 建筑值
+    int32 hp                            = 9;    // 当前耐久
+    uint64 last_outfire_time            = 10;   // 上次灭火时间
+    uint32 speed                        = 11;   // （燃烧）速度
+    int32 max_hp                        = 12;   // 最大耐久
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  联盟建筑模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  器械模块 开始
+//////////////////////////////////////////////////////////////////////////
+message InstumentReserchWorkInfo
+{
+    uint32 instument_id     = 1;
+    int64 start_time        = 3;    // 工作开始时间
+    int64 end_time          = 4;    // 工作到期时间
+    uint64 work_time_length = 5;
+}
+
+message InstumentInfoData
+{
+    uint32 instument_id     = 1;    // 器械所id
+    uint32 level            = 2;    // 科技等级
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  器械模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  科技模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message ReserchWorkInfo
+{
+    uint32 tech_id          = 1;
+    int64 start_time        = 3;    // 工作开始时间
+    int64 end_time          = 4;    // 工作到期时间
+    uint64 work_time_length = 5;
+}
+
+message TechInfoData
+{
+    uint32 tech_id          = 1;    // 科技id
+    uint32 level            = 3;    // 科技等级
+    uint64 last_switch_time = 4;    // 研究时间
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  科技模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+message CollectInfo
+{
+    protomsg.CurrencyType type  = 1;
+    int64 last_change_time      = 3;    // 上次变化时间(buff变化，登录,登出等)
+    uint64 store                = 4;    // 当前缓存量(客户端不关心)
+    uint64 speed                = 5;    // 生产速度
+    uint64 max_collection       = 7;    // 最大收取量(建筑仓库容量)
+    uint32 building_id          = 8;    // 建筑动态ID
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+///  招募模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message NormalRecruitData
+{
+    uint32 count            = 1;    // 已经抽奖的次数
+    int64 next_recurit_time = 2;
+}
+
+message AdvancedRecruitData
+{
+    uint32 count            = 1;    // 已经抽奖的次数
+    int64 next_recurit_time = 2;    // 下次抽奖的时间
+    uint64 stage            = 3;    // 阶段
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  招募模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  新手引导模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message EpisodeData
+{
+    uint32 guide_type   = 1;
+    uint32 guide_id     = 2;
+}
+
+message EpisodeDatas
+{
+    repeated EpisodeData episodes   = 1;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  新手引导模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  医院模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+// 治疗队列
+message CureWorkInfo
+{
+    repeated ArmyInfo army_info = 1;    // 兵种id
+    int64 start_time            = 3;    // 工作开始时间
+    int64 end_time              = 4;    // 工作到期时间
+    uint64 work_time_length     = 5;
+}
+
+message HospitalStatisticsData
+{
+    int64 no_cure_death = 1;    // 未得到治疗而死亡的兵量
+    int64 wounded       = 2;    // 重伤兵量
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  医院模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  国王模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+enum KingdomTitle
+{
+    kKingdomTitleNone   = 0;
+    kKingdomTitleKing   = 1;
+}
+
+// 头衔
+message PlayerKingdomTitleInfo
+{
+    uint64 player_id        = 1;
+    uint32 title            = 2;
+    uint64 guild_id         = 3;
+    string player_name      = 4;
+    string guild_short_name = 5;
+    string head             = 6;
+}
+
+// 头衔列表
+message PlayerKingdomTitleInfos
+{
+    repeated PlayerKingdomTitleInfo infos   = 1;
+}
+
+// 礼物
+message KingGiftInfo
+{
+    uint32 id       = 1;
+    uint32 count    = 2;    // 已发送的礼物数量
+}
+
+// 礼物列表
+message KingGiftInfos
+{
+    repeated KingGiftInfo infos = 1;
+}
+
+// 礼物记录
+message KingGiftRecord
+{
+    uint64 player_id        = 1;
+    uint32 id               = 2;
+    int64 record_time       = 3;
+    string player_name      = 4;
+    string guild_short_name = 5;
+    string head             = 6;
+}
+
+message KingGiftRecords
+{
+    repeated KingGiftRecord records = 1;
+}
+
+// 王国基础信息
+message KingdomBasicInfo
+{
+    string bulletin             = 1;    // 公告
+    uint64 battle_power_limit   = 2;    // 移民战力上限
+}
+
+// 历任国王
+message KingRecord
+{
+    uint64 player_id        = 1;
+    uint32 index            = 2;    // 第几任
+    int64 record_time       = 3;
+    string player_name      = 4;
+    string guild_short_name = 5;
+    string head             = 6;
+}
+
+message KingsHistory
+{
+    repeated KingRecord records = 1;
+}
+
+// 国王的个人信息
+message KingPlayerBaseData
+{
+    uint64 king_player_id   = 1;    // 国王
+    uint64 king_guild_id    = 2;
+    string name             = 3;
+    uint64 kingdom_id       = 4;
+}
+
+message KingManagerInfo
+{
+    KingdomBasicInfo basic_info     = 1;
+    PlayerKingdomTitleInfos title   = 2;
+    KingGiftInfos gift              = 3;
+    KingGiftRecords gift_history    = 4;
+    KingsHistory king_history       = 5;
+}
+
+
+// 王国buff
+message KingdomBuffEffectInfo
+{
+    uint32 kingdom_id           = 1;
+    repeated EffectInfo effects = 2;
+}
+
+
+// 激活记录信息
+message KingdomBuffActiveRecord
+{
+    uint64 active_time      = 1;
+    string guild_short_name = 2;
+    string player_name      = 3;
+    uint32 buff_id          = 4;
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////
+///  国王模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  运输车模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+message CarriageData
+{
+    ResourceSet resource    = 1;
+    uint32 tax              = 2;
+    uint32 march_index      = 3;
+    uint64 entity_id        = 4;
+    uint64 march_speed      = 5;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  运输车模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////
+///  王国列表 开始
+//////////////////////////////////////////////////////////////////////////
+
+// 王国状态
+enum KingdomStatus
+{
+    kKingdomStatusNull          = 0;
+    kKingdomStatusBuilding      = 1;    // 建设中
+    kKingdomStatusOpen          = 2;    // 开放
+    kKingdomStatusLimitMigrate  = 3;    // 移民限制
+}
+
+
+// 王国基本信息
+message KingdomInfoBase
+{
+    uint32 kingdom_id               = 1;
+    int64 origin_time               = 2;    // 开服时间
+    bool new_flag                   = 3;
+    repeated string support_nations = 4;    // 支持的国家
+}
+
+
+// 王国扩展信息
+message KingdomInfoExtend
+{
+    KingdomStatus status        = 1;
+    bool head_flag              = 2;    // 是否先锋王国
+    uint64 kingdom_fight_cap    = 3;    // 王国战力
+    uint64 migrate_fight_cap    = 4;    // 移民战力限制
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  王国列表 结束
+//////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////
+///  布阵 开始
+//////////////////////////////////////////////////////////////////////////
+enum DeployPosition
+{
+    kChiefGeneral       = 0;    // 主将
+    kViceGeneral1       = 1;    // 副将1
+    kViceGeneral2       = 2;    // 副将2
+    kAssistantGeneral1  = 3;    // 偏将1
+    kAssistantGeneral2  = 4;    // 偏将2
+}
+
+message GeneralInfo
+{
+    uint32 general_id       = 1;    // 将领id
+    DeployPosition position = 2;    // 位置
+}
+
+message DeployInfo
+{
+    uint32 id                       = 1;    // 队列id
+    repeated GeneralInfo generals   = 2;    // 将领信息
+    uint32 Siege_id                 = 3;    // 器械id
+    uint32 troops                   = 4;    // 当前兵力
+    bool is_auto_fill               = 5;    // 是否自动补充
+    bool is_march                   = 6;    // 是否正在行军
+}
+
+message DeployUpdateTroop
+{
+    uint32 id = 1;
+    uint32 troops_old = 2;
+    uint32 troops_new = 3;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  布阵 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  预备兵模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+// 预备兵基本信息
+message PrepareSoldierBaseInfo
+{
+    uint64 count        = 1;    // 总数量
+    uint64 battle_count = 2;    // 出战数量
+}
+
+// 训练状态
+enum PrepareSoldierTrainStatus
+{
+    kPrepareSoldierTrainStatusNone      = 0;
+    kPrepareSoldierTrainStatusWorking   = 1;    // 训练中
+}
+
+// 训练队列
+message PrepareSoldierTrainWorkInfo
+{
+    uint64 count                            = 2;    // 数量
+    int64 start_time                        = 3;    // 工作开始时间
+    int64 end_time                          = 4;    // 工作到期时间
+    PrepareSoldierTrainStatus work_status   = 5;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+///  预备兵模块 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  预备兵治疗模块 开始
+//////////////////////////////////////////////////////////////////////////
+
+// 治疗队列
+message PrepareCureWorkInfo
+{
+    uint64 count                = 1;
+    int64 start_time            = 3;    // 工作开始时间
+    int64 end_time              = 4;    // 工作到期时间
+    uint64 work_time_length     = 5;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  预备兵治疗模块 开始
+//////////////////////////////////////////////////////////////////////////

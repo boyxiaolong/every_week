@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "myoption.proto";
+import "msg_common_pompeii.proto";
+
+package db;
+
+
+message pompeii_guild_data {
+    uint64 id = 1;
+    protomsg.PompeiiGuildRegistInfo regist_info = 2;
+    protomsg.PompeiiGuildScoreInfo score_info = 3;
+}
+
+message pompeii_guild_data_set {
+    repeated pompeii_guild_data set = 1;
+}
+
+
+
+

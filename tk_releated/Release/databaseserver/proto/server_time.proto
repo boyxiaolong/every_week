@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "myoption.proto";
+package db;
+
+message server_time
+{
+  uint64 id = 1; // id 
+  string start_time = 2;
+}
+
+message server_time_set
+{
+	repeated server_time set = 1;
+}
