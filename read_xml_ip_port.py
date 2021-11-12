@@ -1,9 +1,9 @@
 import os
 from xml.dom.minidom import parse
 import xml.etree.ElementTree as ET
-add_index = 2
+add_index = 1
 
-def cat_xml(bin_dir):
+def cat_xml(bin_dir, res_dir):
     for root, dirs, files in os.walk(rootdir):
         if 'server' not in root:
             continue
@@ -12,7 +12,7 @@ def cat_xml(bin_dir):
             if 'config.xml' not in file:
                 continue
             xml_path = os.path.join(root, file)
-            print('xml', xml_path)
+            print('xml path', root, file, dirs)
             #xmldoc = ET.ElementTree(xml_path)
             xmldoc = parse(xml_path)
             inet_c_list = xmldoc.getElementsByTagName('inet_c')
@@ -31,12 +31,18 @@ def cat_xml(bin_dir):
                 print("sPort : ", s_port)
                 inet_s_list[0].attributes['Port'].value = str(int(s_port) + add_index)
             new_str = xmldoc.toxml()
-            print(type(new_str))
-            new_file_name = 'test_'+file
-            new_file_path = os.path.join(root, new_file_name)
+            #xmldoc.close()
+            #print(new_str)
+            #new_file_name = file
+            sub_dir = root[root.rfind('\\')+1:len(root)]
+            print('sub_dir', sub_dir)
+            new_file_path = os.path.join(res_dir, sub_dir)
+            new_file_path = os.path.join(new_file_path, file)
+            print('new_file_path', new_file_path)
             myfile = open(new_file_path, "w")
             myfile.write(new_str)
             myfile.close()
 
 rootdir = r'D:\auto_explore_dir\bin\Release_1'
-cat_xml(rootdir)
+res_dir = r'D:\auto_explore_dir\bin\Release_2'
+cat_xml(rootdir, res_dir)
