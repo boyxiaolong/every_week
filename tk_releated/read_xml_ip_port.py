@@ -3,7 +3,7 @@ from xml.dom.minidom import parse
 import xml.etree.ElementTree as ET
 import socket
 
-add_index = 0
+add_index = 1
 
 def cat_xml(bin_dir, res_dir):
     local_ip = socket.gethostbyname(socket.gethostname())
@@ -37,13 +37,15 @@ def cat_xml(bin_dir, res_dir):
                 if len(enet_list) > 0:
                     enet_list[0].attributes['IP'].value = local_ip
                     print('set login eip', local_ip)
-                
+                    if 'loginserver' in root:
+                        enet_port = int(enet_list[0].attributes['Port'].value)
+                        enet_list[0].attributes['Port'].value = str(enet_port + add_index)
+
                 if 'gameserver' in root:
                     GSAddr_list = xmldoc.getElementsByTagName('GSAddr')
                     if len(GSAddr_list) > 0:
                         GSAddr_list[0].attributes['domain'].value = local_ip
                         print('set game domain', local_ip)
-
 
             new_str = xmldoc.toxml()
             #xmldoc.close()
@@ -59,6 +61,6 @@ def cat_xml(bin_dir, res_dir):
             myfile.close()
 
 rootdir = r'D:\test_config\server_config'
-res_dir = r'D:\test_config\server_config_1'
+res_dir = r'D:\auto_explore_dir\bin\Debug_1'
 
 cat_xml(rootdir, res_dir)
