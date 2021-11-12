@@ -13,6 +13,7 @@ def cat_xml(bin_dir):
                 continue
             xml_path = os.path.join(root, file)
             print('xml', xml_path)
+            #xmldoc = ET.ElementTree(xml_path)
             xmldoc = parse(xml_path)
             inet_c_list = xmldoc.getElementsByTagName('inet_c')
             if len(inet_c_list) > 0:
@@ -29,8 +30,13 @@ def cat_xml(bin_dir):
                 print("sIP : ", s_ip)
                 print("sPort : ", s_port)
                 inet_s_list[0].attributes['Port'].value = str(int(s_port) + add_index)
-            #myfile = open('test_'+file, "w")
-            #myfile(xmldoc.toxml())
+            new_str = xmldoc.toxml()
+            print(type(new_str))
+            new_file_name = 'test_'+file
+            new_file_path = os.path.join(root, new_file_name)
+            myfile = open(new_file_path, "w")
+            myfile.write(new_str)
+            myfile.close()
 
 rootdir = r'D:\auto_explore_dir\bin\Release_1'
 cat_xml(rootdir)
