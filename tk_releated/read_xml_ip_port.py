@@ -3,7 +3,7 @@ from xml.dom.minidom import parse
 import xml.etree.ElementTree as ET
 import socket
 
-add_index = 1
+add_index = 0
 
 def cat_xml(bin_dir, res_dir):
     local_ip = socket.gethostbyname(socket.gethostname())
@@ -48,9 +48,6 @@ def cat_xml(bin_dir, res_dir):
                         print('set game domain', local_ip)
 
             new_str = xmldoc.toxml()
-            #xmldoc.close()
-            #print(new_str)
-            #new_file_name = file
             sub_dir = root[root.rfind('\\')+1:len(root)]
             print('sub_dir', sub_dir)
             new_file_path = os.path.join(res_dir, sub_dir)
