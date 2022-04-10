@@ -1,0 +1,10 @@
+<btree name="intoexpr">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+    <node name="unlock expr" type="task" task_type="PM" task_params="expe_unlock_all" reset_intervel="0" do_times="1"/>
+    <!--node name="Into Expr" type="task" task_type="IntoExpr" task_params="1,1" reset_intervel="30" do_times="1"/!-->
+    <node name="Random Expr" type="task" task_type="RandomExpr" task_params="1,100,0" reset_intervel="30" do_times="1"/>
+  </root>
+</btree>

@@ -1,0 +1,115 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_task.proto";
+import "msg_common.proto";
+
+message MsgCL2GSTaskInfoRequest
+{
+}
+
+message MsgGS2CLTaskInfoReply
+{
+	protomsg.ChapterData chapter	= 1;		// 主线任务信息
+	BranchData branch							= 2;		// 支线任务信息
+	DailyData daily								= 3;		// 每日活跃任务
+}
+
+// 主线任务更新通知
+message MsgGS2CLTaskMainTaskUpdateNotice
+{
+	protomsg.TaskData main_task	= 1;
+}
+
+// 请求领取主线任务奖励
+message MsgCL2GSTaskMainTaskAwardRequest
+{
+	uint32	task_id			= 1;
+}
+
+message MsgGS2CLTaskMainTaskAwardReply
+{
+	uint32	task_id			= 1;
+	repeated Resource awards	= 2;	// 奖品信息
+	int32	error_code	= 99;     // 结果
+}
+
+// 开启主线任务章节
+message MsgGS2CLTaskOpenChapterNotice
+{
+	uint32	chapter_id		= 1;
+}
+
+message MsgCL2GSTaskChapterAwardRequest
+{
+}
+
+message MsgGS2CLTaskChapterAwardReply
+{
+	uint32	chapter_id			= 1;
+	repeated Resource awards	= 2;	// 奖品信息
+	int32	error_code	= 99;     // 结果
+}
+
+//////////////////////////////////////////////////////////////////////
+// 分支任务更新通知
+message MsgGS2CLTaskBranchTaskUpdateNotice
+{
+	protomsg.TaskData branch_task	= 1;
+}
+
+// 请求领取分支任务奖励
+message MsgCL2GSTaskBranchTaskAwardRequest
+{
+	uint32	task_id			= 1;
+}
+
+message MsgGS2CLTaskBranchTaskAwardReply
+{
+	uint32	task_id			= 1;
+	repeated Resource awards	= 2;	// 奖品信息
+	int32	error_code	= 99;     // 结果
+}
+
+//////////////////////////////////////////////////////////////////////
+
+message MsgGS2CLTaskDailyTaskUpdateNotice
+{
+	protomsg.TaskData daily_task	= 1;
+}
+
+// 请求领取分支任务奖励
+message MsgCL2GSTaskDailyTaskAwardRequest
+{
+	uint32	task_id			= 1;
+}
+
+message MsgGS2CLTaskDailyTaskAwardReply
+{
+	uint32	task_id			= 1;
+	repeated Resource awards	= 2;	// 奖品信息
+	int32	error_code	= 99;     // 结果
+}
+
+//每日全部活跃任务数据下发
+message MsgGS2CLTaskDailyTaskInfoNotice
+{
+	DailyData		data	= 1;
+}
+
+// 每日活跃度更新
+message MsgGS2CLTaskDailyScoreNotice
+{
+	uint32	score		= 2;
+}
+
+// 公会任务
+message MsgGS2CLGuildTaskNotice
+{
+    repeated protomsg.TaskData task_datas = 1;
+	uint64 refresh_player_id = 2;		// 刷新任务的玩家ID
+}
+
+message MsgGS2CLGuildTaskUpdateNotice
+{
+	protomsg.TaskData task_data	= 1;
+}

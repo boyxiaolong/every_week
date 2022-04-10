@@ -1,0 +1,75 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_task.proto";
+
+// 荣誉勋章(通行证)所有信息通知
+message MsgGS2CLHonroAllInfoNotice 
+{
+  uint32 id 				= 1; 	// ID
+  int64 begin_time			= 2;    // 开始时间
+  int64 end_time			= 3;	// 结束时间
+  int32 level 				= 4;  	// 等级
+  int32 exp 				= 5; 	// 经验
+  uint32 week 				= 6; 	// 周
+  bool gold_card 			= 7; 	// 金卡状态
+  int32 common_reward_level = 8; 	// 已领取到的普通奖励的等级
+  int32 gold_reward_level 	= 9; 	// 已领取到的金卡奖励的等级
+  repeated TaskData tasks	= 10; 	// 所有任务信息
+}
+
+// 荣誉勋章(通行证)基础信息更新通知
+message MsgGS2CLHonorBaseInfoNotice
+{
+  int32 level 				= 1;  	// 等级
+  int32 exp 				= 2; 	// 经验
+  uint32 week 				= 3; 	// 周
+  bool gold_card 			= 4; 	// 金卡状态
+  int32 common_reward_level = 5; 	// 已领取到的普通奖励的等级
+  int32 gold_reward_level 	= 6; 	// 已领取到的金卡奖励的等级
+}
+
+// 荣誉勋章(通行证)任务信息更新通知
+message MsgGS2CLHonorTaskInfoNotice
+{
+  TaskData task	= 1;
+}
+
+// 领取荣誉勋章(通行证)任务奖励请求
+message MsgCL2GSHonorTaskRewardRequest
+{
+  uint32 task_id = 1;		// 任务id
+}
+
+// 领取荣誉勋章(通行证)任务奖励回应
+message MsgGS2CLHonorTaskRewardReply
+{
+  uint32 task_id = 1;				// 任务id
+  repeated Resource awards	= 2;	// 奖品信息
+  int32	error_code = 99;			// 结果和错误码
+}
+
+// 领取荣誉勋章(通行证)等级奖励请求
+message MsgCL2GSHonorLevelRewardRequest
+{
+}
+
+// 领取荣誉勋章(通行证)等级奖励回应
+message MsgGS2CLHonorLevelRewardReply
+{
+  repeated Resource awards	= 1;	// 奖品信息
+  int32	error_code = 99;			// 结果和错误码
+}
+
+// 荣誉勋章(通行证)购买等级请求
+message MsgCL2GSHonorBuyLevelRequest
+{
+  int32 level_count = 1;			// 等级数量
+}
+
+// 荣誉勋章(通行证)购买等级回应
+message MsgGS2CLHonorBuyLevelReply
+{
+  int32 level_count = 1;			// 等级数量
+  int32	error_code = 99;			// 结果和错误码
+}

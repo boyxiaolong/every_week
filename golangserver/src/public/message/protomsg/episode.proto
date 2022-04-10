@@ -1,0 +1,25 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+
+//---------------------------------客户端协议--------------------------------- //
+
+// 玩家引导进度通知
+message MsgGS2CLPlayerAllEpisodeNotice 
+{
+  EpisodeDatas data = 1; // 相同的episode_type，仅记录最后一个
+}
+
+//请求记录关键节点
+message MsgCL2GSEpisodeRecordRequest
+{
+  uint32  guide_id = 1;  // 关键节点id
+}
+
+message MsgGS2CLEpisodeRecordReply
+{
+  uint32  guide_id = 1;
+  int32	error_code		= 99;		// 结果和错误码
+}
+

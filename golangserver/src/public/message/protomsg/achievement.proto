@@ -1,0 +1,95 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_achievement.proto";
+
+
+// 成就全部数据通知
+message MsgGS2CLAllchievementInfoNotice
+{
+	int32 level = 1;											// 等级
+	int32 exp = 2;												// 经验
+	int32 reward_level = 3;										// 已领取奖励的最高等级
+	repeated protomsg.AchievementData data = 4;					// 成就数据
+	repeated protomsg.AchievementFlagData flag_data = 6;		// 成就墙数据
+}
+
+// 成就基本数据更新通知
+message MsgGS2CLAchievementBaseInfoNotice
+{
+	int32 level = 1;						// 等级
+	int32 exp = 2;							// 经验
+}
+
+// 成就等级奖励数据更新通知
+message MsgGS2CLAchievementRewardInfoNotice
+{
+	int32 reward_level = 1;					// 领取奖励的等级
+}
+
+// 成就数据更新通知
+message MsgGS2CLAchievementInfoNotice
+{
+	protomsg.AchievementData data = 1;		// 成就数据
+}
+
+// 成就墙数据更新通知
+message MsgGS2CLAchievementFlagInfoNotice
+{
+	repeated protomsg.AchievementFlagData data = 1;		// 成就墙数据
+}
+
+// 确认成就请求
+message MsgCL2GSAchievementConfirmRequest
+{
+	uint32	achievement_id		= 1;		// 成就ID
+	uint32	sub_id				= 2;		// 成就子ID
+}
+
+// 确认成就回复
+message MsgGS2CLAchievementConfirmReply
+{
+	uint32	achievement_id		= 1;		// 成就ID
+	uint32	sub_id				= 2;		// 成就子ID
+	int32	error_code			= 99;     	// 结果
+}
+
+// 领取成就等级奖励请求
+message MsgCL2GSAchievementLevelRewardRequest
+{
+	int32	level			= 1;			// 等级
+}
+
+// 领取成就等级奖励回复
+message MsgGS2CLAchievementLevelRewardReply
+{
+	int32	level				= 1;		// 等级
+	repeated Resource awards	= 2;		// 奖品信息
+	int32	error_code			= 99;     	// 结果
+}
+
+// 增加成就墙请求
+message MsgCL2GSAddAchievementFlagRequest
+{
+	protomsg.AchievementFlagData data = 1;				// 成就墙数据
+}
+
+// 增加成就墙回复
+message MsgGS2CLAddAchievementFlagReply
+{
+	protomsg.AchievementFlagData data 		= 1;		// 成就墙数据
+	int32	error_code						= 99;     	// 结果
+}
+
+// 删除成就墙请求
+message MsgCL2GSDelAchievementFlagRequest
+{
+	protomsg.AchievementFlagData data = 1;				// 成就墙数据
+}
+
+// 删除成就墙回复
+message MsgGS2CLDelAchievementFlagReply
+{
+	protomsg.AchievementFlagData data 		= 1;		// 成就墙数据
+	int32	error_code						= 99;     	// 结果
+}

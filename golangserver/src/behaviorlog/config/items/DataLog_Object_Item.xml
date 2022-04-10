@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--this is DataLog_Object_Item  config-->
+<metalib>
+<items name = "Object_Item" desc ="道具名称">
+          <item name="90001" desc="公会魔法石"/>
+          <item name="90002" desc="村落设计图"/>
+          <item name="90003" desc="小城镇设计图"/>
+          <item name="90004" desc="大城市设计图"/>
+</items>
+</metalib>

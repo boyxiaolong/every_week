@@ -1,0 +1,29 @@
+{
+	"folders": [
+		{
+			"path": "consoleclient"
+		},
+		{
+			"path": "public"
+		},
+		{
+			"path": "createmodule"
+		},
+		{
+			"path": "csvtomysql"
+		},
+		{
+			"path": "gmclient"
+		},
+		{
+			"path": "protoc-gen-bcrpc"
+		},
+		{
+			"path": "protoc-gen-maprpc"
+		},
+		{
+			"path": "robotclient"
+		}
+	],
+	"settings": {}
+}

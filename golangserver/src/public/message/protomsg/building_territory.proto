@@ -1,0 +1,62 @@
+syntax="proto3";
+package protomsg;
+
+// 格子坐标
+message GridPos
+{
+     int32 x = 1;           // 格子x坐标
+     int32 y = 2;           // 格子y坐标
+}
+
+
+// 服务端建筑领地
+message BuildingTerritoryServer
+{
+     int64 version = 1;        // 版本号,采用生成时的时间转int，  以备后续验证服务端，客户端数据一致性  
+	 repeated BuildingTerritoryUnitServer list_territoy    = 2;  //  建筑领地列表
+}
+
+
+// 客户端建筑领地
+message BuildingTerritoryClient
+{
+     int64 version = 1;       // 版本号,采用生成时的时间转int，以备后续验证服务端，客户端数据一致性 
+	 repeated BuildingTerritoryUnitClient list_territoy    = 2;  //  建筑领地列表
+}
+
+// 服务端建筑领地单元
+message BuildingTerritoryUnitServer
+{
+     int32 id = 1;            // id     
+     int32 type = 2;          // 类型 
+	 repeated int32 list_borderid    = 3;    // 邻居领地列表
+	 repeated GridPos list_grid    = 4;  //  格子列表
+	 repeated int32 list_borderidTown    = 5; // 邻居城市列表，包括通过据点相连的
+      repeated GridPos list_WalledCity = 6;  // 剧本城寨刷新点
+}
+
+
+
+// 轮廓节点
+message ContourNodeData
+{
+     GridPos pos = 1;                  // 格子坐标       
+     GridPos turnDir = 2;              // 转向索引 
+     int32 distance   = 3;             // 距离
+	 int32 startLineBorderid   = 4;    // 以该节点为起点的线段的邻居
+     int32 endLineBorderid   = 5;      // 以该节点为线段终点的共线邻居
+}
+
+// 客户端建筑领地单元
+message BuildingTerritoryUnitClient
+{
+     int32 id = 1;         // id         
+     int32 type = 2;       // 类型 
+     GridPos min_pos   = 3;   // aabb
+   	 GridPos max_pos   = 4 ;  // aabb
+	 repeated int32 list_borderid    = 5; // 邻居领地列表
+	 repeated ContourNodeData list_Contour    = 6;//  轮廓点列表
+	 repeated int32 list_borderidTown    = 7; // 邻居城市列表，包括通过据点相连的
+	 repeated int32 list_WalledCity    = 8; // 剧本城寨刷新点
+}
+

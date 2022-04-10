@@ -1,0 +1,199 @@
+﻿syntax = "proto3";
+package protomsg;
+import "msg_common_mall.proto";
+import "msg_common.proto";
+
+// 商品数据
+message MallGoodsInfo
+{
+  uint32 goods_id = 1;
+  int64  end_time = 2; // 结束时间戳
+}
+
+// 商城全部可用goods_id通知
+message MsgGS2CLAllMallNotice
+{
+  repeated MallGoodsInfo goods = 1;
+}
+
+// 上架一个goods_id
+message MsgGS2CLAddMallNotice
+{
+  MallGoodsInfo goods = 1;
+  bool is_pop = 2;
+}
+
+// 下架一个goods_id
+message MsgGS2CLRemoveMallNotice
+{
+  uint32 goods_id = 1;
+}
+
+
+// 领取首充奖励
+message MsgCL2GSFirstChargeRewardRequest
+{
+}
+
+// 领取首充奖励回复
+message MsgCL2GSFirstChargeRewardReply
+{
+  repeated Resource awards	= 1;	// 奖品信息
+  int32 error_code = 99;
+}
+
+// 商城充值通用reply
+message MsgCL2GSChargeCommonReply
+{
+  uint32 goods_id = 1;
+  repeated Resource awards	= 2;	// 奖品信息
+  int32 error_code = 99;
+}
+
+
+// 所有商城信息
+message MsgGS2CLMallAllDataNotice
+{
+  MallCommonData 	  common_data 	 = 1;   // 普通商城
+  MallFirstChargeData  first_charge  = 2; // 首充
+  MallEverydayHeroData  everyday_hero  = 3; // 每日英雄限购
+  MallChooseGiftData  choose_gift  = 4; // 自选礼包
+  MallTotalChargeData  total_charge  = 5; // 累充
+  MallMoneySellData  money_sell  = 6; // 钻石贩卖	
+  MallTimeCardData   time_card   = 7; // 周月卡
+  MallGrowthFundData growth_fund  = 8; // 成长基金
+  MallPopOutGiftData pop_out_gift = 9; // 弹出式礼包
+  MallMysteryData mystery_data  = 10; // 神秘商店
+  MallPiggySavings piggy_savings = 11; // 小猪储钱罐 
+}
+
+
+// 普通商城数据
+message MsgGS2CLMallOrderDataNotice
+{
+  MallOrder order = 1; // 订单信息
+}
+
+// 商城首充信息
+message MsgGS2CLMallFirstChargeNotice
+{
+  MallFirstChargeData data = 1;
+}
+
+// 商城累充通知
+message MsgGS2CLMallTotalChargeNotice
+{
+  MallTotalChargeData data = 1;
+}
+
+// 商城每日英雄限购通知
+message MsgGS2CLMallEverydayHeroNotice
+{
+  map<uint32,uint32> place_goods_id = 1; // 坑位已购买的goods id
+}
+
+// 领取每日英雄限购免费礼包
+message MsgCL2GSEverydayHeroFreeRequest
+{
+  uint32 goods_id = 1; // 商品id
+}
+
+// 领取每日英雄限购免费礼包回复
+message MsgCL2GSEverydayHeroFreeReply
+{
+  repeated Resource awards	= 1;	// 奖品信息
+  uint32 goods_id = 2; // 商品id 
+  int32 error_code = 99;
+}
+
+// 领取累充奖励
+message MsgCL2GSTotalChargeRewardRequest
+{
+  uint32 goods_id = 1; // 领取goods_id
+}
+
+// 领取累充奖励回复
+message MsgCL2GSTotalChargeRewardReply
+{
+  repeated Resource awards	= 1;	// 奖品信息
+  uint32 goods_id = 2; // 领取档位 
+  int32 error_code = 99;
+}
+
+// 领取周月卡奖励
+message MsgCL2GSTimeCardRewardRequest
+{
+  uint32 goods_id = 1; // 商品ID
+}
+
+// 领取周月卡回复
+message MsgCL2GSTimeCardRewardReply
+{
+  MallTimeCard time_card    = 1; // 周月卡信息
+  ResourceSet  rewards	= 2;	// 奖品信息
+  int32 error_code = 99;
+}
+
+message MsgGS2CLBuyTimeCardNotice
+{
+  MallTimeCard time_card     = 1; // 周月卡信息
+  ResourceSet rewards	= 2;	// 奖品信息
+}
+
+// 领取成长基金奖励
+message MsgCL2GSGrowthFundRewardRequest
+{
+  uint32 goods_id = 1; // 商品ID
+  uint32 level    = 2; // 领取等级
+}
+
+// 领取成长基金回复
+message MsgCL2GSGrowthFundRewardReply
+{
+  uint32 goods_id     = 1; // 商品ID
+  uint32 level        = 2; // 领取等级
+  ResourceSet rewards	= 3;	// 奖品信息
+  int32 error_code = 99;
+}
+
+// 领取小猪储蓄罐奖励
+message MsgCL2GSPiggySavingsRewardRequest
+{
+}
+
+// 领取小猪储蓄罐回复
+message MsgCL2GSPiggySavingsRewardReply
+{
+  ResourceSet rewards	= 1;	// 奖品信息
+  int32 error_code = 99;
+}
+
+// 同步小猪储钱罐信息
+message MsgGS2CLPiggySavingsNotice
+{
+  MallPiggySavings data = 1;
+}
+
+message MsgGS2CLBuyGrowthFundNotice
+{
+  MallGrowthFund growth_fund     = 1; // 成长基金信息
+  ResourceSet    rewards	= 2;	// 奖品信息
+}
+
+message MsgGS2CLMysteryMallNotice
+{
+  MallMysteryData data = 1;
+}
+
+// 同步服务器开服时间
+message MsgGS2CLServerStartTimeNotice
+{
+  int64 start_time     = 1; // 开服时间戳
+}
+
+
+
+
+
+
+

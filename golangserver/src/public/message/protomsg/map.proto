@@ -1,0 +1,523 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_map.proto";
+import "msg_common_scout.proto";
+import "msg_common_radar.proto";
+
+//////////////////////////////////////////////////////////////////////////
+///  playermarch module 开始
+//////////////////////////////////////////////////////////////////////////
+
+message MsgCL2GSMapDataRequest
+{
+
+}
+
+message MsgGS2CLMapDataReply
+{
+	CastleData 				 castle  = 1;
+	repeated MarchData marches = 2;
+	repeated ScoutData scouts = 3;
+	uint64    		 		 region_id = 4;
+	repeated CarriageDetailedData carriages = 5;
+	repeated Presbyter presbyters = 6;
+	repeated VirtualQueueData queues = 7;	// 虚拟队列数据
+	kill_data				kill_data = 8;
+	int32	error_code		= 99;
+}
+
+message MsgGS2CLMonsterDataReply
+{
+	int32					monster_lv = 1;
+	int32					is_quarter = 2;		// 是否驻扎
+}
+
+message MsgCL2GSQuarteRequest
+{
+	int32	is_quarter		 = 1;		// 0否 1是
+}
+	
+message MsgCL2GSCreateMarchRequest
+{
+  MarchCommand   command = 1;
+	ArmyData 			 army    = 2;
+	uint64    		 region_id = 3;
+}
+
+message MsgGS2CLCreateMarchReply
+{
+	MarchData march 		= 1;
+	uint64    region_id = 2;
+	int32	error_code		= 99;
+}
+
+message MsgCL2GSMarchCommandRequest
+{
+	uint32 march_index = 1;
+	MarchCommand command = 2;
+	uint64    region_id = 3;
+}
+
+message MsgGS2CLMarchCommandReply
+{
+	uint64    region_id = 1;
+	int32	error_code		= 99;
+}
+
+message MsgGS2CLMarchRemoveNotice
+{
+	uint32 						 march_index = 1;
+	uint64    region_id = 2;
+}
+
+message MsgCL2GSMoveCastleRequest
+{
+	protomsg.MoveCastleType type = 1;
+	protomsg.vector2d 			position = 2;
+	uint64    		 					region_id = 3;
+}
+
+message MsgGS2CLMoveCastleReply
+{
+	protomsg.vector2d position = 1;
+	uint64    region_id = 2;
+	int32	error_code		= 99;
+}
+
+message MsgGS2CLMoveCastleNotice
+{
+	uint64 		castle_entity_id  = 1;
+	protomsg.vector2d old_pos   = 2;
+	protomsg.vector2d new_pos   = 3;
+	uint64    				region_id = 4;
+	int32	error_code		= 99;
+}
+
+message MsgCL2GSGetEntityBaseDataRequest
+{
+	uint32 kingdom_id = 1; 
+	uint64 entity_id 	= 2;
+	uint64 region_id = 3;
+}
+
+message MsgGS2CLEntityBaseDataReply
+{
+	EntityBaseData entity_data    = 1;
+	int32	error_code		= 99;
+}
+
+message MsgCL2GSGetMarchTargetDataRequest
+{
+	uint64 region_id = 1;
+	uint64 entity_id 	= 2;
+}
+
+message MsgGS2CLGetMarchTargetDataReply
+{
+	MarchTargetData target_data    = 1;
+	int32	error_code		= 99;
+}
+
+message MsgCL2GSPathFindRequest
+{
+  uint64 region_id = 1;
+
+  protomsg.vector2d start = 3;
+  protomsg.vector2d end = 4;
+  
+  repeated uint64 open_pass = 5;
+
+  bool is_cross_pass = 6;
+
+	uint64 request_id = 7;
+}
+
+message MsgGS2CLPathFindReply
+{
+	repeated vector2d paths = 1;
+
+	uint64 request_id 	= 10;
+	int32	error_code		= 99;
+}
+
+message MsgG2CLIntoRegionNotice
+{
+	uint64 region_id = 1;
+}
+
+message MsgG2CLLeaveRegionNotice
+{
+	uint64 region_id = 1;
+}
+
+message MsgG2CLUpdataKillDataNotice
+{
+	kill_monster_data  monster_kill_data = 1;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+///  playermarch module 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  奇观开始
+//////////////////////////////////////////////////////////////////////////
+
+message MsgG2CLUpdateTempleNotice
+{
+	uint64 temple_id = 1;
+}
+
+message MsgG2CLRemoveTempleNotice
+{
+	uint64 temple_id = 1;
+}
+
+message MsgG2CLUpdatePassNotice
+{
+	uint64 pass_id = 1;
+}
+
+message MsgG2CLRemovePassNotice
+{
+	uint64 pass_id = 1;
+}
+
+message MsgGS2CLTempleMonsterCreateNotice
+{
+  uint64 temple_entity_id = 1;
+	uint32 blood_count = 2;
+}
+
+message MsgGS2CLStrongholdMonsterCreateNotice
+{
+    uint64 stronghold_entity_id = 1;
+	uint32 blood_count = 2;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  奇观结束
+//////////////////////////////////////////////////////////////////////////
+
+// 创建斥候
+message MsgGS2CLCreateScoutReply
+{
+	ScoutData scout 		= 1;
+	int32	error_code		= 99;
+}
+// 移除斥候
+message MsgGS2CLScoutRemoveNotice
+{
+	uint32 scout_index = 1;
+}
+
+// 请求联盟资源中心的采集数据
+message MsgCL2GSGetGuildCollectDataRequest
+{
+  uint64 collect_building_entity_id 	= 1; // 资源中心
+	uint64 march_entity_id 	= 2; // 军队
+	uint64 region_id 				= 3;
+}
+
+message MsgGS2CLGetGuildCollectDataReply
+{
+	GuildCollectMarchData collect_data    = 1;
+	int32	error_code		= 99;
+}
+
+// 同步玩家拥有的所有队列表情
+message MsgGS2CLAllMarchFaceNotice
+{
+	repeated uint32 face_id 	= 1;
+}
+
+// 同步玩家新增的队列表情
+message MsgGS2CLAddMarchFaceNotice
+{
+	uint32 face_id 	= 1;
+}
+
+message MsgCL2GSMarchFaceRequest
+{
+	uint64 entity_id 	= 1;
+	uint32 face					= 2;
+	uint64 region_id 		= 3;
+}
+
+message MsgGS2CLMarchFaceReply
+{
+	int32	error_code		= 99;
+}
+
+message MsgGS2CLMarchFaceNotice
+{
+	uint64 entity_id 		= 1;
+	uint32 face					= 2;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  使用物品召唤怪物开始
+//////////////////////////////////////////////////////////////////////////
+
+// 移除斥候
+message MsgGS2CLUseItemCallMonsterNotice
+{
+	uint64  entity_id    = 2;
+  protomsg.vector2d      position     = 3;
+	int32	error_code		= 99;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  使用物品召唤怪物结束
+//////////////////////////////////////////////////////////////////////////
+
+
+
+//////////////////////////////////////////////////////////////////////////
+///  地图测试消息开始
+//////////////////////////////////////////////////////////////////////////
+
+message MsgCL2GSSearchEmptyPosRequest
+{
+  EntityType entity_type  = 1;
+	uint32     search_level = 2;
+	uint32     search_range = 3;
+
+	bool       nearby_player_castle = 4;
+	vector2d   center_pos    				= 5;
+}
+
+message MsgGS2CLSearchEmptyPosReply
+{
+  vector2d position  = 1;
+  int32	error_code		= 99;
+}
+
+// PM命令创副本通知
+message MsgGS2CLPMCreateInstanceNotice
+{
+	uint64 region_id	= 1;
+	int32	error_code		= 99;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  地图测试消息结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  庞贝的事件数据
+
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////
+///  资源援助开始
+//////////////////////////////////////////////////////////////////////////
+
+message MsgCL2GSCreateCarriageRequest
+{
+  MarchCommand   command = 1;
+	ResourceSet resources = 2;
+	uint64    		 region_id = 3;
+}
+
+message MsgGS2CLCreateCarriageReply
+{
+	CarriageDetailedData data 		= 1;
+	uint64    region_id = 2;
+	int32	error_code		= 99;
+}
+
+message MsgCL2GSGetCarriageCapacityRequest
+{
+  uint64 target_player_id = 1;
+	uint64    		 region_id = 3;
+}
+
+message MsgGS2CLGetCarriageCapacityReply
+{
+	CarriageCapacityInfo info 		= 1;
+	uint64    region_id = 2;
+	int32	error_code		= 99;
+}
+
+message MsgGS2CLCarriageRemoveNotice
+{
+	uint32 	 march_index = 1;
+	uint64   region_id = 2;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  资源援助结束
+//////////////////////////////////////////////////////////////////////////
+
+
+message MsgGS2CLPickFinishNotice
+{
+    uint64 march_entity_id  = 1;
+    uint32 drop_item_type   = 2;
+    uint32 drop_item_id     = 3;
+}
+
+// 据点
+message MsgG2CLUpdateStrongholdNotice
+{
+	uint64 stronghold_id = 1;
+	protomsg.GuildStrongholdData stronghold_data = 2;
+}
+
+message MsgG2CLRemoveStrongholdNotice
+{
+	uint64 stronghold_id = 1;
+}
+
+message MsgG2CLUpdateGuildStrongholdNotice
+{
+	uint64 stronghold_id = 1;
+	protomsg.GuildStrongholdData stronghold_data = 2;
+}
+
+message MsgG2CLRemoveGuildStrongholdNotice
+{
+	uint64 stronghold_id = 1;
+}
+
+message MsgCL2GSGiveupStrongholdRequest
+{
+	uint64		region_id = 1;
+    uint64		stronghold_id = 2;
+}
+
+message MsgGS2CLGiveupStrongholdReply
+{
+	int32	error_code		= 1;
+}
+
+message MsgCL2GSGetStrongholdRewardRequest
+{
+	uint64		region_id = 1;
+}
+
+message MsgGS2CLGetStrongholdRewardReply
+{
+	int32	error_code		= 1;
+    repeated protomsg.Resource resource = 2;
+}
+
+// 玩家部队进入离开城池范围消息
+message MsgGS2CLMarchEnterLeaveTempleRange
+{
+	uint64 march_entity_id = 1;	// 部队ID
+	bool enter_or_leave = 2;	// true进入，false离开
+	uint64 temple_id = 3;		// 城池ID
+	int64 next_score_time = 4;	// 下次得分时间
+}
+
+// TK从布阵列表中出征
+message MsgCL2GSCreateMarchTKRequest
+{
+	MarchCommand   	command = 1;
+	uint32			deploy_id = 2;
+	uint64			region_id = 3;
+}
+
+message MsgGS2CLCreateMarchTKReply
+{
+	MarchData	march 		= 1;
+	uint64		region_id 	= 2;
+	int32		error_code	= 99;
+}
+
+// 请求地图建筑信息
+message MsgCL2GSGetMapBuildingBriefInfoRequest
+{
+	uint64		region_id = 1;
+}
+
+message MsgGS2CLGetMapBuildingBriefInfoReply
+{
+    repeated protomsg.MapBuildingBriefInfo map_building_infos = 1;
+	uint64	region_id		= 2;
+	int32	error_code		= 3;
+}
+
+message MsgGS2CLUpdateMapBuildingBriefInfo
+{
+    protomsg.MapBuildingBriefInfo map_building_info = 1;
+	uint64	region_id		= 2;
+}
+
+// 修复据点请求
+message MsgCL2GSRepairStrongholdRequest
+{
+	uint64		region_id = 1;
+	uint64		stronghold_id = 2;
+}
+
+message MsgGS2CLRepairStrongholdReply
+{
+	int32		error_code = 1;
+}
+
+// 请求据点驻防信息
+message MsgCL2GSStrongholdReenforceInfoRequest
+{
+	uint64		region_id = 1;
+	uint64		stronghold_id = 2;
+}
+
+message MsgGS2CLStrongholdReenforceInfoReply
+{
+	int32		error_code = 1;
+	protomsg.DefendMarchesInfo defend_info = 2;
+}
+
+message MsgGS2CLStrongholdReenforceInfoNotice
+{
+	protomsg.DefendMarchesInfo defend_info = 1;
+}
+
+
+message MsgGS2CLCastleReenforceInfoNotice
+{
+	protomsg.ReenforceInfo reenforce_info = 1;
+}
+
+message MsgGS2CLCastleFriendReenforceInfoNotice
+{
+	protomsg.ReenforceInfo reenforce_info = 1;
+}
+
+// 请求友军主堡自己的增援信息
+message MsgCL2GSGetReenforcepRequest
+{
+  uint64 castle_enity_id = 1;//主堡id
+  uint64 region_id = 2;
+}
+
+message MsgGS2CLGetReenforcepReply
+{
+	protomsg.ReenforceInfo reenforce_info = 1;
+	int32		error_code = 99;
+}
+
+// 自己驻防盟友信息更新
+message MsgGS2CLFriendReenforceInfoNotice
+{
+	protomsg.ReenforceInfo reenforce_info = 1;
+}
+
+//撤回派遣部队
+message MsgCL2GSCancelReenforceRequest
+{
+  uint64 march_enity_id = 1;//派遣实体id
+  uint64 region_id = 2;
+}
+
+message MsgGS2CLCancelReenforceReply
+{
+	int32		error_code = 99;
+}

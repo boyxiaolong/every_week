@@ -1,0 +1,8 @@
+<btree name="collect">
+  <root name="root test" type="sequence" sleep_time="1000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+    <node name="collect task" type="task" task_type="Collect" task_params="1,0,0" reset_intervel="0" do_times="1"/>
+  </root>
+</btree>

@@ -1,0 +1,35 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+// 求贤所
+message MsgCL2GSGetSeekTalentRequest
+{
+
+}
+
+message MsgGS2CLGetSeekTalentReply
+{
+    repeated protomsg.SeekTalentData data  = 1;
+}
+
+message MsgCL2GSOpenSeekTalentRequest
+{
+    uint32 id                   = 1;    // 卡池id
+    bool is_all                 = 2;    // 一键招募
+    uint32 recruit_count        = 3;    // 招募次数
+}
+
+message MsgGS2CLOpenSeekTalentReply
+{
+    uint32 id         = 1;    // 卡池id
+    bool is_all       = 2;
+    protomsg.ResourceSet set    = 3;    // 获取所有的资源
+
+    int32 error_code            = 99;   // 结果和错误码
+}
+
+message MsgGS2CLOpenSeekTalentNotice
+{
+    repeated protomsg.SeekTalentData data  = 1;
+}

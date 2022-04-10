@@ -1,0 +1,39 @@
+syntax = "proto3";
+package protomsg;
+
+import "msg_common_mintage.proto";
+import "msg_common.proto";
+
+
+message MsgGS2CLMintageNotice
+{
+    protomsg.MintageInfo info   = 1;    // 铸币信息
+}
+
+// 请求收集铸币
+message MsgCL2GSMintageCollectRequest
+{
+
+}
+
+// 回复收集铸币
+message MsgGS2CLMintageCollectReply
+{
+
+    int32 error_code                    = 99;
+}
+
+message MsgCL2GSMintageRequest
+{
+    repeated protomsg.Resource  res = 1;      // 资源
+}
+
+message MsgGS2CLMintageReply
+{
+    uint64 use_resource                 = 1;    // 使用过的资源数量
+    uint64 end_mintage_time             = 2;    // 结束铸币时间
+    protomsg.MintageInfoStatus status   = 3;    // 是否收集过
+    uint64 mintage_num                  = 4;    // 铜币数量
+    uint64 begin_time                   = 5;    // 开始时间
+    int32 error_code    = 99;
+}

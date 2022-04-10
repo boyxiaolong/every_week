@@ -1,0 +1,15 @@
+<btree name="marchmove">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+    <node name="root test" type="sequence">
+      <node name="MarchMove" type="task" task_type="MarchMoveBack" task_params="" reset_intervel="0" do_times="1"/>
+      <node name="MarchMove" type="task" task_type="MarchMove" task_params="1,1,10" reset_intervel="20" do_times="1"/>
+      <node name="MarchMove" type="task" task_type="MarchMove" task_params="1,1,10" reset_intervel="20" do_times="1"/>
+      <node name="MarchMove" type="task" task_type="MarchMove" task_params="1,1,10" reset_intervel="20" do_times="1"/>
+      <node name="MarchMove" type="task" task_type="MarchMove" task_params="1,1,10" reset_intervel="20" do_times="1"/>
+      <node name="MarchMove" type="task" task_type="MarchMove" task_params="1,1,10" reset_intervel="20" do_times="1"/>
+    </node>
+  </root>
+</btree>

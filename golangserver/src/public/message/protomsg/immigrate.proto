@@ -1,0 +1,73 @@
+﻿syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_activity.proto";
+
+// 国王请求查看特许移民申请列表
+message MsgCL2GSListPioneerApplicationRequest
+{
+
+}
+
+message MsgGS2CLListPioneerApplicationReply
+{
+	uint32  quota       = 1;        // 当前剩余名额
+	repeated protomsg.PlayerLordInfo infos   = 2;
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 申请先锋王国高战移民
+message MsgCL2GSApplyPioneerRequest
+{
+	uint32 kingdom_id		= 1;
+}
+
+message MsgGS2CLApplyPioneerReply
+{
+	uint32 kingdom_id		= 1;
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 国王批复先锋王国高战移民申请
+message MsgCL2GSAnswerPioneerApplicationRequest
+{
+	uint64 player_id  = 1;
+	bool  agree       = 2;
+}
+
+message MsgGS2CLAnswerPioneerApplicationReply
+{
+	uint64 player_id  = 1;
+	bool  agree       = 2;
+
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 玩家请求移民
+message MsgCL2GSImmigrateRequest
+{
+	uint32	kingdom_id	= 1;
+	bool		is_newbee		= 2;		//  是否新手移民
+	uint32	state_id		= 3;		// 移民目标省份ID
+}
+
+message MsgGS2CLImmigrateReply
+{
+	uint32	kingdom_id	= 1;
+	bool		is_newbee		= 2;		//  是否新手移民
+	uint32	state_id		= 3;		// 移民目标省份ID
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 查看指定王国移民信息
+message MsgCL2GSImmigrateKingdomInfoRequest
+{
+	uint32	kingdom_id	= 1;
+}
+
+message MsgGS2CLImmigrateKingdomInfoReply
+{
+	uint32	kingdom_id	= 1;
+	ImmigrateKingdomInfo info = 2;
+	int32	error_code		= 99;		// 结果和错误码
+}

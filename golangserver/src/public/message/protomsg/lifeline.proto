@@ -1,0 +1,53 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_lifeline.proto";
+
+// 获取所有事件信息
+message MsgCL2GSLifeLineInfoRequest
+{
+}
+
+message MsgGS2CLLifeLineInfoReply
+{
+    repeated protomsg.LifeLineData life_line_data   = 1;    // key = npc_id
+}
+
+// 通知下发
+message MsgGS2CLLifeLineNotice
+{
+    uint32 incident_id      = 1;    // 事件id
+    uint32 node_id          = 2;    // 事件当前节点
+    LifeLineStatus status   = 3;    // 当前状态
+    uint64 start_time       = 4;    // 事件触发时间
+}
+
+// 
+message MsgCL2GSLifeLineSelectRequest
+{
+    uint32 incident_id  = 1;    // 事件id
+    uint32 select_index = 2;    // 玩家的选择
+    uint64 start_time   = 3;    // 服务器验证 事件触发事件 用于判断覆盖后，出现不同节点选择不一致问题
+    uint32 node_id      = 4;    // 服务器验证 事件触发事件 用于判断覆盖后，出现不同节点选择不一致问题
+}
+
+message MsgGS2CLLifeLineSelectReply
+{
+    uint32 incident_id  = 1;    // 事件id
+    uint32 select_index = 2;    // 玩家的选择
+    uint32 node_id      = 3;
+    uint32 error_code   = 99;   // 
+}
+message MsgCL2GSLifeLineNpcSetRequest
+{
+    uint64 npc_id       = 1;    // npc id
+    string data         = 2;
+    uint32 option_id    = 3;
+}
+
+message MsgGS2CLLifeLineNpcSetReply
+{
+    uint64 npc_id       = 1;    // npc id
+    string data         = 2;
+    uint32 option_id    = 3;
+    uint32 error_code   = 99;   // 
+}

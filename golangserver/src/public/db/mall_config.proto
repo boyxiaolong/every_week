@@ -1,0 +1,33 @@
+syntax = "proto3"; 
+
+package db; 
+message mall_config
+{
+	uint64 id = 1;
+	string pcid = 2;
+	uint64 sub_goods_id = 3;
+	string comment = 4;
+	string next_goods = 5;
+	uint64 name = 6;
+	uint64 type = 7;
+	uint64 subtype = 8;
+	uint64 duration = 9;
+	string ad_pic = 10;
+	uint64 level = 11;
+	string start_time = 12;
+	string end_time = 13;
+	uint64 limit_time = 14;
+	uint64 currency_type = 15;
+	uint64 price = 16;
+	uint64 bonus = 17;
+	uint64 label = 18;
+	uint64 desc = 19;
+	string icon = 20;
+	uint64 gift = 21;
+	uint64 discontinue = 22;
+}
+
+message mall_config_set
+{ 
+	repeated mall_config set = 1;
+}

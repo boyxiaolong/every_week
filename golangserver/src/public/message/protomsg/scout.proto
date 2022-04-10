@@ -1,0 +1,234 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_scout.proto";
+import "msg_common_map.proto";
+import "msg_common.proto";
+
+//---------------------------------客户端协议--------------------------------- //
+
+// 客户端请求侦查
+message MsgCL2GSScoutRequest
+{
+  uint32 scout_index = 2;
+  
+  ScoutCommand command = 3;
+  uint64 region_id = 4;
+}
+
+// 侦查响应
+message MsgGS2CLScoutReply
+{
+  uint64  entity_id  = 1;
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 撤回
+message MsgCL2GSScoutMoveBackRequest
+{
+  uint32 scout_index = 1;
+  uint64 region_id = 2;
+}
+
+message MsgGS2CLScoutMoveBackReply
+{
+  uint32 scout_index = 1;
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+
+///////////////////////////////////////////////迷雾//////////////////////////////////
+
+// 客户端请求迷雾数据
+message MsgCL2GSMistRequest
+{
+}
+
+message MsgGS2CLMistReply
+{
+  MistData mist    = 1;
+  uint64   region_id = 2;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 请求探索迷雾
+message MsgCL2GSMistExploreRequest
+{
+  uint32 scout_index = 1;         // 斥候索引  
+  repeated vector2d route = 2;
+  bool is_auto_explore = 3;        //是否自动探索
+}
+
+message MsgGS2CLMistExploreReply
+{
+  uint32 scout_index = 1;         // 斥候索引
+  uint64   region_id = 2;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 迷雾打开通知
+message MsgGS2CLMistOpenNotice
+{
+  uint32 x = 1; // (x:0-239, y: 0-239
+  uint32 y = 2;
+  MistOpenType open_type = 3;   // 开启迷雾类型
+  uint64   region_id = 4;
+}
+
+// 所有迷雾清除通知
+message MsgGS2CLMistCleanNotice
+{
+	uint64   region_id = 1;
+}
+
+// 客户端请求自动解除不可达迷雾
+message MsgCL2GSMistOpenMistRequest
+{
+  repeated vector2d route = 1;
+}
+
+message MsgGS2CLMistOpenMistReply
+{
+	uint64   region_id = 1;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 开启指定关卡/神庙建筑的迷雾
+message MsgCL2GSMistOpenBuildingMistRequest
+{
+  uint64 entity_id = 1;
+}
+
+message MsgGS2CLMistOpenBuildingMistReply
+{
+  uint64 entity_id = 1;
+  uint64   region_id = 2;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+///////////////////////////////////////////////迷雾//////////////////////////////////
+
+///////////////////////////////////////////////探索//////////////////////////////////
+// 客户端请求探索数据
+message MsgCL2GSExploreRequest
+{
+}
+
+message MsgGS2CLExploreReply
+{
+  PlayerExploreInfo info = 1;
+  uint64   region_id = 2;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 更新村庄状态
+message MsgGS2CLExploreUpdateVillageNotice
+{
+  uint64 village_id = 1;
+  ExploreStatus status = 2;
+  uint64   region_id = 3;
+}
+
+// 更新山洞信息
+message MsgGS2CLExploreUpdateCaveNotice
+{
+  CaveInfo cave = 1;
+  uint64   region_id = 2;
+}
+
+// 更新探索建筑状态
+message MsgGS2CLExploreUpdateBuildingNotice
+{
+  uint64 object_id = 1;
+  ExploreStatus status = 2;
+  uint64   region_id = 3;
+  uint32 entity_type = 4;
+}
+
+// 请求领取山洞/村庄奖励
+message MsgCL2GSExploreAwardRequest
+{
+  EntityType entity_type = 1; // entity类型，山洞/村庄
+  uint64 object_id = 2;
+}
+
+message MsgGS2CLExploreAwardReply
+{
+  EntityType entity_type = 1; // entity类型，山洞/村庄
+  uint64 object_id = 2;
+
+  ResourceSet rewards = 3;
+  uint64   region_id = 4;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 一键领取山洞/村庄奖励
+message MsgCL2GSExploreBatchAwardRequest
+{
+  EntityType entity_type = 1; // entity类型
+  repeated uint64 object_ids = 2; // 山洞需要填写ID列表， 村庄无需填写，自动领取所有已发现的村庄奖励
+}
+
+message MsgGS2CLExploreBatchAwardReply
+{
+  EntityType entity_type = 1; // entity类型，山洞/村庄
+  repeated uint64 object_ids = 2;
+  ResourceSet rewards = 3;
+  uint64   region_id = 4;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 请求领取山洞额外奖励
+message MsgCL2GSExploreCaveExtraAwardRequest
+{
+  uint64 object_id  = 1;
+}
+
+message MsgGS2CLExploreCaveExtraAwardReply
+{
+	uint64 object_id  = 1;
+	ResourceSet rewards = 2;
+	uint64   region_id = 3;
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 派遣斥候访问指定物件
+message MsgCL2GSExploreVisitRequest
+{
+  uint32 scout_index  = 1;
+  uint64 object_id = 2;   // (山洞ID)
+}
+
+message MsgCL2GSExploreVisitReply
+{
+  uint32 scout_index  = 1;
+  uint64 object_id = 2;   // (山洞ID)
+  uint64   region_id = 3;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 解锁已探索建筑
+message MsgCL2GSUnlockExploredBuildingRequest
+{
+  uint64 object_id = 2;
+}
+
+message MsgGS2CLUnlockExploredBuildingReply
+{
+  uint64 object_id = 2;   // (山洞ID)
+  uint64   region_id = 3;
+  uint32 entity_type = 4;
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//请求是否驻扎
+message MsgCL2GSStationRequest
+{
+  bool is_station = 1;
+}
+
+message MsgGS2CLStationgReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+///////////////////////////////////////////////探索//////////////////////////////////

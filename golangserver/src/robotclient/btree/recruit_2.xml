@@ -1,0 +1,13 @@
+<btree name="scout">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+	<node name="unlock expr" type="task" task_type="PM" task_params="clearitem" reset_intervel="0"  do_times="1"/>
+	<node name="unlock expr" type="task" task_type="PM" task_params="clearallcurrency" reset_intervel="0"  do_times="1"/>
+	<node name="recruit" type="loop" loop_max_times="100" >
+	 <node name="recruit" type="task" task_type="Recruit" task_params="1" sleep_time="1000"/>
+	</node>
+	<node name="end task" type="task" task_type="End"/>
+  </root>
+</btree>

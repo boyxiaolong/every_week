@@ -1,0 +1,51 @@
+﻿syntax = "proto3";
+package protomsg;
+
+import "msg_common_shop.proto";
+
+
+message MsgCL2GSShopBuyItemRequest
+{
+ uint32 type = 1; //商店类型
+ uint32 id = 2; //购买的商品id
+ uint32 count = 3; //购买的物品数量
+}
+
+message MsgGS2CLShopBuyItemReply
+{
+  int32 error_code = 99;
+}
+
+message MsgCL2GSShopRefreshRequest
+{
+ uint32 type = 1; //
+}
+
+message MsgGS2CLShopRefreshReply
+{
+  int32 error_code = 99;
+}
+
+//普通商店通知
+message MsgGS2CLShopNotice
+{
+  protomsg.ShopData shop_data = 1;
+}
+
+message MsgGS2CLShopManNotice
+{
+  protomsg.MysteryShopManData shop_data = 1; 
+}
+
+message MsgCL2GSShopManTalkRequest
+{
+}
+
+message MsgGS2CLShopManTalkReply
+{
+    int32 error_code = 99;
+}
+
+
+
+

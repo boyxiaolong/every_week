@@ -1,0 +1,321 @@
+syntax = "proto3";
+package protomsg;
+
+import "msg_common.proto";
+import "msg_common_map.proto";
+import "msg_common_guild.proto";
+
+//////////////////////////////////////////////////////////////////////////
+///  走马灯 开始
+//////////////////////////////////////////////////////////////////////////
+
+enum MagicLampLevel
+{
+  kMagicLampLevel_None = 0;
+  kMagicLampLevel_Level1 = 1;      //走马灯优先级1
+  kMagicLampLevel_Level2 = 2;      //走马灯优先级2
+  kMagicLampLevel_Level3 = 3;      //走马灯优先级3
+  kMagicLampLevel_Level4 = 4;      //走马灯优先级4
+}
+
+enum MagicLampType
+{
+  kMagicLampType_None = 0;
+
+  kMagicLampType_MilestoneComplete = 10027; // 里程碑完成提示
+  kMagicLampType_TempleFirstOccupat = 10028; // 奇观首占提示
+  kMagicLampType_TempleBeRobbed = 10029; // 奇观被抢夺提示
+  kMagicLampType_PassFirstOccupat = 10030; // 关卡首占提示
+  kMagicLampType_PassBeRobbed = 10031; // 关卡被抢夺提示
+  kMagicLampType_GuildBuildingCreate = 10032; // 联盟建筑被创建提示
+  kMagicLampType_GuildBuildingConstruct = 10033; // 联盟建筑建设完成提示
+  kMagicLampType_GuildBuildingDestroyed = 10034; // 联盟建筑被摧毁提示
+  kMagicLampType_GuildMarchCreate = 10035; // 玩家创建联盟集结提示
+  kMagicLampType_GuildMarchCancel = 10036; // 玩家取消联盟集结提示
+  kMagicLampType_PlayerBeAssembled = 10037; // 玩家被其他联盟集结提示
+  kMagicLampType_GuildBuildingBeAssembled = 10038; // 联盟建筑被其他联盟集结提示
+  kMagicLampType_TempleBeAssembled = 10039; // 奇观被其他联盟集结提示
+  kMagicLampType_PassBeAssembled = 10040; // 关卡被其他联盟集结提示
+
+  kMagicLampType_CreateGuild = 10041; // 创建联盟提示
+  kMagicLampType_CreateGuildLabel = 60022; // 创建联盟标记提示
+  kMagicLampType_RemoveGuildLabel = 60010; // 取消联盟标记提示
+  kMagicLampType_AppointOfficial = 10042; // 联盟官职任命提示
+  kMagicLampType_AddGuildGift = 10043; // 收到联盟礼物提示
+  kMagicLampType_JoinGuild = 10044; // 玩家加入联盟提示
+  kMagicLampType_QuitGuild = 10045; // 玩家退出联盟提示
+
+  kMagicLampType_SetKingdomTitle = 60515; // 任命王国头衔
+  kMagicLampType_SendKingdomGift = 60517; // 分配王国礼物
+
+  kMagicLampType_PompeiiSnatching = 70144; //庞贝的建筑占领中
+  kMagicLampType_PompeiiOccupied = 70145; //庞贝的建筑被完全占领
+
+  kMagicLampType_PompeiiKillBoss = 70282; // 庞贝击杀boss
+
+  kMagicLampType_StartTempleWar = 70283; // 城池宣战
+
+  kMagicLampType_SystemBegin = 1000000;    // 后面的为自定义走马灯
+  kMagicLampType_GM = 1000001;    // GM公告走马灯
+}
+
+//走马灯发送类型
+enum MagicLampSendType
+{
+  kMagicLampSendType_None = 0;
+  kMagicLampSendType_Guild = 1;          //走马灯公会
+  kMagicLampSendType_Kingdom = 2;        //走马灯王国
+}
+
+message LanguageMessageData
+{
+  uint32 language = 1; // 语言（定义参考语言定义表）
+  string content = 2;  // 内容
+}
+
+message MagicLampGMContent
+{
+  repeated LanguageMessageData messages = 1;   // 多语言内容 
+  uint32 period = 2;                           // 走马灯持续时间(秒)
+}
+
+message MagicLampTempleWinContent
+{
+  uint32 temple_id = 1;
+  string guild_name = 2;
+  string be_attack_guild_name = 3;
+  protomsg.vector2d pos = 4;
+}
+
+message MagicLampPassWinContent
+{
+  uint32 pass_id = 1;
+  string guild_name = 2;
+  string be_attack_guild_name = 3;
+  protomsg.vector2d pos = 4;
+}
+
+message MagicLampCancelGuildLabelContent
+{
+  uint64 label_id = 1;
+  string player_name = 2;
+}
+
+message MagicLampRelieveCityLordContent
+{
+  uint64 city_lord_id = 1;
+  string appoint_name = 2;
+  string be_relieve_name = 3;
+  protomsg.vector2d pos = 4;
+}
+
+message MagicLampMilestoneCompleteContent
+{
+  uint32 task_id = 1;
+}
+
+
+message MagicLampTempleFirstOccupatContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string guild_name = 3;
+  string guild_short_name = 4;
+}
+
+message MagicLampTempleBeRobbedContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string defend_guild_name = 3;
+  string defend_guild_short_name = 4;
+  string attack_guild_name = 5;
+  string attack_guild_short_name = 6;
+}
+
+message MagicLampPassFirstOccupatContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string guild_name = 3;
+  string guild_short_name = 4;
+}
+
+message MagicLampPassBeRobbedContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string defend_guild_name = 3;
+  string defend_guild_short_name = 4;
+  string attack_guild_name = 5;
+  string attack_guild_short_name = 6;
+}
+
+message MagicLampGuildBuildingCreateContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+}
+
+message MagicLampGuildBuildingConstructContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+}
+
+message MagicLampGuildBuildingDestroyedContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string defend_guild_name = 3;
+  string defend_guild_short_name = 4;
+  string attack_guild_name = 5;
+  string attack_guild_short_name = 6;
+}
+
+message MagicLampGuildMarchCreateContent
+{
+  string attack_player_name = 1;
+  EntityType entity_type = 2;
+  uint32 config_id = 3;
+  string defend_player_name = 4;
+  string defend_guild_short_name = 5;
+}
+
+message MagicLampGuildMarchCancelContent
+{
+  string attack_player_name = 1;
+}
+
+message MagicLampPlayerBeAssembledContent
+{
+  string defend_player_name = 1;
+  string attack_guild_short_name = 2;
+  string attack_player_name = 3;
+}
+
+message MagicLampGuildBuildingBeAssembledContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string attack_guild_short_name = 3;
+  string attack_player_name = 4;
+}
+
+message MagicLampTempleBeAssembledContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string attack_guild_short_name = 3;
+  string attack_player_name = 4;
+}
+
+message MagicLampPassBeAssembledContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string attack_guild_short_name = 3;
+  string attack_player_name = 4;
+}
+
+message MagicLampCreateGuildContent
+{
+  string player_name = 1;
+  string guild_name = 2;
+  string guild_short_name = 3;
+}
+
+message MagicLampCreateGuildLabelContent
+{
+  string player_name = 1;
+  protomsg.GuildOfficial official = 2;
+  uint32 label_id = 3;
+}
+
+message MagicLampRemoveGuildLabelContent
+{
+  string player_name = 1;
+  protomsg.GuildOfficial official = 2;
+  uint32 label_id = 3;
+}
+
+message MagicLampAppointOfficialContent
+{
+  string player_name = 1;
+  protomsg.GuildOfficial official = 2; 
+}
+
+message MagicLampAddGuildGiftContent
+{
+  uint32 gift_id = 1;
+}
+
+message MagicLampJoinGuildContent
+{
+  string player_name = 1;
+}
+
+message MagicLampQuitGuildContent
+{
+  string player_name = 1;
+}
+
+message MagicLampSetKingdomTitleContent
+{
+  string player_name = 1;
+  uint32 title_id = 2;
+  string be_set_player_name = 3;
+  uint32 be_set_title = 4;
+}
+
+message MagicLampSendKingdomGiftContent
+{
+  string player_name = 1;
+  uint32 title_id = 2;
+  uint32 gift_id = 3;
+  string be_send_player_name = 4;
+}
+
+//庞贝的建筑被完全占领时发送
+message MagicLampPompeiiBuildOccupiedContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string guild_name = 3;
+  string guild_short_name = 4;
+  uint64 guild_id = 5;
+  uint32 force_id = 6;
+}
+
+//庞贝的建筑占领中发送
+message MagicLampPompeiiBuildSnatchingContent
+{
+  uint32 config_id = 1;
+  vector2d position = 2; // 位置
+  string guild_name = 3;
+  string guild_short_name = 4;
+  uint32 time = 5;
+  uint64 guild_id = 6;
+  uint32 force_id = 7;
+}
+
+message MagicLampPompeiiKillBossContent
+{
+  string guild_name = 1;
+  string guild_short_name = 2;
+  uint64 guild_id = 3;
+  uint32 force_id = 4;
+  uint32 monster_id = 5;
+  string player_name = 6;
+  uint32 total_kill_count = 7;
+}
+
+message MagicLampStartTempleWarContent
+{
+    uint32 config_id = 1;
+    vector2d position = 2; // 位置
+    string defend_guild_name = 3;
+    string defend_guild_short_name = 4;
+    string attack_guild_name = 5;
+    string attack_guild_short_name = 6;
+}

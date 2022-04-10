@@ -1,0 +1,283 @@
+syntax = "proto3";
+
+package protomsg;
+
+
+// 活动阶段分类
+enum PompeiiActStage
+{
+    kPompeiiActStageNull        = 0;    // 非活动期
+    kPompeiiActStagePrediction  = 1;    // 预告阶段
+    kPompeiiActStageRegist      = 2;    // 报名阶段
+    kPompeiiActStageGame        = 3;    // 比赛阶段
+    kPompeiiActStagePrize       = 4;    // 领奖阶段
+}
+
+
+// 成员报名状态
+enum PompeiiRegistMemberStatus
+{
+    kPompeiiRegistMemberStatusNull      = 0;    // 未入选
+    kPompeiiRegistMemberStatusSelected  = 1;    // 已入选(非正式或替补)
+    kPompeiiRegistMemberStatusRegular   = 2;    // 正式队员
+    kPompeiiRegistMemberStatusBench     = 3;    // 替补队员
+    kPompeiiRegistMemberStatusNoAuth    = 4;    // 无资格
+}
+
+// 玩家展示信息
+message PompeiiPlayerInfo
+{
+    uint64 player_id    = 1;
+    string player_name  = 2;
+    string player_head  = 3;
+}
+
+
+// 公会展示信息
+message PompeiiGuildInfo
+{
+    uint64 guild_id         = 1;
+    string guild_name       = 2;
+    string guild_short_name = 3;
+    uint32 guild_icon       = 4;
+}
+
+
+// 阶段信息
+message PompeiiActStageInfo
+{
+    PompeiiActStage stage   = 1;
+    int64 begin_time        = 2;
+    int64 end_time          = 3;
+}
+
+
+// 公会战绩的一方
+message PompeiiGuildResultSideInfo
+{
+    PompeiiGuildInfo guild_info = 1;
+    int32 join_member_count     = 2;    // 已报名的正式队员人数
+    int32 max_member_count      = 3;    // 正式队员总人数(按配置固定)
+    int32 score                 = 4;
+    bool is_win                 = 5;
+}
+
+
+// 公会战绩信息
+message PompeiiGuildResult
+{
+    PompeiiGuildResultSideInfo blue_side    = 1;
+    PompeiiGuildResultSideInfo red_side     = 2;
+    int64 result_time                       = 3;
+}
+
+
+// 注册玩家信息
+message PompeiiRegistMemberInfo
+{
+    PompeiiPlayerInfo player_info           = 1;
+    uint64 match_point                      = 2;    // 匹配分
+    PompeiiRegistMemberStatus regist_status = 3;    // 报名状态
+}
+
+
+// 配对信息的一方
+message PompeiiGetPairingInfoSide
+{
+    PompeiiGuildInfo guild_info = 1;
+    uint64 match_point          = 2;
+    int32 join_member_count     = 3;    // 参战队员人数(在副本内的人数)
+    int32 max_member_count      = 4;    // 正式队员总人数(按配置固定)
+    int32 kingdom_days          = 5;    // 王国历史天数
+    int32 claim_num             = 6;    // (+/-)连胜/败数
+    int32 overall_rank          = 7;    // 综合排名
+    int32 score                 = 8;    // 当前得分
+}
+
+
+// 候选人排行榜列表项
+message PompeiiCandidateListItem
+{
+    PompeiiGuildInfo guild_info = 1;
+    uint64 fight_cap            = 2;
+}
+
+
+//////////////////////////////////////////////////////////////////////////
+///  庞贝的战术板 开始
+//////////////////////////////////////////////////////////////////////////
+
+enum PompeiiEventStatus
+{
+    kPompeiiEventStatus_NotOpen = 0;    // 未开启
+    kPompeiiEventStatus_Open    = 1;    // 开启
+    kPompeiiEventStatus_Finish  = 2;    // 结束
+}
+
+enum PompeiiEventType
+{
+    kPompeiiEventType_Nono          = 0;    // 未开启
+    kPompeiiEventType_Open          = 1;    // 副本开启
+    kPompeiiEventType_Finish        = 2;    // 副本结束
+    kPompeiiEventType_BuildOpen     = 3;    // 建筑开启
+    kPompeiiEventType_CultureTank   = 4;    // 培养槽开放
+    kPompeiiEventType_BossRefresh   = 5;    // boss开始刷新
+}
+
+message PompeiiEventBaseData
+{
+    uint32 event_id             = 1;
+    PompeiiEventStatus status   = 2;
+    int64 start_time            = 3;
+    int64 end_time              = 4;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  庞贝的战术板 开始
+//////////////////////////////////////////////////////////////////////////
+
+message PompeiiPlayerData
+{
+    uint64 player_id    = 1;
+    string player_name  = 2;
+    uint32 score        = 3;
+    string player_head  = 4;
+}
+
+message PompeiiGuildData
+{
+    uint32 force_id                     = 1;
+    uint64 guild_id                     = 2;
+    uint32 score                        = 3;
+    string name                         = 4;    // 公会名称
+    string short_name                   = 5;    // 简称
+    uint32 icon                         = 6;    // 图标
+    repeated PompeiiPlayerData players  = 7;
+    uint32 kingdom_id                   = 8;
+}
+
+message PompeiiGameData
+{
+    repeated PompeiiGuildData guild_data    = 1;
+}
+
+message PompeiiPlayerRecord
+{
+    uint64 player_id                = 1;
+    string player_name              = 2;
+    string player_head              = 3;
+    uint32 score                    = 4;
+
+
+    uint32 experiments_score        = 10;   // 生化实验品得分
+    uint32 kill_score               = 11;   // 击杀个人得分
+    uint32 collect_score            = 12;   // 收集个人得分
+    uint32 capture_score            = 13;   // 占领建筑个人得分
+    uint32 kill_monster_score       = 14;   // 杀怪得分
+    uint32 kill_boss_score          = 15;   // 杀boss得分
+
+    uint32 kill_troops_count        = 20;   // 击杀敌方部队数量
+    uint32 kill_monster_count       = 21;   // 击杀野怪数量
+    uint32 heal_unit_count          = 22;   // 治疗单位数量
+    uint32 sinjured_troops_count    = 23;   // 重伤单位数量
+    uint32 kill_boss_count          = 24;   // 击杀BOSS数量
+}
+
+message PompeiiGuildRecord
+{
+    uint32 force_id                         = 1;
+    uint64 guild_id                         = 2;
+    uint32 score                            = 3;
+    string name                             = 4;    // 公会名称
+    string short_name                       = 5;    // 简称
+    uint32 icon                             = 6;    // 图标
+    uint32 kingdom_id                       = 7;
+
+    uint32 experiments_score                = 10;   // 生化实验品得分
+    uint32 kill_score                       = 11;   // 击杀个人得分
+    uint32 collect_score                    = 12;   // 收集个人得分
+    uint32 capture_score                    = 13;   // 占领建筑个人得分
+    uint32 kill_monster_score               = 14;   // 杀怪得分
+    uint32 kill_boss_score                  = 15;   // 杀boss得分
+
+    uint32 kill_troops_count                = 20;   // 击杀敌方部队数量
+    uint32 kill_monster_count               = 21;   // 击杀野怪数量
+    uint32 heal_unit_count                  = 22;   // 治疗单位数量
+    uint32 sinjured_troops_count            = 23;   // 重伤单位数量
+    uint32 move_castle_times                = 24;   // 迁城次数
+    uint32 kill_boos_count                  = 25;   // 击杀boss数量
+
+    repeated PompeiiPlayerRecord players    = 17;
+}
+
+message PompeiiGameRecord
+{
+    repeated PompeiiGuildRecord guild_data  = 1;
+}
+
+message PompeiiExtendContent
+{
+    repeated uint64 guilds  = 1;
+}
+
+message PompeiiGuildBaseData
+{
+    uint32 force_id             = 1;
+    uint64 guild_id             = 2;
+    uint32 score                = 3;
+    uint32 move_castle_times    = 4;
+    uint32 player_count         = 5;
+    string name                 = 6;    // 公会名称
+    string short_name           = 7;    // 简称
+    uint32 icon                 = 8;    // 图标
+    uint32 kingdom_id           = 9;
+}
+
+message PompeiiGameBaseData
+{
+    repeated PompeiiGuildBaseData guild_data    = 1;
+}
+
+
+
+
+// 公会报名信息
+message PompeiiGuildRegistInfo
+{
+    PompeiiGuildInfo guild_info                         = 1;
+    int32 regist_round                                  = 2;
+    uint64 total_match_point                            = 3;
+    map<uint64, PompeiiRegistMemberInfo> member_info    = 4;
+}
+
+// 公会得分信息
+message PompeiiGuildScoreInfo
+{
+    uint32 total_score          = 1;
+    uint32 experiments_score    = 2;    // 生化实验品得分
+    uint32 kill_score           = 3;    // 击杀个人得分
+    uint32 collect_score        = 4;    // 收集个人得分
+    uint32 capture_score        = 5;    // 占领建筑个人得分
+    uint32 kill_soldier_count   = 6;    // 击杀敌方部队数量
+    uint32 kill_monster_count   = 7;    // 击杀野怪数量
+    uint32 heal_unit_count      = 8;    // 治疗单位数量
+    uint32 major_injury_count   = 9;    // 重伤单位数量
+}
+
+
+
+
+
+// 玩家得分信息
+message PompeiiPlayerScoreInfo
+{
+    uint32 total_score          = 1;
+    uint32 experiments_score    = 2;    // 生化实验品得分
+    uint32 kill_score           = 3;    // 击杀个人得分
+    uint32 collect_score        = 4;    // 收集个人得分
+    uint32 capture_score        = 5;    // 占领建筑个人得分
+    uint32 kill_soldier_count   = 6;    // 击杀敌方部队数量
+    uint32 kill_monster_count   = 7;    // 击杀野怪数量
+    uint32 heal_unit_count      = 8;    // 治疗单位数量
+    uint32 major_injury_count   = 9;    // 重伤单位数量
+}

@@ -1,0 +1,44 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+
+
+//---------------------------------客户端协议--------------------------------- //
+
+// 玩家vip信息
+message MsgGS2CLVipInfoNotice 
+{
+   uint32 vip_level = 1; //vip等级
+   uint32 login_days = 2; // 累积登陆天数
+   bool exp_reward = 3;  // 今天的vip经验是否领取
+   bool gift_reward = 4; // 今天的礼包是否领取 
+}
+
+//领取vip经验请求
+message MsgCL2GSGetVipExpRequest
+{
+   uint32 vip_level = 1; //vip等级
+}
+
+//领取vip经验响应
+message MsgGS2CLGetVipExpReply
+{
+   uint32 vip_level = 1; //vip等级
+   uint32 add_exp = 2;  //获得的vip经验
+   int32 error_code = 99;
+}
+
+//领取vip礼包请求
+message MsgCL2GSGetVipGiftRequest
+{
+   uint32 vip_level = 1; //vip等级
+}
+
+//领取vip礼包响应
+message MsgGS2CLGetVipGiftReply
+{
+   uint32 vip_level = 1; //vip等级
+   protomsg.ResourceSet reward = 2; // 礼包开出的物品
+   int32 error_code = 99;
+}

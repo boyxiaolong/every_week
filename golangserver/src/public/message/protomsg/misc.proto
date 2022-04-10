@@ -1,0 +1,156 @@
+
+syntax = "proto3";
+package protomsg;
+
+import "msg_common.proto";
+
+
+
+enum UsPlayerStatus
+{
+	kPsOffline		= 0;
+	kPsOnline		= 1;
+	kPsOfflineCache	= 2;
+}
+
+// 
+enum KickoutReason
+{
+  kKickoutReason_Normal = 0;                // 正常下线
+  kKickoutReason_DuplicateLogin = 1;        // 重复登录
+  kKickoutReason_LoginFail = 2;             // 登录失败
+  kKickoutReason_DataServerDisconnect = 3;  // 数据库断开连接玩家掉线
+  kKickoutReason_UserServerDisconnect = 4;  // UserServer断开连接玩家掉线
+  kKickoutReason_ServerShutDown = 5;        // 服务器关服玩家下线
+  kKickoutReason_ServerRemove = 6;          // 移除玩家下线
+  kKickoutReason_KeepLiveTimeout = 7;       // 心跳超时
+  kKickoutReason_BanAccount = 8;            // 封号
+  kKickoutReason_AntiIndulgence = 9;        // 防沉迷在线时间过长
+  kKickoutReason_InvalidMessage	= 10;		// 客户端发送非法消息
+  kKickoutReason_FloodMessage	= 11;		// 流量攻击（断时间内消息数量太多）
+  kKickoutReason_InvalidFirstMessage = 12;	// 第一条消息非法
+	kKickoutReason_Emigration		= 13;					// 移民(移出王国)
+  kKickoutReason_GM = 14;                   // GM踢人
+};
+
+//////////////////////////////////////////////////////////////////////////
+///  客户端大型分包消息 开始
+//////////////////////////////////////////////////////////////////////////
+message MsgGS2CLBigPackage
+{
+	uint32 session_id = 1;
+	uint32 pack_count = 2;
+	uint32 pack_idx = 3;
+	uint32 msg_type = 4;
+	bytes content = 5;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  客户端大型分包消息 结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  登入系统开始
+//////////////////////////////////////////////////////////////////////////
+
+// 客户端向登录服务器请求登录(CL->LS)
+message MsgCL2LSLoginRequest
+{
+	uint64 account			= 3;  // 账号(IGG ID)
+	string web_session		= 4;
+	string strMacAddress	= 5;
+	uint32 language			= 6;
+	uint32 area_id			= 7; 	// 地区ID
+	string game_id			= 8;	
+	uint32 camp_id			= 9;	// 势力阵营ID(一定要填写，切换账号可以随便填合法的阵营ID，不会覆盖旧有的阵营)
+	string udid					= 10;	// 设备ID
+}
+
+// 客户端向登录服务器请求登录回复(LS->CL)
+message MsgLS2CLLoginReply
+{
+	uint64 player_id		= 1;
+	NetAddress net_address	= 2;
+	string login_session	= 3;
+	string	server_version	= 4;
+	uint32 kingdom_id				= 5;
+	
+	int32 	error_code		= 99;	
+}
+
+// 客户端向登录服务器请求登录回复(LS->CL)
+//message MsgLS2CLLoginFailed
+//{
+//	int32 	error_code		= 99;	
+//}
+
+// 客户端向游戏服务器请求登录(CL->GS)
+message MsgCL2GSLoginRequest
+{
+	uint64 player_id		= 1;
+	uint64 account			= 2;
+	string login_session	= 3;
+	bool certification = 5;
+	bool adult = 6;
+	uint32	config_version	= 8;	// 配置版本号
+	string udid							= 9;	// 客户端设备标识
+	string client_version		= 10;	// 客户端版本号
+}
+
+// 客户端向游戏服务器请求登录回复(GS->CL)
+message	MsgGS2CLLoginReply
+{	
+	string	server_version	= 3;	// 服务器版本
+	int32 	error_code		= 99;
+}
+
+// 客户端进入游戏(CL->GS)
+message MsgCL2GSEnterGameRequest
+{
+	string mac = 1;			// MAC地址
+}
+
+// 客户端进入游戏回复(GS->CL)
+message MsgGS2CLEnterGameReply
+{
+	int32 error_code		= 1;
+}
+
+// 通知客户端是新玩家(GS->CL)
+message MsgGS2CLNewPlayerNotice
+{
+}
+
+message MsgGS2CLPrepareShutdownNotice
+{
+	uint32 wait_seconds	= 1;	// 准备关服时间：秒(有可能为0)
+}
+
+message MsgGS2CLKickoutNotice
+{
+	KickoutReason reason = 1;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  登入系统结束
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+///  PM命令 开始
+//////////////////////////////////////////////////////////////////////////
+
+// PM命令
+message MsgCL2GSPMCommandRequest
+{
+	string 	command		= 1;
+}
+
+message MsgGS2CLPMCommandReply
+{
+	int32	error_code	= 99;		// 执行结果
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  PM命令 结束
+//////////////////////////////////////////////////////////////////////////
+

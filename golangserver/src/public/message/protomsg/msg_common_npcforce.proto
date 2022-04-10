@@ -1,0 +1,32 @@
+syntax = "proto3";
+package protomsg;
+
+message npc_force
+{
+    uint64 npc_force_id          = 1;
+    string npc_force_name        = 2;
+    string npc_force_short_name  = 3;
+    uint32 npc_force_flag        = 4;
+    uint32 drama_story_id        = 6;
+    repeated uint64 citys        = 5;
+}
+
+enum NpcForceEvent
+{
+    kNpcForceEvent_None             = 0;
+    kNpcForceEvent_AttackCity       = 1;        // 势力攻城
+    kNpcForceEvent_AttackStronghold = 2;        // 势力入侵
+}
+
+enum NpcForceDataType
+{
+    kNpcForceData_None = 0;
+    kNpcForceData_FortNumber = 1;               // Npc城寨
+}
+
+message NpcForceFortData
+{
+    uint32 num                      = 1;        // 城寨数量
+    uint32 fort_id                  = 2;        // 怪物id
+    uint32 event_id                 = 3;        // 来源事件
+}

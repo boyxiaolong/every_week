@@ -1,0 +1,83 @@
+syntax = "proto3";
+package protomsg;
+
+import "msg_common.proto";
+
+
+
+
+enum ShopType
+{
+    kShopType_Normal            = 0;    // 普通商店
+    kShopType_Refresh           = 1;    // 刷新商店
+    kShopType_Mystery           = 2;    // 神秘商店
+    kShopType_HeroToken         = 3;    // 英雄酒肆
+    kShopType_GuildShop         = 4;    // 工会商店
+    kShopType_SpecialMystery    = 5;    // 特殊神秘商店
+
+}
+
+enum DayShopRefreshType
+{
+    kDayShopRefreshType_Day     = 0;    // 按天重置
+    kDayShopRefreshType_Week    = 1;    // 按周重置
+    kDayShopRefreshType_Month   = 2;    // 按月重置
+    kDayShopRefreshType_Not     = 3;    // 不会重置
+}
+
+
+enum ShopBuyLimitType
+{
+    ShopBuyLimitType_None       = 0;
+    ShopBuyLimitType_Castle     = 1;
+    ShopBuyLimitType_Vip        = 2;
+    ShopBuyLimitType_GuildLevel = 3;
+}
+
+// 商店物品基本数据
+message ShopBaseItemData
+{
+    uint32 id               = 1;
+    uint32 buy_count        = 3;    // 已经购买数量
+    protomsg.Resource res   = 4;    // 购买价格
+}
+
+// 普通商店数据
+message ShopData
+{
+    uint32 shop_id                  = 1;
+    repeated ShopBaseItemData items = 2;    // 普通商店物品数据
+    uint32 refresh_count            = 3;    // 购买的次数
+    int64 refresh_time              = 4;    // 刷新时间
+    int64 expire_time               = 5;    // 过期时间
+    uint32 rate_value               = 6;    // 当前刷新的权重值
+    uint32 day_refresh_count        = 8;    // 每日刷新次数
+    uint32 vip_free_refresh_count   = 9;    // 每日vip刷新次数
+    uint32 shop_man_id              = 10;   // 商人id
+}
+
+// 神秘商人数据
+
+enum MysteryShopManTriggerType
+{
+    kMysteryShopManTriggerType_None             = 0;
+    kMysteryShopManTriggerType_BuildSoldiersCnt = 1;    // 造兵个数
+    kMysteryShopManTriggerType_BuildLelvel      = 2;    // 建筑等级
+
+}
+
+enum MysteryShopMansStatus
+{
+    MysteryShopMansStatus_None      = 0;    // 为开始
+    MysteryShopMansStatus_Execute   = 1;    // 正执行中
+    MysteryShopMansStatus_Complete  = 2;    // 已结束
+}
+
+message MysteryShopManData
+{
+    uint32 shop_man_id          = 1;    // 神秘商人的id
+    int64 appear_time          = 2;    // 神秘商人的出现时间
+    int64 disappear_time       = 3;    // 神秘商人消失时间
+    uint32 is_player_animation  = 4;    // 是否播放过从城外跑到城内的动画
+    uint32 status               = 5;    // 商人处于那个状态
+}

@@ -1,0 +1,76 @@
+syntax = "proto3";
+package protomsg;
+
+import "msg_common_mail.proto";
+import "msg_common.proto";
+
+
+//////////////////////////////////////////////////////////////////////////
+///  mail module 开始
+//////////////////////////////////////////////////////////////////////////
+
+message MsgGS2CLMailIDListNotice
+{
+	repeated uint64 id = 1;
+}
+
+message MsgCL2GSMailListRequest
+{
+	repeated uint64 id = 1;
+}
+
+message MsgGS2CLMailListReply
+{
+	repeated MailInfo mail = 1;
+	int32	 error_code		= 99;
+}
+
+message MsgGS2CLMailNewNotice
+{
+	MailInfo mail		= 1;
+}
+
+message MsgCL2GSMailOperatorRequest
+{
+	repeated uint64 id		= 1;
+	uint32 read_flag		= 2;
+}
+
+message MsgGS2CLMailOperatorReply
+{
+	repeated uint64 success_ids		= 1;
+  repeated uint64 fail_ids		= 2;
+	uint32 read_flag		= 3;
+	protomsg.ResourceSet set = 4;
+	int32	 error_code		= 99;
+}
+
+//发送私人邮件
+message MsgCL2GSMailSendPrivateRequest
+{
+	uint64 receive_id = 1;
+	string title = 2;
+	string content = 3;
+}
+
+message MsgGS2CLMailSendPrivateReply
+{
+	int32	 error_code		= 99;
+}
+
+message MsgGS2CLKingMailRefreshNotice
+{
+	int64 king_mail_refresh_time = 1;
+}
+
+//发送王国邮件
+message MsgCL2GSMailSendKingRequest
+{
+	string title = 2;
+	string content = 3;
+}
+
+message MsgGS2CLMailSendKingReply
+{
+	int32	 error_code		= 99;
+}

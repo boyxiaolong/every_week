@@ -1,0 +1,24 @@
+syntax = "proto3";
+package protomsg;
+
+
+
+enum MintageInfoStatus
+{
+    MintageInfoStatus_None      = 0;    // 铸币中
+    MintageInfoStatus_Execute   = 1;    // 铸币执行中
+
+}
+
+// 铸币信息
+message MintageInfo
+{
+    uint64 use_resource         = 1;    // 使用过的资源数量
+    uint64 end_mintage_time     = 2;    // 结束铸币时间
+    uint64 cur_food             = 3;    // 当前食物
+    uint64 cur_wood             = 4;    // 当前木材
+    uint64 cur_ore              = 5;    // 当前矿石
+    MintageInfoStatus status    = 6;    // 是否收集过
+    uint64 begin_time           = 7;    // 开始时间戳
+    uint64 mintage_num          = 8;    // 铸造的铜币数量
+}

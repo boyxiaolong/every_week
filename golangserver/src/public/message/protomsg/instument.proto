@@ -1,0 +1,79 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+
+
+// ---------------------------------客户端协议--------------------------------- //
+
+// 所有科技通知
+message MsgGS2CLAllInstumentNotice
+{
+    repeated InstumentInfoData infos    = 1;
+    InstumentReserchWorkInfo work       = 2;
+}
+
+// 研究队列通知
+message MsgGS2CLInstumentReserchWorkNotice
+{
+    InstumentInfoData info  = 1;
+    InstumentReserchWorkInfo work   = 2;
+}
+
+// 请求研究
+message MsgCL2GSInstumentResearchRequest
+{
+    uint32 instument_id = 1;    // 科技ID
+}
+
+message MsgGS2CLInstumentResearchReply
+{
+    int32 error_code    = 99;   // 结果和错误码
+}
+
+// 立即研究
+message MsgCL2GSInstumentInstantResearchRequest
+{
+    uint32 instument_id = 1;    // 科技ID
+}
+
+message MsgGS2CLInstumentInstantResearchReply
+{
+    InstumentInfoData info  = 1;
+    int32 error_code        = 99;   // 结果和错误码
+}
+
+// 取消研究
+message MsgCL2GSInstumentCancelResearchRequest
+{
+}
+
+message MsgGS2CLInstumentCancelResearchReply
+{
+    int32 error_code    = 99;   // 结果和错误码
+}
+
+// 使用VIP时间，立刻完成科技研究
+message MsgCL2GSInstumentResearchVipFreeTimeRequest
+{
+    uint32 instument_id = 1;    // 科技ID
+}
+
+message MsgGS2CLInstumentResearchVipFreeTimeReply
+{
+    uint32 instument_id     = 1;    // 科技ID
+    InstumentInfoData info  = 2;
+    int32 error_code        = 99;   // 结果和错误码
+}
+
+// 立即加速研究
+message MsgCL2GSInstumentInstantSpeedUpResearchRequest
+{
+    uint32 instument_id = 1;    // 科技ID
+}
+
+message MsgGS2CLInstumentInstantSpeedUpResearchReply
+{
+    InstumentInfoData info  = 1;
+    int32 error_code        = 99;   // 结果和错误码
+}

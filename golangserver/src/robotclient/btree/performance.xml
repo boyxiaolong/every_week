@@ -1,0 +1,20 @@
+<btree name="performance">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="root test" type="sequence" sleep_time="5000">
+          <node name="login" type="task" task_type="Login" task_params="1"/>
+        </node>    
+    </node>
+    <node name="create march" type="condition" sleep_time="5000" condition_check="CheckMarchCount" condition_params="5" condition_result="false" >
+      <node name="random create march" type="random">
+        <node name="battle barbarian" type="task" task_type="Battle" task_params="0,0,0,0,0,1000,1000"/>
+        <node name="battle castle" type="task" task_type="Battle" task_params="10,0,0,0,0,1000,1000"/>
+        <node name="battle march" type="task" task_type="Battle" task_params="11,0,0,0,0,1000,1000"/>
+        <node name="collect" type="task" task_type="Collect" task_params="1,0,0"/>
+      </node>
+    </node>    
+    <node name="random action" type="random" sleep_time="5000">
+      <node name="scout" type="task" task_type="Scout" task_params="10,0,0"/>
+    </node>
+  </root>
+</btree>

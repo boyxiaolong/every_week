@@ -1,0 +1,194 @@
+syntax = "proto3";
+import "msg_common_expe.proto";
+import "msg_common_map.proto";
+import "msg_common.proto";
+
+package protomsg;
+
+// 状态通知(登录, 变更同步)
+message MsgGS2CLPlayerExpeStatusNotice
+{
+    bool hard_mode          = 1;
+    bool is_exist_reward    = 2;    // 是否有奖励未领
+    uint64 next_refresh_time = 3;   // 下次刷新时间
+}
+
+
+// 请求关卡列表
+message MsgCL2GSPlayerExpeLevelListRequest
+{
+    bool hard_mode  = 1;
+}
+
+
+// 响应关卡列表
+message MsgGS2CLPlayerExpeLevelListReply
+{
+    int32 error_code                        = 1;
+    bool hard_mode                          = 2;
+    repeated PlayerExpeLevelInfo level_info = 3;    // 关卡信息列表
+}
+
+
+// 请求领取关卡奖励
+message MsgCL2GSPlayerExpeLevelRewardRequest
+{
+    bool hard_mode  = 1;
+    uint32 level_id = 2;
+}
+
+
+// 响应领取关卡奖励
+message MsgGS2CLPlayerExpeLevelRewardReply
+{
+    int32 error_code            = 1;
+    bool hard_mode              = 2;
+    uint32 level_id             = 3;
+    repeated Resource reward    = 4;    // 奖励内容
+}
+
+
+// 请求一键领取关卡奖励
+message MsgCL2GSPlayerExpeBatchCollectRequest
+{
+    bool hard_mode  = 1;
+}
+
+
+// 响应一键领取关卡奖励
+message MsgGS2CLPlayerExpeBatchCollectReply
+{
+    int32 error_code            = 1;
+    bool hard_mode              = 2;
+    repeated Resource reward    = 3;    // 奖励内容(已汇总)
+}
+
+
+// 关卡挑战结果通知(战斗结束时同步)
+message MsgGS2CLPlayerExpeBattleResultNotice
+{
+    bool hard_mode                  = 1;
+    uint32 level_id                 = 2;
+    bool is_win                     = 3;
+    int32 star                      = 4;
+    repeated int32 condition_star   = 5;
+    bool is_first_reward            = 6;    // 是否包含首次奖励
+    repeated Resource reward        = 7;
+}
+
+
+// 请求挑战远征关卡
+message MsgCL2GSPlayerExpeChallengeLevelRequest
+{
+    bool hard_mode                  = 1;
+    uint32 level_id                 = 2;
+    repeated ArmyData army_array    = 3;    // 我方阵容信息
+    ArmyData hq_army                = 4;    // 我方主堡守军
+}
+
+
+// 响应挑战远征关卡
+message MsgGS2CLPlayerExpeChallengeLevelReply
+{
+    int32 error_code                = 1;
+    bool hard_mode                  = 2;
+    uint32 level_id                 = 3;
+    repeated ArmyData army_array    = 4;    // 我方阵容信息
+    ArmyData hq_army                = 5;    // 我方主堡守军
+    uint64 region_id                = 6;
+}
+
+
+// 请求退出远征关卡
+message MsgCL2GSPlayerExpeExitLevelRequest
+{
+}
+
+
+// 响应退出远征关卡
+message MsgGS2CLPlayerExpeExitLevelReply
+{
+    int32 error_code    = 1;
+}
+
+
+// 远征副本就绪
+message MsgGS2CLPlayerExpeReadyNotice
+{
+}
+
+
+// 请求解锁动画列表
+message MsgCL2GSPlayerExpeUnlockListRequest
+{
+    bool hard_mode  = 1;
+}
+
+
+// 响应解锁动画列表
+message MsgGS2CLPlayerExpeUnlockListReply
+{
+    int32 error_code                = 1;
+    bool hard_mode                  = 2;
+    repeated uint32 chapter_id_list = 3;
+}
+
+
+// 请求标记已解锁动画
+message MsgCL2GSPlayerExpeUnlockAddRequest
+{
+    bool hard_mode      = 1;
+    uint32 chapter_id   = 2;
+}
+
+
+// 响应标记已解锁动画
+message MsgGS2CLPlayerExpeUnlockAddReply
+{
+    int32 error_code    = 1;
+    bool hard_mode      = 2;
+    uint32 chapter_id   = 3;
+}
+
+
+// 刷怪波次信息通知
+message MsgGS2CLPlayerExpeRefreshWaveNotice
+{
+    repeated ExpeWaveInfo wave_info = 1;
+}
+
+
+
+
+// 请求剧情奖励信息列表
+message MsgCL2GSPlayerExpeStoryRewardInfoRequest
+{
+    bool hard_mode  = 1;
+}
+
+
+// 响应剧情奖励信息列表
+message MsgGS2CLPlayerExpeStoryRewardInfoReply
+{
+    int32 error_code                = 1;
+    bool hard_mode                  = 2;
+    repeated uint32 level_id_list   = 3;
+}
+
+
+// 请求领取剧情奖励
+message MsgCL2GSPlayerExpeStoryRewardClaimRequest
+{
+    bool hard_mode  = 1;
+    uint32 level_id = 2;
+}
+
+
+// 响应领取剧情奖励
+message MsgGS2CLPlayerExpeStoryRewardClaimReply
+{
+    int32 error_code            = 1;
+    bool hard_mode              = 2;
+    uint32 level_id             = 3;
+    repeated Resource reward    = 4;
+}

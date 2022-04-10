@@ -1,0 +1,210 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+
+
+//---------------------------------客户端协议--------------------------------- //
+
+//所有英雄通知
+message MsgGS2CLAllHeroNotice 
+{
+  repeated HeroInfo infos = 1;
+}
+
+//更新英雄通知
+message MsgGS2CLUpdateHeroNotice 
+{
+  HeroInfo info = 1;
+}
+
+//英雄属性变化通知
+message MsgGS2CLHeroAttrNotice 
+{
+  uint32 hero_id = 1;  //英雄id
+  HeroAttributes attr = 2; //属性类型
+  uint32 id = 3;         //额外id,如技能id
+  uint64 value = 4;  //属性值
+}
+
+// 召唤英雄请求
+message MsgCL2GSSummonHoroRequest
+{
+	uint32	hero_id = 1;
+}
+
+// 召唤英雄响应
+message MsgGS2CLSummonHoroReply
+{
+	int32	error_code		= 99;
+}
+
+// 兑换碎片请求
+message MsgCL2GSExchangeHeroDebrisRequest
+{
+  uint32 hero_id = 1;        //英雄id
+  uint32 exchange = 2;       //兑换材料
+  uint32 exchange_count = 3; //兑换材料的数量
+}
+
+// 兑换碎片响应
+message MsgGS2CLExchangeHeroDebrisReply
+{
+	int32	error_code		= 99;
+}
+
+// 升级技能请求
+message MsgCL2GSUpgradeSkillRequest
+{
+	uint32 hero_id = 1;
+  uint32 skill_id = 2;
+}
+
+// 升级技能响应
+message MsgGS2CLUpgradeSkillReply
+{
+  uint32 hero_id = 1;
+  repeated SkillInfo skills = 2; //英雄的所有技能 error_code为0时发
+	int32	error_code		= 99;
+}
+
+// 英雄击杀数据请求
+message MsgCL2GSHeroKillRequest
+{
+	uint32 hero_id = 1;
+}
+
+// 英雄击杀数据响应
+message MsgGS2CLHeroKillReply
+{
+  uint32 hero_id = 1;
+  HeroKillData kill = 2; //英雄的击杀数据
+	int32	error_code		= 99;
+}
+
+message StarItemInfo
+{
+  uint32 item_id = 1;   //物品id
+  uint32 count = 2;     //物品数量
+}
+
+//升星请求
+message MsgCL2GSUpgradeStarRequest
+{
+   repeated StarItemInfo items = 1;
+   uint32 hero_id = 2;
+}
+
+//升星响应
+message MsgGS2CLUpgradeStarReply
+{
+   bool is_lucky = 1;
+   int32 error_code = 99;
+}
+
+// 觉醒技能请求
+message MsgCL2GSAwakSkillRequest
+{
+	uint32 hero_id = 1;
+}
+
+// 觉醒技能响应
+message MsgGS2CLAwakSkillReply
+{
+  uint32 hero_id = 1;
+	int32	error_code		= 99;
+}
+
+message PointInfo
+{
+  HeroPointsType type = 1;   // 类型
+  uint32 count = 2;     // 增加的点数
+}
+
+// 加点请求
+message MsgCL2GSUsePointRequest
+{
+  repeated PointInfo info = 1;
+  uint32 hero_id = 2;
+}
+
+// 加点响应
+message MsgGS2CLUsePointReply
+{
+  uint32 hero_id = 1;
+  int32 error_code = 99;
+}
+
+// 重置点数请求
+message MsgCL2GSResetPointRequest
+{
+  uint32 hero_id = 2;
+}
+
+// 重置点数响应
+message MsgGS2CLResetPointReply
+{
+  uint32 hero_id = 1;
+  int32 error_code = 99;
+}
+
+// 任命祭司
+message MsgCL2GSCommissionPresbyterRequest
+{
+	uint32	hero_id = 1;
+  uint32  presbyter_index = 2;
+  uint64  region_id = 3;
+}
+
+message MsgGS2CLCommissionPresbyterReply
+{
+  Presbyter presbyter		  = 1;
+  uint32  presbyter_index = 2;
+  uint64  region_id = 3;
+	int32	error_code		= 99;
+}
+
+message MsgCL2GSUnCommissionPresbyterRequest
+{
+  uint32  presbyter_index = 1;
+  uint64  region_id = 2;
+}
+
+message MsgGS2CLUnCommissionPresbyterReply
+{
+  uint32  presbyter_index = 1;
+  uint64  region_id = 2;
+	int32	error_code = 99;
+}
+
+message MsgGS2CLPresbyterDataUpdateNotice
+{
+  Presbyter presbyter = 1;
+  uint32  presbyter_index = 2;
+  uint64  region_id = 3;
+}
+
+// 获取全局英雄加点
+message MsgCL2GSGetGlobalHeroPointsRequest
+{
+  uint32  hero_id = 1;
+}
+
+message MsgGS2CLGetGlobalHeroPointsReply
+{
+  GlobalHeroPointDatas hero_points = 1; // 仅包含始计加点数据， 未计算初始配置
+  int32	error_code		= 99;
+}
+
+// 升级阶级请求
+message MsgCL2GSUpgradeStageRequest
+{
+    uint32 hero_id  = 1;
+}
+
+// 升级阶级响应
+message MsgGS2CLUpgradeStageReply
+{
+    uint32 hero_id                  = 1;
+    int32 error_code                = 99;
+}

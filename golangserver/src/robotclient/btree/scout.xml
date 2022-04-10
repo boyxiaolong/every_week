@@ -1,0 +1,10 @@
+<btree name="scout">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+    <node name="scout" type="task" task_type="Scout" task_params="1,10,25" reset_intervel="10" do_times="1"/>
+	<node name="scout" type="task" task_type="Scout" task_params="1,10,25" reset_intervel="10" do_times="1"/>
+	<node name="scout" type="task" task_type="Scout" task_params="1,10,25" reset_intervel="10" do_times="1"/>
+  </root>
+</btree>

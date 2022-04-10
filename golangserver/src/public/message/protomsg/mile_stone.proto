@@ -1,0 +1,53 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_task.proto";
+
+message MsgGS2CLMileStoneRewardListNotice
+{
+  repeated MileStonePlayerRewardInfo list = 1; //奖励信息
+}
+
+//当前里程碑通知
+message MsgGS2CLCurMileStoneNotice
+{
+  uint32 mile_stone_id = 1;
+  int64  end_time = 2;
+  uint64 count = 3; 
+}
+
+message MsgCL2GSMileStoneInfoRequest
+{
+  
+}
+
+message MsgGS2CLMileStoneInfoReply
+{
+  int32 error_code = 99;
+}
+
+message MsgCL2GSMileStoneGetRewardRequest
+{
+  uint32 mile_stone_id = 1;
+}
+
+message MsgGS2CLMileStoneGetRewardReply
+{
+  int32 error_code = 99;
+}
+
+message MsgCL2GSMileStoneRankListRequest
+{
+  uint32 mile_stone_id = 1;
+}
+
+message MsgGS2CLMileStoneRankListReply
+{
+  MileStoneRankList rank_list = 1;
+  int32 error_code = 99;
+}
+
+//通知里程碑数据变化
+message MsgGS2CLMileStoneChangeNotice
+{
+  
+}

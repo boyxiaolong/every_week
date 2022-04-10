@@ -1,0 +1,127 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_map.proto";
+
+//---------------------------------客户端协议--------------------------------- //
+
+// 治疗队列通知
+message MsgGS2CLCureWorkNotice 
+{
+    CureWorkInfo work = 1;
+    int64 next_cure_assist_time = 2;    // 下次可以申请治疗帮助的时间
+}
+
+// 医院伤兵通知
+message MsgGS2CLWoundedSoldierNotice 
+{
+  repeated protomsg.ArmyInfo army_info = 1;
+}
+
+// 请求治疗
+message MsgCL2GSHospitalCureRequest
+{
+  repeated protomsg.ArmyInfo army_info = 1;
+}
+
+message MsgGS2CLHospitalCureReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 收取
+message MsgCL2GSHospitalDealRequest
+{
+}
+
+message MsgGS2CLHospitalDealReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 请求立即治疗
+message MsgCL2GSHospitalInstantCureRequest
+{
+  repeated protomsg.ArmyInfo army_info = 1;
+}
+
+message MsgGS2CLHospitalInstantCureReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 请求立即完成治疗
+message MsgCL2GSHospitalInstantSpeedUpRequest
+{
+}
+
+message MsgGS2CLHospitalInstantSpeedUpReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+message PompeiiCureWorkInfo
+{
+	repeated TroopData army_info = 1;    // 兵种id
+	int64 start_time            = 2;    // 工作开始时间
+	int64 end_time              = 3;    // 工作到期时间
+	uint64 work_time_length = 4;
+}
+
+// 治疗队列通知
+message MsgGS2CLPompeiiCureWorkNotice 
+{
+	PompeiiCureWorkInfo work = 1;
+}
+
+// 医院伤兵通知
+message MsgGS2CLPompeiiWoundedSoldierNotice 
+{
+	repeated TroopData army_info = 1;
+}
+
+// 请求治疗
+message MsgCL2GSPompeiiHospitalCureRequest
+{
+	repeated TroopData army_info = 1;
+}
+
+message MsgGS2CLPompeiiHospitalCureReply
+{
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 收取
+message MsgCL2GSPompeiiHospitalDealRequest
+{
+}
+
+message MsgGS2CLPompeiiHospitalDealReply
+{
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 请求立即治疗
+message MsgCL2GSPompeiiHospitalInstantCureRequest
+{
+	repeated TroopData army_info = 1;
+}
+
+message MsgGS2CLPompeiiHospitalInstantCureReply
+{
+	int32	error_code		= 99;		// 结果和错误码
+}
+
+// 请求加速治疗
+message MsgCL2GSPompeiiHospitalInstantSpeedUpRequest
+{
+	uint32	speed_up_seconds =	1;	// 加速秒数
+}
+
+message MsgGS2CLPompeiiHospitalInstantSpeedUpReply
+{
+	int32	error_code		= 99;		// 结果和错误码
+}
+

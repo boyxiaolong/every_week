@@ -1,0 +1,286 @@
+syntax = "proto3";
+package protomsg;
+import "google/protobuf/any.proto";
+import "msg_common.proto";
+import "msg_common_guild.proto";
+import "msg_common_map.proto";
+
+/**************************** 公会相关 ****************************/
+message MsgGuild2GSJoinNotice
+{
+	uint64 player_id	= 1;
+  PlayerGuildInfo info	= 2;
+}
+
+message MsgGuild2GSQuitNotice
+{
+	uint64 player_id	= 1;
+	uint64 guild_id		= 2;	
+}
+
+
+// GS通知公会服务器清除玩家公会申请记录
+message MsgGS2GuildRemoveApplyRecordNotice
+{
+	uint64 player_id	= 1;
+}
+
+message MsgGuild2GSPositionNotice
+{
+	uint64 player_id	= 1;
+	protomsg.GuildPosition position		= 2;
+}
+
+// 通知GS玩家官位更改
+message MsgGuild2GSOfficialNotice
+{
+	uint64 player_id	= 1;
+	protomsg.GuildOfficial official		= 2;
+}
+
+// 更新玩家基础信息
+message MsgGS2GuildSearchPlayerInfoNotice
+{
+	uint64 player_id	= 1;
+	SearchPlayerInfo data = 2;
+}
+
+// 改名通知
+message MsgGS2GuildRenameNotice
+{
+	uint64 player_id	= 1;
+	string name			= 3;
+}
+
+// 战斗力变化通知
+message MsgGS2GuildBattlePowerNotice
+{
+	uint64 player_id = 1;
+	uint64 battle_power = 3;
+}
+
+// 击杀通知
+message MsgGS2GuildKillCountNotice
+{
+	uint64 player_id = 1;
+	uint64 kill_count = 2;
+}
+
+// 更新公会名字
+message MsgGuild2GSUpdateGuildNameNotice
+{
+	uint64 player_id	= 1;
+	string name			= 2;
+	string short_name = 3;
+}
+
+// 更新公会图标通知
+message MsgGuild2GSUpdateGuildIconNotice
+{
+	uint64 player_id	= 1;
+	uint32  icon		= 2;
+}
+
+// 工会广播通知
+message MsgGuild2GSBroadcastNotice
+{
+	uint64 player_id	= 1;
+	uint32	msg_id		= 2;
+	google.protobuf.Any content = 3;
+}
+
+// 通知公会服务器玩家上线
+message MsgGS2GuildPlayerLoginNotice
+{
+	uint64 player_id	= 1;
+	SearchPlayerInfo data = 2;
+}
+
+// 战斗力变化通知
+message MsgGuild2GSExpAndLevelNotice
+{
+	uint64 guild_id = 1;
+	uint32 exp = 2;
+	uint32 level = 3;
+}
+
+
+message MsgGS2GuildPlayerLogoutNotice
+{
+	uint64 player_id	= 1;
+}
+
+// 玩家加载数据完成，进入cache
+message MsgGS2GuildPlayerLoadedNotice
+{
+	uint64 player_id	= 1;
+}
+
+// 玩家释放，离开cache
+message MsgGS2GuildPlayerReleaseNotice
+{
+	uint64 player_id	= 1;
+}
+
+message MsgGS2GuildDestroyNotice
+{
+	uint64 guild_id		= 1;
+}
+
+// 公会服务器通知GS玩家更新公会更新记录 
+message MsgGuild2GSApplyRecordNotice
+{
+  uint64 player_id  = 1;
+  repeated GuildApplyRecord applying_records = 2;	// 正在申请公会ID列表	
+}
+
+message MsgGuild2GSUpdateGuildInfoRequest
+{
+	uint64 player_id = 1;
+	PlayerGuildInfo info = 2;
+}
+
+message MsgGS2GuildUpdateGuildInfoReply
+{
+
+}
+
+message MsgGuild2GSGuildDisbandNotice
+{
+	uint64 guild_id		= 1;
+}
+
+///////////////////////////公会搜索////////////////////////////////////
+// 同步公会数据
+message MsgGuild2GuildSearchSyncDataNotice
+{
+	repeated GuildBriefData datas		= 1;
+}
+
+message DeleteGuildInfo
+{
+	uint64 guild_id		= 1;
+	string name				= 2; 
+	string short_name = 3;
+}
+
+
+// 删除公会通知
+message MsgGuild2GuildSearchDeleteGuildNotice
+{
+	repeated DeleteGuildInfo delete_guilds			= 1;
+}
+
+// GuildServer通知GuildSearchServer数据加载完成
+message MsgGuild2GuildSearchLoadDataCompleteNotice
+{
+	uint32	count  = 1;	// 记录条数
+}
+
+///////////////////////////公会搜索////////////////////////////////////
+
+
+message GuildAssistExecutor
+{
+	GuildAssistItem	item	= 1;
+	uint32 count			= 2;
+}
+
+// 通知GS玩家，执行公会帮助
+message MsgGuild2GSGuildAssistExecuteHelpNotice
+{
+	repeated GuildAssistExecutor executors = 1;
+	bool logon = 2;				// 是否上线时决算
+}
+
+// 通知GS玩家，公会交互帮助信息更新
+message MsgGuild2GSGuildAssistUpdateNotice
+{
+	GuildAssistDetail detail	= 1;
+}
+
+// 通知GS玩家，公会敌对信息更新
+message MsgGuild2GSGuildHostilityNotice
+{
+    repeated uint64 hostility_guild_ids = 1; // 敌对公会列表
+}
+
+///////////////////////////地图相关////////////////////////////////////
+
+message MsgGuild2MSGuildEventNotice
+{
+  uint64 guild_id = 1;
+	protomsg.EventData event_data = 2;
+}
+
+///////////////////////////地图相关////////////////////////////////////
+
+
+///////////////////////////公会buff////////////////////////////////////
+
+// MapServer通知GuildServer，公会增加建筑设施信息
+message MsgMap2GuildAddGuildFacilityNotice
+{
+	uint64 guild_id				 = 1;
+	EntityType entity_type = 2;
+	uint64 entity_id			 = 3;
+	uint64 param						= 4;
+	uint64 param2	= 5;
+	uint32 param3 = 6;   //用来判定据点和城池的类型
+}
+
+// MapServer通知GuildServer，公会移除建筑设施信息
+message MsgMap2GuildRemoveGuildFacilityNotice
+{
+	uint64 guild_id				 = 1;
+	EntityType entity_type = 2;
+	uint64 entity_id			 = 3;
+	uint64 param						= 4;
+}
+
+// PM增加/减少公会资源点数量
+message MsgGS2GuildPMUpdateResourceFieldCountNotice
+{
+	uint64 guild_id							= 1;
+	GuildResourceFieldType type = 2;
+	int32 count									= 3;	// >0增加, <0减少
+}
+
+// 公会服务器通知其他服务器buff效果变更
+message MsgGuild2OtherBuffEffectUpdateNotice
+{
+  protomsg.GuildBuffEffectInfo guild_effects = 1;
+}
+///////////////////////////公会buff////////////////////////////////////
+
+
+///////////////////////////国王////////////////////////////////////
+
+// 通知其他服务器王国buff效果变更
+message MsgGuild2OtherKingdomBuffEffectUpdateNotice
+{
+    protomsg.KingdomBuffEffectInfo kingdom_effects = 1;
+    uint32 cur_buff_id  = 2;
+    uint64 expire_time  = 3;
+}
+
+
+
+///////////////////////////国王////////////////////////////////////
+
+message PlayerGuildExpInfo
+{
+	uint64 exp_from_barbarians = 1;	// 单日通过击杀野蛮人获取的公会经验
+	uint64 exp_from_donate = 2;		// 单日通过捐献获得的工会经验
+}
+
+message MsgGuild2GSUpdatePlayerGuildExpInfoRequest
+{
+	uint64 player_id = 1;
+	protomsg.PlayerGuildExpInfo info = 2;
+}
+
+message MsgGS2GuildUpdatePlayerGuildExpInfoReply
+{
+
+}

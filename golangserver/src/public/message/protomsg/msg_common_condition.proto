@@ -1,0 +1,41 @@
+syntax = "proto3";
+package protomsg;
+
+//条件 逻辑运算 枚举
+enum ConditionLogicalType
+{
+	kConditionLogicalType_None				= 0;	 // 无
+	kConditionLogicalType_Or				= 1;	 // ||	或
+	kConditionLogicalType_And				= 2;	 // &&	与
+}
+
+
+//条件 运算符 枚举
+enum ConditionOperatorType
+{
+	kConditionOperatorType_None					= 0;	 // 无
+	kConditionOperatorType_Equal				= 1;	 // ==	等于
+	kConditionOperatorType_Less					= 2;	 // <	小于
+	kConditionOperatorType_Less_Equal			= 3;	 // <=	小于等于
+	kConditionOperatorType_Greater				= 4;	 // >	大于
+	kConditionOperatorType_Greater_Equal		= 5;	 // >=	大于等于	
+	kConditionOperatorType_Unequal				= 6;	 // !=	不等于
+}
+
+
+//条件类型枚举
+enum ConditionType
+{
+	kConditionType_None								= 0;	 // 无
+	kConditionType_Condition_Group					= 1;	 // 条件组 (支持多条件组) ==  这里算 &&  其他全部算 ||
+	kConditionType_City_Level						= 2;	 // 目标建筑等级 (1.目标ID,2.等级) ==某个等级 >=某个等级
+	kConditionType_Server_Time						= 3;	 // 服务器时间 (1.时间戳) 
+	kConditionType_Server_Pass_Time					= 4;	 // 服务器经过时间 (1.秒)
+	kConditionType_Player_Creation_Time				= 5;	 // 玩家创建时间 (1.时间戳)
+	kConditionType_Player_Creation_Pass_Time		= 6;	 // 玩家创建经过时间 (1.秒)
+	kConditionType_Hero								= 7;	 // 是否拥有某些英雄(1.英雄ID)  == 拥有 其他 未拥有
+	kConditionType_Science_Level					= 8;	 // 科技等级(1.科技ID 2.等级) 
+	kConditionType_City_Have						= 9;	 // 某些建筑是否拥有(1.建筑ID) == 拥有 其他 未拥有
+	kConditionType_Season_Time						= 10;	 // 指定目标剧本章回进行时间(1.剧本ID,2.章节ID,3.秒)
+}
+

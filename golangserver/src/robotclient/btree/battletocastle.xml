@@ -1,0 +1,29 @@
+<btree name="battletocastle">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+
+    <node name="MarchMove" type="task" task_type="MarchMoveBack" task_params="" reset_intervel="0" do_times="1"/>
+    <node name="isinguild" type="condition" condition_check="IsInGuild" condition_result="false">
+      <node name="join guild" type="randomweigth" random_weigth="1,1000">
+        <node name="create guild" type="task" task_type="CreateGuild" task_params="" />
+        <node name="join guild" type="task" task_type="JoinGuild" task_params=""/>
+      </node>
+    </node>
+
+    <node name="CheckGuildPosition to guild" type="condition" condition_check="CheckGuildPosition" condition_params="5" condition_result="false">
+      <node name="Move Castle To Guild" type="task" task_type="MoveCastleToGuild" task_params="1,500" reset_intervel="0" do_times="1"/>
+    </node>
+
+    <node name="random sleep" type="task" task_type="RandomSleep" task_params="60,180" reset_intervel="0" do_times="1"/>
+
+    <node name="battle" type="parallel">
+      <node name="create guild march" type="task" task_type="GuildBattle" task_params="10,0,0,200,200" reset_intervel="600" do_times="1"/>
+      <node name="join guild" type="task" task_type="JoinGuildMarch" task_params="101,0,200,200" reset_intervel="60" do_times="1" />
+      <node name="join guild" type="task" task_type="JoinGuildMarch" task_params="101,0,200,200" reset_intervel="60" do_times="1" />
+      <node name="join guild" type="task" task_type="JoinGuildMarch" task_params="101,0,200,200" reset_intervel="60" do_times="1" />
+      <node name="join guild" type="task" task_type="JoinGuildMarch" task_params="101,0,200,200" reset_intervel="60" do_times="1" />
+    </node>
+  </root>
+</btree>

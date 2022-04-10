@@ -1,0 +1,145 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+
+
+//---------------------------------客户端协议--------------------------------- //
+//所有兵种通知
+message MsgGS2CLAllArmyNotice 
+{
+  repeated ArmyInfoData infos = 1;
+  repeated uint32	unlock_feature_special_ids	=	2;			//已解锁的特色兵种组id
+  repeated uint32 use_feature_special_ids = 3;//选择使用的特色兵组id
+  int64 use_feature_special_cd = 4;//选择特色兵的CD
+}
+
+//更新兵种通知
+message MsgGS2CLUpdateArmyNotice 
+{
+  ArmyInfoData info = 1;
+}
+
+//更新训练通知
+message MsgGS2CLUpdateTrainNotice 
+{
+  TrainWorkInfo work = 1;
+  uint64 train_count = 2;//今日训练数量
+  uint64 update_train_time = 3; //更新时间
+}
+
+//请求训练
+message MsgCL2GSTrainRequest
+{
+  ArmyInfo army = 1;
+  uint32 barrack_id = 2;
+}
+
+message MsgGS2CLTrainReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//取消训练
+message MsgCL2GSCancelTrainRequest
+{
+  uint32 barrack_id = 1;
+}
+
+message MsgGS2CLCancelTrainReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//进阶
+message MsgCL2GSUpRankRequest
+{
+  ArmyInfo army = 1;
+  uint32 barrack_id = 2;
+}
+
+message MsgGS2CLUpRankReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//解散
+message MsgCL2GSDisbandRequest
+{
+  ArmyInfo army = 1;
+}
+
+message MsgGS2CLDisbandReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 立即训练
+message MsgCL2GSInstantTrainRequest
+{
+  ArmyInfo army = 1;
+  uint32 barrack_id = 2;
+}
+
+message MsgGS2CLInstantTrainReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+// 收割
+message MsgCL2GSDealArmyRequest
+{
+  uint32 barrack_id = 1;
+}
+
+message MsgGS2CLDealArmyReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//立即进阶
+message MsgCL2GSInstantUpRankRequest
+{
+  ArmyInfo army = 1;
+  uint32 barrack_id = 2;
+}
+
+message MsgGS2CLInstantUpRankReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//立即加速完成
+message MsgCL2GSInstantSpeedUpRequest
+{
+  uint32 barrack_id = 1;
+}
+
+message MsgGS2CLInstantSpeedUpReply
+{
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//解锁特种兵
+message MsgCL2GSDeblockingFeatureTroopRequest
+{
+  uint32 special_id = 1; // 需要解锁的特色兵种组id
+}
+
+message MsgGS2CLDeblockingFeatureTroopReply
+{
+  uint32 special_id = 1; // 需要解锁的特色兵种组id
+  int32 error_code = 99; // 结果和错误码
+}
+
+//选择使用特种兵
+message MsgCL2GSUseFeatureToopRequest
+{
+  uint32 special_id = 1; // 选择使用的特色兵种组id
+}
+
+message MsgGS2CLUseFeatureToopReply
+{
+  uint32 special_id = 1; // 需要解锁的特色兵种组id
+  int32 error_code = 99; // 结果和错误码
+}

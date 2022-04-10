@@ -1,0 +1,46 @@
+syntax = "proto3";
+package protomsg;
+
+import "msg_common.proto";
+
+//////////////////////////////////////////////////////////////////////////
+///  ??
+//////////////////////////////////////////////////////////////////////////
+
+message MsgGS2CLStatusInfoNotice
+{
+	StatusData statuses = 1;
+}
+
+message MsgGS2CLUpdateStatusNotice
+{
+	StatusInfo status = 1;
+}
+
+message MsgGS2CLRemoveStatusNotice
+{
+	uint32 status_id = 1;
+}
+
+message MsgCL2GSBuyStatusRequest
+{
+	uint32 id = 1;
+}
+
+message MsgGS2CLBuyStatusReply
+{
+	int32 error_code = 99;
+}
+
+message MsgCL2GSStartWarManiaRequest
+{
+}
+
+message MsgGS2CLStartWarManiaReply
+{
+	int32 error_code = 99;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  ??
+//////////////////////////////////////////////////////////////////////////

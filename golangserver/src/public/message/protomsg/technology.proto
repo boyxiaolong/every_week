@@ -1,0 +1,120 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+// ---------------------------------客户端协议--------------------------------- //
+
+// 所有科技通知
+message MsgGS2CLAllTechNotice
+{
+    repeated TechInfoData infos = 1;
+    ReserchWorkInfo work        = 2;
+    uint32 reforem_point        = 3;    // 剩余计略点
+    int64 reset_next_time     = 4;    // 计略点重置下次免费时间
+}
+
+// 研究队列通知
+message MsgGS2CLReserchWorkNotice
+{
+    ReserchWorkInfo work    = 1;
+}
+
+// 请求研究
+message MsgCL2GSResearchRequest
+{
+    uint32 tech_id  = 1;    // 科技ID
+}
+
+message MsgGS2CLResearchnReply
+{
+    int32 error_code    = 99;   // 结果和错误码
+}
+
+// 立即研究
+message MsgCL2GSInstantResearchRequest
+{
+    uint32 tech_id  = 1;    // 科技ID
+}
+
+message MsgGS2CLInstantResearchnReply
+{
+    TechInfoData info       = 1;
+    int32 error_code        = 99;   // 结果和错误码
+    uint32 reforem_point    = 2;    // 剩余计略点
+}
+
+// 切换特殊科技
+message MsgCL2GSSwitchResearchRequest
+{
+    uint32 old_tech_id  = 1;    // 原从属子科技ID
+    uint32 new_tech_id  = 2;    // 新从属子科技ID
+}
+
+message MsgGS2CLSwitchResearchReply
+{
+    TechInfoData info   = 1;
+    int32 error_code    = 99;   // 结果和错误码
+}
+
+// 取消研究
+message MsgCL2GSCancelResearchRequest
+{
+}
+
+message MsgGS2CLCancelResearchReply
+{
+    int32 error_code    = 99;   // 结果和错误码
+}
+
+// 收割科技
+message MsgCL2GSDealResearchRequest
+{
+}
+
+message MsgGS2CLDealResearchReply
+{
+    TechInfoData info       = 1;
+    int32 error_code        = 99;   // 结果和错误码
+    uint32 reforem_point    = 2;    // 剩余计略点
+}
+
+// 使用VIP时间，立刻完成科技研究
+message MsgCL2GSResearchVipFreeTimeRequest
+{
+    uint32 tech_id  = 1;    // 科技ID
+}
+
+message MsgGS2CLResearchVipFreeTimeReply
+{
+    uint32 tech_id      = 1;    // 科技ID
+    TechInfoData info   = 2;
+    int32 error_code    = 99;   // 结果和错误码
+    uint32 reforem_point    = 3;    // 剩余计略点
+}
+
+// 立即加速研究
+message MsgCL2GSInstantSpeedUpResearchRequest
+{
+    uint32 tech_id  = 1;    // 科技ID
+}
+
+message MsgGS2CLInstantSpeedUpResearchReply
+{
+    TechInfoData info   = 1;
+    int32 error_code    = 99;   // 结果和错误码
+    uint32 reforem_point    = 3;    // 剩余计略点
+}
+
+// 重置计略点
+message MsgCL2GSResetReforemPointRequest
+{
+    uint32 tech_id  = 1;    // 科技ID
+}
+
+message MsgGS2CLResetReforemPointReply
+{
+     TechInfoData info   = 1;
+    uint32 reforem_point    = 2;    // 剩余计略点
+    int64 reset_next_time = 3;    // 计略点重置下次免费时间
+    int32 error_code        = 99;   // 结果和错误码
+}

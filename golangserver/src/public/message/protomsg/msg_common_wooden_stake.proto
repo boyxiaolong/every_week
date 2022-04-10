@@ -1,0 +1,16 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+
+// 任务数据
+message WoodenStakeData
+{
+    vector2d position = 1;  // 位置
+    string hero_info  = 2;  // 英雄信息组 参见team表hero字段
+    string buffs_info = 3;  // buff信息组 参见team表buff字段
+    uint32 troop_id   = 4;  // 兵种
+    uint32 troop_uints= 5;  // 数量
+    uint32 camp_id    = 6;  // 阵营
+    uint32 ai_id      = 7;
+    uint32 monster_id = 8;
+}

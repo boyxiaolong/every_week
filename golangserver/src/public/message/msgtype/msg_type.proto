@@ -1,0 +1,3067 @@
+syntax = "proto3";
+package msgtype;
+
+message MsgTypeData
+{}
+
+enum MsgType
+{
+	kMsgBegin			= 0;
+
+	kMsgServerTransfer			= 1001;
+
+	kMsgClientTransfer			= 1002;
+
+	kMsgCL2ChargeServerChargeRequest			= 6880;
+
+	kMsgChargeServer2CLChargeReply			= 6881;
+
+	kMsgCL2ChargeServerSubscribeChargeRequest			= 6882;
+
+	kMsgGMClientBegin			= 7101;
+
+	kMsgGM2CLCommonReply			= 7102;
+
+	kMsgCL2GMDeliverAnnouncement			= 7103;
+
+	kMsgCL2GMSendMail			= 7104;
+
+	kMsgCL2GMGetPlayerInfo			= 7105;
+
+	kMsgCL2GMProhibitTaking			= 7106;
+
+	kMsgCL2GMBanAccount			= 7107;
+
+	kMsgCL2GMCloseServerGroup			= 7108;
+
+	kMsgCL2GMGetServerStatus			= 7109;
+
+	kMsgGM2CLGetServerStatusReply			= 7110;
+
+	kMsgCL2GMRemoveTokenCache			= 7111;
+
+	kMsgCL2GMSendScrollingMsg			= 7112;
+
+	kMsgGM2CLGetPlayerInfoReply			= 7113;
+
+	kMsgCL2GMReloadConfig			= 7115;
+
+	kMsgCL2GMGetAccountCount			= 7116;
+
+	kMsgGM2CLGetAccountCountReply			= 7117;
+
+	kMsgCL2GMReducePlayerResource			= 7118;
+
+	kMsgCL2GMSendMailEx			= 7119;
+
+	kMsgCL2GMPlayerRename			= 7120;
+
+	kMsgCL2GMGuildRename			= 7121;
+
+	kMsgCL2GMGuildChangeShortName			= 7122;
+
+	kMsgCL2GMUpdateAllKingdomInfo			= 7123;
+
+	kMsgCL2GMKickoffPlayers			= 7124;
+
+	kMsgCL2GMSetCreateRoleRule			= 7125;
+
+	kMsgCL2GMSetKingdomInfo			= 7126;
+
+	kMsgCL2GMGetAllKingdomInfo			= 7127;
+
+	kMsgGM2CLGetAllKingdomInfoReply			= 7128;
+
+	kMsgCL2GMGetCastleCount			= 7129;
+
+	kMsgGM2CLGetCastleCountReply			= 7130;
+
+	kMsgCL2GMSetKingdomNationMap			= 7131;
+
+	kMsgGMClientEnd			= 7200;
+
+	kMsgGS2CLAllArmyNotice			= 10001;
+
+	kMsgGS2CLUpdateArmyNotice			= 10002;
+
+	kMsgGS2CLPlayerBaseNotice			= 10003;
+
+	kMsgCL2GSRenameRequest			= 10004;
+
+	kMsgGS2CLRenameReply			= 10005;
+
+	kMsgCL2GSKeepLiveRequest			= 10006;
+
+	kMsgGS2CLKeepLiveReply			= 10007;
+
+	kMsgGS2CLServerTimeNotice			= 10008;
+
+	kMsgGS2CLPlayerAttribute			= 10009;
+
+	kMsgCL2GSSetLanguageTypeRequest			= 10010;
+
+	kMsgGS2CLSetLanguageTypeReply			= 10011;
+
+	kMsgCL2GSUpdateClientLocalDataRequest			= 10012;
+
+	kMsgGS2CLScrollingMessage			= 10013;
+
+	kMsgCL2GSCmdAttackReq			= 10014;
+
+	kMsgCL2GSCmdAttackRes			= 10015;
+
+	kMsgGS2CLBattleState			= 10016;
+
+	kMsgGS2CLBeginAttack			= 10017;
+
+	kMsgGS2CLEndAttack			= 10018;
+
+	kMsgGS2CLSkillStatus			= 10019;
+
+	kMsgGS2CLMultiStrike			= 10020;
+
+	kMsgGS2CLBattleRoundDataSyn			= 10021;
+
+	kMsgGS2CLAllChatMessageNotice			= 10022;
+
+	kMsgGS2CLOneChatMessageNotice			= 10023;
+
+	kMsgCL2GSSendChatMessageRequest			= 10024;
+
+	kMsgGS2CLSendChatMessageReply			= 10025;
+
+	kMsgGS2CLBanNotice			= 10026;
+
+	kMsgCL2GSCityInfoRequest			= 10027;
+
+	kMsgGS2CLCityInfoReply			= 10028;
+
+	kMsgGS2CLCityBuildQueueNotice			= 10029;
+
+	kMsgCL2GSCityCreateBuildingRequest			= 10030;
+
+	kMsgGS2CLCityCreateBuildingReply			= 10031;
+
+	kMsgCL2GSCityUpgradeBuidlingRequest			= 10032;
+
+	kMsgGS2CLCityUpgradeBuidlingReply			= 10033;
+
+	kMsgGS2CLCityBuildingUpdateNotice			= 10034;
+
+	kMsgCL2GSCityCancelBuildingRequest			= 10035;
+
+	kMsgGS2CLCityCancelBuildingReply			= 10036;
+
+	kMsgCL2GSCityMoveBuildingRequest			= 10037;
+
+	kMsgGS2CLCityMoveBuildingReply			= 10038;
+
+	kMsgCL2GSCityRemoveBuildingRequest			= 10039;
+
+	kMsgGS2CLCityRemoveBuildingReply			= 10040;
+
+	kMsgCL2GSCityActivateBuildingRequest			= 10041;
+
+	kMsgGS2CLCityActivateBuildingReply			= 10042;
+
+	kMsgCL2GSQueryKingdomPlayerCityInfoRequest			= 10043;
+
+	kMsgGS2CLQueryKingdomPlayerCityInfoReply			= 10044;
+
+	kMsgCL2GSQueryWorldPlayerCityInfoRequest			= 10045;
+
+	kMsgGS2CLQueryWorldPlayerCityInfoReply			= 10046;
+
+	kMsgGS2CLCityFindLocationNotice			= 10047;
+
+	kMsgCL2GSGuildBaseInfoRequest			= 10048;
+
+	kMsgGS2CLGuildBaseInfoReply			= 10049;
+
+	kMsgCL2GSGuildCreateRequest			= 10050;
+
+	kMsgGS2CLGuildCreateReply			= 10051;
+
+	kMsgGS2CLGuildJoinNotice			= 10052;
+
+	kMsgGS2CLGuildQuitNotice			= 10053;
+
+	kMsgCL2GSGuildJoinRequest			= 10054;
+
+	kMsgGS2CLGuildJoinReply			= 10055;
+
+	kMsgCL2GSGuildQuitRequest			= 10056;
+
+	kMsgGS2CLGuildQuitReply			= 10057;
+
+	kMsgCL2GSGuildListApplicantRequest			= 10058;
+
+	kMsgGS2CLGuildListApplicantReply			= 10059;
+
+	kMsgCL2GSGuildAnswerApplyRequest			= 10060;
+
+	kMsgGS2CLGuildAnswerApplyReply			= 10061;
+
+	kMsgCL2GSGuildPromoteRequest			= 10062;
+
+	kMsgGS2CLGuildPromoteReply			= 10063;
+
+	kMsgCL2GSGuildDemoteRequest			= 10064;
+
+	kMsgGS2CLGuildDemoteReply			= 10065;
+
+	kMsgCL2GSGuildQueryRequest			= 10066;
+
+	kMsgGS2CLGuildQuserReply			= 10067;
+
+	kMsgCL2GSGuildKickMemberRequest			= 10068;
+
+	kMsgGS2CLGuildKickMemberReply			= 10069;
+
+	kMsgCL2GSGuildSetBulletinRequest			= 10070;
+
+	kMsgGS2CLGuildSetBulletinReply			= 10071;
+
+	kMsgCL2GSGuildSetJoinConditionRequest			= 10072;
+
+	kMsgGS2CLGuildSetJoinConditionReply			= 10073;
+
+	kMsgCL2GSGuildSendMailRequest			= 10074;
+
+	kMsgGS2CLGuildSendMailReply			= 10075;
+
+	kMsgGS2CLGuildApplyGuildListNotice			= 10076;
+
+	kMsgCL2GSGuildUpdateParamRequest			= 10077;
+
+	kMsgGS2CLGuildUpdateParamReply			= 10078;
+
+	kMsgCL2GSGuildSearchRequest			= 10079;
+
+	kMsgGS2CLGuildSearchReply			= 10080;
+
+	kMsgCL2GSRecommendGuildListRequest			= 10081;
+
+	kMsgGS2CLRecommendGuildListReply			= 10082;
+
+	kMsgCL2GSRecommendGuildRequest			= 10083;
+
+	kMsgGS2CLRecommendGuildReply			= 10084;
+
+	kMsgCL2GSGuildDismissRequest			= 10085;
+
+	kMsgGS2CLGuildDismissReply			= 10086;
+
+	kMsgCL2GSGuildListInviteeRequest			= 10087;
+
+	kMsgGS2CLGuildListInviteeReply			= 10088;
+
+	kMsgCL2GSGuildInviteRequest			= 10089;
+
+	kMsgGS2CLGuildInviteReply			= 10090;
+
+	kMsgCL2GSGuildSearchInviteeRequest			= 10091;
+
+	kMsgGS2CLGuildSearchInviteeReply			= 10092;
+
+	kMsgCL2GSGuildCancelApplyRequest			= 10093;
+
+	kMsgGS2CLGuildCancelApplyReply			= 10094;
+
+	kMsgCL2GSGetGuildMarchListRequest			= 10095;
+
+	kMsgGS2CLGetGuildMarchListReply			= 10096;
+
+	kMsgCL2GSCreateGuildMarchRequest			= 10097;
+
+	kMsgGS2CLCreateGuildMarchReply			= 10098;
+
+	kMsgCL2GSJoinGuildMarchRequest			= 10099;
+
+	kMsgGS2CLJoinGuildMarchReply			= 10100;
+
+	kMsgCL2GSLeaveGuildMarchRequest			= 10101;
+
+	kMsgGS2CLLeaveGuildMarchReply			= 10102;
+
+	kMsgCL2GSKickOutGuildMarchRequest			= 10103;
+
+	kMsgGS2CLKickOutGuildMarchReply			= 10104;
+
+	kMsgGS2CLAddGuildMarchNotice			= 10105;
+
+	kMsgGS2CLjoinGuildMarchNotice			= 10106;
+
+	kMsgGS2CLLeaveGuildMarchNotice			= 10107;
+
+	kMsgGS2CLRemoveGuildMarchNotice			= 10108;
+
+	kMsgGS2CLUpdateGuildMarchNotice			= 10109;
+
+	kMsgGS2CLAllHeroNotice			= 10110;
+
+	kMsgGS2CLUpdateHeroNotice			= 10111;
+
+	kMsgGS2CLAllItemNotice			= 10112;
+
+	kMsgCL2GSItemUseRequest			= 10113;
+
+	kMsgGS2CLItemUseReply			= 10114;
+
+	kMsgGS2CLUpdateItemNotice			= 10115;
+
+	kMsgGS2CLMailIDListNotice			= 10116;
+
+	kMsgCL2GSMailListRequest			= 10117;
+
+	kMsgGS2CLMailListReply			= 10118;
+
+	kMsgGS2CLMailNewNotice			= 10119;
+
+	kMsgCL2GSMailOperatorRequest			= 10120;
+
+	kMsgGS2CLMailOperatorReply			= 10121;
+
+	kMsgCL2GSMailSendPrivateRequest			= 10122;
+
+	kMsgGS2CLMailSendPrivateReply			= 10123;
+
+	kMsgCL2GSMapDataRequest			= 10124;
+
+	kMsgGS2CLMapDataReply			= 10125;
+
+	kMsgCL2GSCreateMarchRequest			= 10126;
+
+	kMsgGS2CLCreateMarchReply			= 10127;
+
+	kMsgCL2GSMarchCommandRequest			= 10128;
+
+	kMsgGS2CLMarchCommandReply			= 10129;
+
+	kMsgGS2CLUpdateCastleNotice			= 10130;
+
+	kMsgGS2CLUpdateMarchNotice			= 10131;
+
+	kMsgGS2CLMarchRemoveNotice			= 10132;
+
+	kMsgCL2GSMarchMoveBackRequest			= 10133;
+
+	kMsgGS2CLMarchMoveBackReply			= 10134;
+
+	kMsgCL2GSViewMapRequest			= 10135;
+
+	kMsgGS2CLViewMapReply			= 10136;
+
+	kMsgGS2CLAddSyncEntitieNotice			= 10137;
+
+	kMsgGS2CLUpdateSyncEntitieNotice			= 10138;
+
+	kMsgGS2CLRemoveSyncEntitieNotice			= 10139;
+
+	kMsgGS2CLBigPackage			= 10140;
+
+	kMsgCL2LSLoginRequest			= 10141;
+
+	kMsgLS2CLLoginReply			= 10142;
+
+	kMsgCL2GSLoginRequest			= 10143;
+
+	kMsgGS2CLLoginReply			= 10144;
+
+	kMsgCL2GSEnterGameRequest			= 10145;
+
+	kMsgGS2CLEnterGameReply			= 10146;
+
+	kMsgGS2CLNewPlayerNotice			= 10147;
+
+	kMsgGS2CLPrepareShutdownNotice			= 10148;
+
+	kMsgGS2CLKickoutNotice			= 10149;
+
+	kMsgCL2GSPMCommandRequest			= 10150;
+
+	kMsgGS2CLPMCommandReply			= 10151;
+
+	kMsgGM2LSRemoveSessionKeyNotice			= 10152;
+
+	kMsgUS2GSKickPlayerNotice			= 10153;
+
+	kMsgLS2GSKickPlayerNotice			= 10154;
+
+	kMsgS2GSPlayerNotice			= 10155;
+
+	kMsgS2CLPlayerNotice			= 10156;
+
+	kMsgServerRegist			= 10157;
+
+	kMsgServiceReady			= 10158;
+
+	kMsgServiceBreak			= 10159;
+
+	kMsgServerPrepareShutdown			= 10160;
+
+	kMsgServerShutdown			= 10161;
+
+	kMsgServerGroupReadyNotice			= 10162;
+
+	kMsgServerEventListen			= 10163;
+
+	kMsgServerEventNotice			= 10164;
+
+	kMsgS2RPGamePush			= 10165;
+
+	kMsgSeverReloadNotice			= 10166;
+
+	kMsgServerConfigNotice			= 10167;
+
+	kMsgS2GSSendMsgToPlayerRequest			= 10168;
+
+	kMsgGS2SSendMsgToPlayerReply			= 10169;
+
+	kMsgS2GSBroadcastToPlayerNotice			= 10170;
+
+	kMsgDBPostSQL			= 10171;
+
+	kMsgMS2GSPlayerCastleDataNotice			= 10172;
+
+	kMsgGS2MSSyncEntityNotice			= 10173;
+
+	kMsgMS2GSSyncEntityDataNotice			= 10174;
+
+	kMsgMS2GSRemoveEntityRequest			= 10175;
+
+	kMsgGS2MSRemoveEntityReply			= 10176;
+
+	kMsgGS2MSPlayerOnlineNotice			= 10177;
+
+	kMsgGS2MSPlayerOfflineNotice			= 10178;
+
+	kMsgMS2GSMarchIntoHomeRequest			= 10179;
+
+	kMsgGS2MSMarchIntoHomeReply			= 10180;
+
+	kMsgS2GSGetPlayerCastleDataRequest			= 10181;
+
+	kMsgGS2SGetPlayerCastleDataReply			= 10182;
+
+	kMsgMS2GSIntoGuildMarchRequest			= 10183;
+
+	kMsgGS2MSIntoGuildMarchReply			= 10184;
+
+	kMsgS2GSGetPlayerMarchRequest			= 10185;
+
+	kMsgGS2SGetPlayerMarchReply			= 10186;
+
+	kMsgS2GSPlayerMarchGoOutRequest			= 10187;
+
+	kMsgGS2SPlayerMarchGoOutReply			= 10188;
+
+	kMsgS2GSPlayerCreateGuildMarchRequest			= 10189;
+
+	kMsgGS2SPlayerCreateGuildMarchReply			= 10190;
+
+	kMsgMS2GSDisbandGuildMarchRequest			= 10191;
+
+	kMsgGS2MSDisbandGuildMarchReply			= 10192;
+
+	kMsgS2GSPlayerMarchMoveBackRequest			= 10193;
+
+	kMsgGS2SPlayerMarchMoveBackReply			= 10194;
+
+	kMsgM2GSBattleRoundDataSyn			= 10195;
+
+	kMsgMAS2GSSAddMailNotice			= 10196;
+
+	kMsgGS2MASPlayerOffline			= 10197;
+
+	kMsgMAS2GSNoticeSystemAnnounce			= 10198;
+
+	kMsgGS2CSQuitRoom			= 10199;
+
+	kMsgGS2CSSendChat			= 10200;
+
+	kMsgCS2GSSendChat			= 10201;
+
+	kMsgCS2GSBanNotice			= 10202;
+
+	kMsgGS2LUSLoadInfoNotice			= 10203;
+
+	kMsgGS2GSQueryPlayerCityInfoRequest			= 10204;
+
+	kMsgGS2GSQueryPlayerCityInfoReply			= 10205;
+
+	kMsgGuild2GSJoinNotice			= 10206;
+
+	kMsgGuild2GSQuitNotice			= 10207;
+
+	kMsgGS2GuildRemoveApplyRecordNotice			= 10208;
+
+	kMsgGuild2GSPositionNotice			= 10209;
+
+	kMsgGS2GuildRenameNotice			= 10210;
+
+	kMsgGS2GuildLevelNotice			= 10211;
+
+	kMsgGS2GuildBattlePowerNotice			= 10212;
+
+	kMsgGS2GuildKillCountNotice			= 10213;
+
+	kMsgGS2GuildMiscNotice			= 10214;
+
+	kMsgGuild2GSUpdateGuildNameNotice			= 10215;
+
+	kMsgGuild2GSUpdateGuildIconNotice			= 10216;
+
+	kMsgGuild2GSBroadcastNotice			= 10217;
+
+	kMsgGS2GuildPlayerLoginNotice			= 10218;
+
+	kMsgGS2GuildPlayerLogoutNotice			= 10219;
+
+	kMsgGS2GuildPlayerLoadedNotice			= 10220;
+
+	kMsgGS2GuildPlayerReleaseNotice			= 10221;
+
+	kMsgGS2GuildDestroyNotice			= 10222;
+
+	kMsgGuild2GSApplyRecordNotice			= 10223;
+
+	kMsgGuild2GSUpdateGuildInfoRequest			= 10224;
+
+	kMsgGS2GuildUpdateGuildInfoReply			= 10225;
+
+	kMsgGuild2GuildSearchSyncDataNotice			= 10226;
+
+	kMsgGuild2GuildSearchDeleteGuildNotice			= 10227;
+
+	kMsgGuild2GuildSearchLoadDataCompleteNotice			= 10228;
+
+	kMsgGS2CLStatusInfoNotice			= 10229;
+
+	kMsgGS2CLUpdateStatusNotice			= 10230;
+
+	kMsgGS2CLRemoveStatusNotice			= 10231;
+
+	kMsgCL2GSBuyStatusRequest			= 10232;
+
+	kMsgGS2CLBuyStatusReply			= 10233;
+
+	kMsgCL2GSTaskInfoRequest			= 10234;
+
+	kMsgGS2CLTaskInfoReply			= 10235;
+
+	kMsgGS2CLTaskMainTaskUpdateNotice			= 10236;
+
+	kMsgCL2GSTaskMainTaskAwardRequest			= 10237;
+
+	kMsgGS2CLTaskMainTaskAwardReply			= 10238;
+
+	kMsgGS2CLUpdateGuildMarchStatusNotice			= 10239;
+
+	kMsgMS2GSKillNpcRequest			= 10240;
+
+	kMsgGS2MSKillNpcReply			= 10241;
+
+	kMsgGS2CLMonsterDataReply			= 10245;
+
+	kMsgCL2GSQuarteRequest			= 10246;
+
+	kMsgCL2GSSetDisplayPhotoRequest			= 10247;
+
+	kMsgGS2CLSetDisplayPhotoReply			= 10248;
+
+	kMsgCL2GSSetDisplayPhotoFrameRequest			= 10249;
+
+	kMsgGS2CLSetDisplayPhotoFrameReply			= 10250;
+
+	kMsgCL2GSKillRequest			= 10251;
+
+	kMsgGS2CLKillReply			= 10252;
+
+	kMsgCL2GSQueryPlayerLordInfoRequest			= 10253;
+
+	kMsgGS2CLQueryPlayerLordInfoReply			= 10254;
+
+	kMsgCL2GSBattleStatisticsRequest			= 10255;
+
+	kMsgGS2CLBattleStatisticsReply			= 10256;
+
+	kMsgGS2GSQueryPlayerLordInfoRequest			= 10257;
+
+	kMsgGS2GSQueryPlayerLordInfoReply			= 10258;
+
+	kMsgGS2CLDisplayPhotoFrameNotice			= 10259;
+
+	kMsgGS2CLDisplayPhotoNotice			= 10260;
+
+	kMsgCL2GSGuildChangePositionRequest			= 10261;
+
+	kMsgGS2CLGuildChangePositionReply			= 10262;
+
+	kMsgGS2GSQueryPlayerKillRequest			= 10263;
+
+	kMsgGS2GSQueryPlayerKillReply			= 10264;
+
+	kMsgGS2GSQueryPlayerBattleStatisticsRequest			= 10265;
+
+	kMsgGS2GSQueryPlayerBattleStatisticsReply			= 10266;
+
+	kMsgGS2CLHeroAttrNotice			= 10267;
+
+	kMsgCL2GSGemToResource			= 10268;
+
+	kMsgGS2CLGemToResourceReply			= 10269;
+
+	kMsgCL2GSSummonHoroRequest			= 10270;
+
+	kMsgGS2CLSummonHoroReply			= 10271;
+
+	kMsgCL2GSExchangeHeroDebrisRequest			= 10272;
+
+	kMsgGS2CLExchangeHeroDebrisReply			= 10273;
+
+	kMsgCL2GSUpgradeSkillRequest			= 10274;
+
+	kMsgGS2CLUpgradeSkillReply			= 10275;
+
+	kMsgCL2GSAppointOfficialRequest			= 10276;
+
+	kMsgGS2CLAppointOfficialReply			= 10277;
+
+	kMsgCL2GSDeposeOfficialRequest			= 10278;
+
+	kMsgGS2CLDeposeOfficialReply			= 10279;
+
+	kMsgGuild2GSOfficialNotice			= 10280;
+
+	kMsgGS2GSAddHeroExpRequest			= 10281;
+
+	kMsgGS2GSAddHeroExpReply			= 10282;
+
+	kMsgGS2CLPlayerAPData			= 10283;
+
+	kMsgCL2GSHeroKillRequest			= 10284;
+
+	kMsgGS2CLHeroKillReply			= 10285;
+
+	kMsgCL2GSUpdateWelcomeMailRequest			= 10286;
+
+	kMsgGS2CLUpdateWelcomeMailReply			= 10287;
+
+	kMsgCL2GSGetWelcomeMailRequest			= 10288;
+
+	kMsgGS2CLGetWelcomeMailReply			= 10289;
+
+	kMsgCL2GSGuildSendConfirmMailRequest			= 10290;
+
+	kMsgGS2CLGuildSendConfirmMailReply			= 10291;
+
+	kMsgCL2GSGuildAnswerConfirmMailRequest			= 10292;
+
+	kMsgGS2CLGuildAnswerConfirmMailReply			= 10293;
+
+	kMsgCL2GSGuildViewConfirmDataRequest			= 10294;
+
+	kMsgGS2CLGuildViewConfirmDataReply			= 10295;
+
+	kMsgGS2CLCityWallNotice			= 10296;
+
+	kMsgCL2GSSelectGarrisonHeroRequest			= 10297;
+
+	kMsgGS2CLSelectGarrisonHeroReply			= 10298;
+
+	kMsgCL2GSRepairWallRequest			= 10299;
+
+	kMsgGS2CLRepairWallReply			= 10300;
+
+	kMsgCL2GSPutOutFireRequest			= 10301;
+
+	kMsgGS2CLPutOutFireReply			= 10302;
+
+	kMsgCL2GSItemBuyRequest			= 10303;
+
+	kMsgGS2CLItemBuyReply			= 10304;
+
+	kMsgCL2GSGuildQueryMemberRankBoardRequest			= 10305;
+
+	kMsgGS2CLGuildQueryMemberRankBoardReply			= 10306;
+
+	kMsgMS2GSBattleEndRequest			= 10307;
+
+	kMsgGS2MSBattleEndReply			= 10308;
+
+	kMsgMS2GSRoundResultRequest			= 10309;
+
+	kMsgGS2MSRoundResultReply			= 10310;
+
+	kMsgMS2GSKillBarbariansRequest			= 10311;
+
+	kMsgGS2MSKillBarbariansReply			= 10312;
+
+	kMsgCL2GSCityImmediateUpgrageBuildingRequest			= 10313;
+
+	kMsgGS2CLCityImmediateUpgrageBuildingReply			= 10314;
+
+	kMsgCL2GSCityInstantUpgrageBuildingRequest			= 10315;
+
+	kMsgGS2CLCityInstantUpgrageBuildingReply			= 10316;
+
+	kMsgCL2GSMoveCastleRequest			= 10317;
+
+	kMsgGS2CLMoveCastleReply			= 10318;
+
+	kMsgMS2GSRetAPRequest			= 10319;
+
+	kMsgGS2MSRetAPReply			= 10320;
+
+	kMsgGS2CLCityBurnMoveNotice			= 10321;
+
+	kMsgCL2GSUpgradeStarRequest			= 10322;
+
+	kMsgGS2CLUpgradeStarReply			= 10323;
+
+	kMsgCL2GSAwakSkillRequest			= 10324;
+
+	kMsgGS2CLAwakSkillReply			= 10325;
+
+	kMsgGS2CLEntityMoveCrileNotice			= 10326;
+
+	kMsgCL2GSPrivateChatMessageRequest			= 10327;
+
+	kMsgGS2CLPrivateChatMessageReply			= 10328;
+
+	kMsgGS2CLPrivateChatMessageUnReadNotice			= 10329;
+
+	kMsgCL2GSClearNoticeCountRequest			= 10330;
+
+	kMsgGS2CLClearNoticCountReply			= 10331;
+
+	kMsgCS2GSSendPrivateChat			= 10332;
+
+	kMsgCS2GSClearNoticeCount			= 10333;
+
+	kMsgGS2CLEntityMovePathNotice			= 10334;
+
+	kMsgGS2CLAttackTarget			= 10335;
+
+	kMsgCL2GSScoutRequest			= 10336;
+
+	kMsgGS2CLScoutReply			= 10337;
+
+	kMsgGS2GSScoutResourceRequest			= 10338;
+
+	kMsgGS2GSScoutResourceReply			= 10339;
+
+	kMsgCL2GSGuildQueryStoreRequest			= 10340;
+
+	kMsgGS2CLGuildQueryStoreReply			= 10341;
+
+	kMsgCL2GSConstructGuildBuildingRequest			= 10342;
+
+	kMsgGS2CLConstructGuildBuildingReply			= 10343;
+
+	kMsgCL2GSReenforceQueryInfoRequest			= 10344;
+
+	kMsgGS2CLReenforceQueryInfoReply			= 10345;
+
+	kMsgCL2GSReenforceJoinRequest			= 10346;
+
+	kMsgGS2CLReenforceJoinReply			= 10347;
+
+	kMsgCL2GSReenforceChangeLeaderRequest			= 10348;
+
+	kMsgGS2CLReenforceChangeLeaderReply			= 10349;
+
+	kMsgGS2CLReenforceUpdateInfoNotice			= 10350;
+
+	kMsgGS2CLReenforceAddArmyNotice			= 10351;
+
+	kMsgCL2GSGuildBuildingListRequest			= 10352;
+
+	kMsgGS2CLGuildBuildingListReply			= 10353;
+
+	kMsgGS2MSOpenTempleRequest			= 10354;
+
+	kMsgGS2MSCaptureTempleRequest			= 10355;
+
+	kMsgGS2GSAddResourceRequest			= 10356;
+
+	kMsgGS2GSAddResourceReply			= 10357;
+
+	kMsgGS2CLGuildBroadcast			= 10358;
+
+	kMsgMS2GSGuildBroadcast			= 10359;
+
+	kMsgCL2GSOutfireRequest			= 10360;
+
+	kMsgGS2CLOutfireReply			= 10361;
+
+	kMsgCL2GSGuildBuildingRemoveRequest			= 10362;
+
+	kMsgGS2CLGuildBuildingRemoveReply			= 10363;
+
+	kMsgCL2GSReenforceKickRequest			= 10364;
+
+	kMsgGS2CLReenforceKickReply			= 10365;
+
+	kMsgS2GSGetRewardRequest			= 10366;
+
+	kMsgGS2SGetRewardReply			= 10367;
+
+	kMsgMS2GSCostAPRequest			= 10368;
+
+	kMsgGS2MSCostAPReply			= 10369;
+
+	kMsgGS2MSOpenPassRequest			= 10370;
+
+	kMsgGS2MSCapturePassRequest			= 10371;
+
+	kMsgGS2CLPlayerEntityUpdateNotice			= 10372;
+
+	kMsgGS2MSFinishBuildRequest			= 10373;
+
+	kMsgMS2GSFinishBuildReply			= 10374;
+
+	kMsgGS2CLGuildEntityUpdateNotice			= 10375;
+
+	kMsgCL2GSDisbandGuildMarchRequest			= 10376;
+
+	kMsgGS2CLDisbandGuildMarchReply			= 10377;
+
+	kMsgCL2GSGuildTempleAndPassRequest			= 10378;
+
+	kMsgGS2CLGuildTempleAndPassReply			= 10379;
+
+	kMsgCL2GSStartWarManiaRequest			= 10380;
+
+	kMsgGS2CLStartWarManiaReply			= 10381;
+
+	kMsgCL2GSItemBuyAndUseRequest			= 10382;
+
+	kMsgGS2CLItemBuyAndUseReply			= 10383;
+
+	kMsgGS2MSRefershBuildingRequest			= 10384;
+
+	kMsgGS2CLCityWallHeroNotice			= 10385;
+
+	kMsgGS2GSReduceResourceRequest			= 10386;
+
+	kMsgGS2GSReduceResourceReply			= 10387;
+
+	kMsgGS2GSGetRewardRequest			= 10388;
+
+	kMsgMS2GSCityWallNotice			= 10389;
+
+	kMsgMS2GSCityWallMoveNotice			= 10390;
+
+	kMsgGS2MSCityWallBurnPm			= 10391;
+
+	kMsgGS2MSCityWallResetRepareTimePm			= 10392;
+
+	kMsgGS2MSCityWallSetLostDurableCountPm			= 10393;
+
+	kMsgMS2GSStartWarManiaRequest			= 10394;
+
+	kMsgGS2MSStartWarManiaReply			= 10395;
+
+	kMsgGS2MSSetTempleStatusRequest			= 10396;
+
+	kMsgGS2CLAddPlayerEntityNotice			= 10397;
+
+	kMsgGS2CLRemovePlayerEntityNotice			= 10398;
+
+	kMsgGS2CLReenforceLeaveArmyNotice			= 10399;
+
+	kMsgS2SLargePackage			= 10400;
+
+	kMsgGS2CLUpdateTrainNotice			= 10401;
+
+	kMsgCL2GSTrainRequest			= 10402;
+
+	kMsgGS2CLTrainReply			= 10403;
+
+	kMsgCL2GSCancelTrainRequest			= 10404;
+
+	kMsgGS2CLCancelTrainReply			= 10405;
+
+	kMsgCL2GSUpRankRequest			= 10406;
+
+	kMsgGS2CLUpRankReply			= 10407;
+
+	kMsgCL2GSDisbandRequest			= 10408;
+
+	kMsgGS2CLDisbandReply			= 10409;
+
+	kMsgCL2GSInstantTrainRequest			= 10410;
+
+	kMsgGS2CLInstantTrainReply			= 10411;
+
+	kMsgCL2GSDealArmyRequest			= 10412;
+
+	kMsgGS2CLDealArmyReply			= 10413;
+
+	kMsgCL2GSInstantUpRankRequest			= 10414;
+
+	kMsgGS2CLInstantUpRankReply			= 10415;
+
+	kMsgGS2CLKingChatLimitNotice			= 10416;
+
+	kMsgGS2CLAddGuildLabelNotice			= 10417;
+
+	kMsgGS2CLCancelGuildLabelNotice			= 10418;
+
+	kMsgCL2GSAddGuildLabelRequest			= 10419;
+
+	kMsgGS2CLAddGuildLabelReply			= 10420;
+
+	kMsgCL2GSCancelGuildLabelRequest			= 10421;
+
+	kMsgGS2CLCancelGuildLabelReply			= 10422;
+
+	kMsgGS2CLGuildLabelListNotice			= 10423;
+
+	kMsgCL2GSResearchRequest			= 10424;
+
+	kMsgGS2CLResearchnReply			= 10425;
+
+	kMsgCL2GSInstantResearchRequest			= 10426;
+
+	kMsgGS2CLInstantResearchnReply			= 10427;
+
+	kMsgCL2GSSwitchResearchRequest			= 10428;
+
+	kMsgGS2CLSwitchResearchReply			= 10429;
+
+	kMsgCL2GSCancelResearchRequest			= 10430;
+
+	kMsgGS2CLCancelResearchReply			= 10431;
+
+	kMsgGS2CLAllTechNotice			= 10432;
+
+	kMsgGS2CLReserchWorkNotice			= 10433;
+
+	kMsgCL2GSDealResearchRequest			= 10434;
+
+	kMsgGS2CLDealResearchReply			= 10435;
+
+	kMsgCL2GSAppointCityLordRequest			= 10436;
+
+	kMsgGS2CLAppointCityLordReply			= 10437;
+
+	kMsgCL2GSRelieveCityLordRequest			= 10438;
+
+	kMsgGS2CLRelieveCityLordReply			= 10439;
+
+	kMsgG2CLUpdateTempleNotice			= 10440;
+
+	kMsgG2CLRemoveTempleNotice			= 10441;
+
+	kMsgG2CLUpdatePassNotice			= 10442;
+
+	kMsgG2CLRemovePassNotice			= 10443;
+
+	kMsgMS2GSCastleBattleRequest			= 10444;
+
+	kMsgGS2MSCastleBattleReply			= 10445;
+
+	kMsgCL2GSCityActivateStrategyRequest			= 10446;
+
+	kMsgGS2CLCityActivateStrategyReply			= 10447;
+
+	kMsgGS2CLCityStrategyInfoNotice			= 10448;
+
+	kMsgCL2GSCreateStrongHoldRequest			= 10449;
+
+	kMsgGS2CLCreateStringHoldReply			= 10450;
+
+	kMsgCL2GSInstantSpeedUpRequest			= 10451;
+
+	kMsgGS2CLInstantSpeedUpReply			= 10452;
+
+	kMsgCL2GSSkillCastRequest			= 10453;
+
+	kMsgCL2GSSkillCastReply			= 10454;
+
+	kMsgGS2CLBattleDirectDataSyn			= 10455;
+
+	kMsgGS2CLMagicLampNotice			= 10456;
+
+	kMsgS2GSMagicLampNotice			= 10457;
+
+	kMsgGS2CLAllPresbyterNotice			= 10458;
+
+	kMsgCL2GSCommissionPresbyterRequest			= 10459;
+
+	kMsgGS2CLCommissionPresbyterReply			= 10460;
+
+	kMsgCL2GSGuildAssistListRequest			= 10461;
+
+	kMsgGS2CLGuildAssistListReply			= 10462;
+
+	kMsgGS2CLGuildAssistUpdateNotice			= 10463;
+
+	kMsgCL2GSGuildAssistAskForAssistRequest			= 10464;
+
+	kMsgGS2CLGuildAssistAskForAssistReply			= 10465;
+
+	kMsgCL2GSGuildAssistHelpOtherRequest			= 10466;
+
+	kMsgGS2CLGuildAssistHelpOtherReply			= 10467;
+
+	kMsgGS2CLGuildAssistDayContributionNotice			= 10468;
+
+	kMsgGuild2GSGuildAssistExecuteHelpNotice			= 10469;
+
+	kMsgGuild2GSGuildAssistUpdateNotice			= 10470;
+
+	kMsgGS2MSClearTempleAppointCdRequest			= 10471;
+
+	kMsgGS2CLCreateStrongHoldReply			= 10472;
+
+	kMsgCL2GSCityInstantRemoveBuildingRequest			= 10473;
+
+	kMsgGS2CLCityInstantRemoveBuildingReply			= 10474;
+
+	kMsgCL2GSCitySpeedUpRemoveBuildingRequest			= 10475;
+
+	kMsgGS2CLCitySpeedUpRemoveBuildingReply			= 10476;
+
+	kMsgCL2GSCityCancelRemoveBuildingRequest			= 10477;
+
+	kMsgGS2CLCityCancelRemoveBuildingReply			= 10478;
+
+	kMsgCL2GSCollectInfoRequest			= 10479;
+
+	kMsgGS2CLCollectInfoReply			= 10480;
+
+	kMsgCL2GSCollectResourceRequest			= 10481;
+
+	kMsgGS2CLCollectResourceReply			= 10482;
+
+	kMsgGS2CLCollectInfoNotice			= 10483;
+
+	kMsgGS2MSPlayerEventNotice			= 10484;
+
+	kMsgGuild2MSGuildEventNotice			= 10485;
+
+	kMsgGS2CLSkillCastReply			= 10486;
+
+	kMsgGS2CLCollectTimeUpdateNotice			= 10487;
+
+	kMsgGuild2GSAddBuffNotice			= 10488;
+
+	kMsgMap2GuildAddGuildFacilityNotice			= 10489;
+
+	kMsgMap2GuildRemoveGuildFacilityNotice			= 10490;
+
+	kMsgGuild2GSRemoveBuffNotice			= 10491;
+
+	kMsgGS2CLGuildAddBuffNotice			= 10492;
+
+	kMsgGS2CLGuildRemoveBuffNotice			= 10493;
+
+	kMsgCL2GSMapSearchRequest			= 10494;
+
+	kMsgGS2CLMapSearchReply			= 10495;
+
+	kMsgCL2GSUnCommissionPresbyterRequest			= 10496;
+
+	kMsgGS2CLUnCommissionPresbyterReply			= 10497;
+
+	kMsgCL2GSKillBarbariasGlobalDataRequest			= 10498;
+
+	kMsgGS2CLKillBarbariansGlobalDataReply			= 10499;
+
+	kMsgS2GSUpdateArmyDataRequest			= 10500;
+
+	kMsgGS2SUpdateArmyDataReply			= 10501;
+
+	kMsgGS2CLKillBarbariansGlobalDataNotice			= 10502;
+
+	kMsgS2GSAllActivityNotice			= 10503;
+
+	kMsgS2GSUpdateActivityNotice			= 10504;
+
+	kMsgCL2GSRecruitRequest			= 10505;
+
+	kMsgGS2CLRecruitReply			= 10506;
+
+	kMsgGS2CLNormalRecruitNotice			= 10507;
+
+	kMsgGS2CLAdvancedRecruitNotice			= 10508;
+
+	kMsgGS2CLTaskOpenChapterNotice			= 10509;
+
+	kMsgCL2GSTaskChapterAwardRequest			= 10510;
+
+	kMsgGS2CLTaskChapterAwardReply			= 10511;
+
+	kMsgGS2CLAllActivityNotice			= 10512;
+
+	kMsgCL2GSMapAlarmRequest			= 10513;
+
+	kMsgGS2CLMapAlarmReply			= 10514;
+
+	kMsgGS2CLMapAddAlarmNotice			= 10515;
+
+	kMsgGS2CLRemoveAlarmNotice			= 10516;
+
+	kMsgGS2CLActivityTaskUpdateNotice			= 10517;
+
+	kMsgCL2GSGuildShopBuyItemResquest			= 10518;
+
+	kMsgGS2CLGuildShopBuyItemReply			= 10519;
+
+	kMsgCL2GSGuildShopAddItemResquest			= 10520;
+
+	kMsgGS2CLGuildShopAddItemReply			= 10521;
+
+	kMsgGS2CLGuildShopItemListNotice			= 10522;
+
+	kMsgCL2GSGuildShopBuyItemListResquest			= 10523;
+
+	kMsgGS2CLGuildShopBuyItemListReply			= 10524;
+
+	kMsgCL2GSGuildShopBuyItemLogListResquest			= 10525;
+
+	kMsgGS2CLGuildShopBuyItemLogListReply			= 10526;
+
+	kMsgCL2GSGuildShopAddItemLogListResquest			= 10527;
+
+	kMsgGS2CLGuildShopAddItemLogListReply			= 10528;
+
+	kMsgGS2CLActivityRewardedNotice			= 10529;
+
+	kMsgGS2CLPlayerAllActivityNotice			= 10530;
+
+	kMsgGS2CLPlayerActivityRewardedNotice			= 10531;
+
+	kMsgGS2CLPlayerActivityNotice			= 10532;
+
+	kMsgGS2CLActivityNotice			= 10533;
+
+	kMsgGS2CLPlayerActivityTaskUpdateNotice			= 10534;
+
+	kMsgGS2CLActivityStatusNotice			= 10535;
+
+	kMsgGS2CLActivityRemoveNotice			= 10536;
+
+	kMsgCL2GSActivityTaskAwardRequest			= 10537;
+
+	kMsgCL2GSActivityIndexAwardRequest			= 10538;
+
+	kMsgCL2GSActivityTaskAwardReply			= 10539;
+
+	kMsgCL2GSActivityIndexAwardReply			= 10540;
+
+	kMsgAS2SStartServerTimeNotice			= 10541;
+
+	kMsgAS2SUpdateRankBoardInfoNotice			= 10542;
+
+	kMsgS2ASUpdateRankDataNotice			= 10543;
+
+	kMsgS2ASUpdateRankMiscNotice			= 10544;
+
+	kMsgCL2GSRankQueryRankBoardRequest			= 10545;
+
+	kMsgGS2CLRankQueryRankBoardReply			= 10546;
+
+	kMsgCL2GSCityBuyBuildQueueTimeRequest			= 10547;
+
+	kMsgGS2CLCityBuyBuildQueueTimeReply			= 10548;
+
+	kMsgCL2GSCityCastLordSkillRequest			= 10549;
+
+	kMsgGS2CLCityCastLordSkillReply			= 10550;
+
+	kMsgGS2CLCityLordSkillCDNotice			= 10551;
+
+	kMsgGS2CLTaskBranchTaskUpdateNotice			= 10552;
+
+	kMsgCL2GSTaskBranchTaskAwardRequest			= 10553;
+
+	kMsgGS2CLTaskBranchTaskAwardReply			= 10554;
+
+	kMsgGS2CLTaskDailyTaskUpdateNotice			= 10555;
+
+	kMsgCL2GSTaskDailyTaskAwardRequest			= 10556;
+
+	kMsgGS2CLTaskDailyTaskAwardReply			= 10557;
+
+	kMsgGS2CLTaskDailyTaskInfoNotice			= 10558;
+
+	kMsgGS2CLTaskDailyScoreNotice			= 10559;
+
+	kMsgGS2CLMarchCommandUpdateNotice			= 10560;
+
+	kMsgCL2GSCityAddRoadRequest			= 10561;
+
+	kMsgGS2CLCityAddRoadReply			= 10562;
+
+	kMsgCL2GSCityRemoveRoadRequest			= 10563;
+
+	kMsgGS2CLCityRemoveRoadReply			= 10564;
+
+	kMsgCL2GSCityMoveRoadRequest			= 10565;
+
+	kMsgGS2CLCityMoveRoadReply			= 10566;
+
+	kMsgCL2GSRankJumpSelfRequest			= 10567;
+
+	kMsgGS2CLRankJumpSelfReply			= 10568;
+
+	kMsgCL2GSMileStoneInfoRequest			= 10569;
+
+	kMsgGS2CLMileStoneInfoReply			= 10570;
+
+	kMsgS2ASMileStoneDataNotice			= 10571;
+
+	kMsgS2ASMileStoneTaskNotice			= 10572;
+
+	kMsgAS2SMileStoneOpenNewTaskNotice			= 10573;
+
+	kMsgCL2GSMileStoneGetRewardRequest			= 10574;
+
+	kMsgGS2CLMileStoneGetRewardReply			= 10575;
+
+	kMsgCL2GSMileStoneRankListRequest			= 10576;
+
+	kMsgGS2CLMileStoneRankListReply			= 10577;
+
+	kMsgGS2ASMileStoneEndPmNotice			= 10578;
+
+	kMsgGS2CLMileStoneRewardListNotice			= 10579;
+
+	kMsgGS2CLMileStoneChangeNotice			= 10580;
+
+	kMsgGS2CLCurMileStoneNotice			= 10581;
+
+	kMsgGS2CLPlayerActivityScoreNotice			= 10582;
+
+	kMsgGS2CLEntityStopMoveNotice			= 10583;
+
+	kMsgGuild2ASDeleteGuildNotice			= 10584;
+
+	kMsgGS2CLEntityUpdateMovePathNotice			= 10585;
+
+	kMsgM2GSCastlePlunderRequest			= 10586;
+
+	kMsgM2GSCastlePlunderReply			= 10587;
+
+	kMsgGS2MCastlePlunderReply			= 10588;
+
+	kMsgCL2GSGetEntityBaseDataRequest			= 10589;
+
+	kMsgGS2CLEntityBaseDataReply			= 10590;
+
+	kMsgCL2GSChangeCampRequest			= 10591;
+
+	kMsgGS2CLChangeCampReply			= 10592;
+
+	kMsgM2GSSkillCastRequest			= 10593;
+
+	kMsgGS2MSkillCastReply			= 10594;
+
+	kMsgGS2CLPlayerAllEpisodeNotice			= 10595;
+
+	kMsgCL2GSEpisodeRecordRequest			= 10596;
+
+	kMsgGS2CLEpisodeRecordReply			= 10597;
+
+	kMsgCL2GSGetMarchTargetDataRequest			= 10598;
+
+	kMsgGS2CLGetMarchTargetDataReply			= 10599;
+
+	kMsgCL2GSShopBuyItemRequest			= 10600;
+
+	kMsgGS2CLShopBuyItemReply			= 10601;
+
+	kMsgCL2GSShopRefreshRequest			= 10602;
+
+	kMsgGS2CLShopRefreshReply			= 10603;
+
+	kMsgGS2CLShopNotice			= 10604;
+
+	kMsgGS2CLScoutCommandUpdateNotice			= 10605;
+
+	kMsgMS2GSScoutIntoHomeRequest			= 10606;
+
+	kMsgMS2GSScoutIntoHomeReply			= 10607;
+
+	kMsgGS2CLCreateScoutReply			= 10608;
+
+	kMsgCL2GSScoutMoveBackRequest			= 10609;
+
+	kMsgGS2CLScoutMoveBackReply			= 10610;
+
+	kMsgGS2CLScoutRemoveNotice			= 10611;
+
+	kMsgGS2CLTempleMonsterCreateNotice			= 10612;
+
+	kMsgGS2ASMileStoneResetPmNotice			= 10613;
+
+	kMsgServerTestNotice			= 10614;
+
+	kMsgGS2CLCureWorkNotice			= 10615;
+
+	kMsgGS2CLWoundedSoldierNotice			= 10616;
+
+	kMsgCL2GSHospitalCureRequest			= 10617;
+
+	kMsgGS2CLHospitalCureReply			= 10618;
+
+	kMsgCL2GSHospitalInstantCureRequest			= 10619;
+
+	kMsgGS2CLHospitalInstantCureReply			= 10620;
+
+	kMsgCL2GSHospitalInstantSpeedUpRequest			= 10621;
+
+	kMsgGS2CLHospitalInstantSpeedUpReply			= 10622;
+
+	kMsgCL2GSHospitalDealRequest			= 10623;
+
+	kMsgGS2CLHospitalDealReply			= 10624;
+
+	kMsgGS2CLGuildGiftDataNotice			= 10625;
+
+	kMsgGS2CLGuildGiftBaseInfoUpdateNotice			= 10626;
+
+	kMsgGS2CLGuildGiftInfoUpdateNotice			= 10627;
+
+	kMsgCL2GSGuildGiftClaimRequest			= 10628;
+
+	kMsgGS2CLGuildGiftClaimReply			= 10629;
+
+	kMsgCL2GSGuildGiftClaimAllRequest			= 10630;
+
+	kMsgGS2CLGuildGiftClaimAllReply			= 10631;
+
+	kMsgCL2GSGuildGiftCleanRequest			= 10632;
+
+	kMsgGS2CLGuildGiftCleanReply			= 10633;
+
+	kMsgGS2GuildSearchPlayerInfoNotice			= 10634;
+
+	kMsgCL2GSGuildSearchPlayerRequest			= 10635;
+
+	kMsgGS2CLGuildSearchPlayerReply			= 10636;
+
+	kMsgGS2CLSyncEntitiesDataNotice			= 10637;
+
+	kMsgGS2CLSyncEntitiesDataRemoveNotice			= 10638;
+
+	kMsgS2GSBroadcastToClientsNotice			= 10639;
+
+	kMsgS2GSToClientNotice			= 10640;
+
+	kMsgCL2GSGuildQueryPlayerGuildResourceRequest			= 10641;
+
+	kMsgGS2CLGuildQueryPlayerGuildResourceReply			= 10642;
+
+	kMsgCL2GSGuildCollectPlayerGuildResourceRequest			= 10643;
+
+	kMsgGS2CLGuildCollectPlayerGuildResourceReply			= 10644;
+
+	kMsgGS2GuildPMUpdateResourceFieldCountNotice			= 10645;
+
+	kMsgCL2GSGetGuildCollectDataRequest			= 10646;
+
+	kMsgGS2CLGetGuildCollectDataReply			= 10647;
+
+	kMsgCL2GSMarchFaceRequest			= 10648;
+
+	kMsgGS2CLMarchFaceReply			= 10649;
+
+	kMsgGS2CLMarchFaceNotice			= 10650;
+
+	kMsgGS2CLUseItemCallMonsterNotice			= 10651;
+
+	kMsgGS2CLGuildTechDataNotice			= 10652;
+
+	kMsgCL2GSGuildTechInfoRequest			= 10653;
+
+	kMsgGS2CLGuildTechInfoReply			= 10654;
+
+	kMsgCL2GSGuildTechDonateRequest			= 10655;
+
+	kMsgGS2CLGuildTechDonateReply			= 10656;
+
+	kMsgCL2GSGuildTechResearchRequest			= 10657;
+
+	kMsgGS2CLGuildTechResearchReply			= 10658;
+
+	kMsgGS2CLGuildTechResearchNotice			= 10659;
+
+	kMsgCL2GSGuildTechRecommendRequest			= 10660;
+
+	kMsgGS2CLGuildTechRecommendReply			= 10661;
+
+	kMsgGS2CLGuildTechRecommendNotice			= 10662;
+
+	kMsgCL2GSMistRequest			= 10663;
+
+	kMsgGS2CLMistReply			= 10664;
+
+	kMsgCL2GSMistExploreRequest			= 10665;
+
+	kMsgGS2CLMistExploreReply			= 10666;
+
+	kMsgGS2CLMistOpenNotice			= 10667;
+
+	kMsgGS2CLMistCleanNotice			= 10668;
+
+	kMsgCL2GSMistAutoOpenMistRequest			= 10669;
+
+	kMsgGS2CLMistAutoOpenMistReply			= 10670;
+
+	kMsgCL2GSMistOpenMistRequest			= 10671;
+
+	kMsgGS2CLMistOpenMistReply			= 10672;
+
+	kMsgGS2MSPMCleanMistNotice			= 10673;
+
+	kMsgCL2GSMistOpenBuildingMistRequest			= 10674;
+
+	kMsgGS2CLMistOpenBuildingMistReply			= 10675;
+
+	kMsgGS2CLGuildTechDonateDataNotice			= 10676;
+
+	kMsgGS2CLGuildTechDailyRefreshNotice			= 10677;
+
+	kMsgServerBackup			= 10678;
+
+	kMsgGS2CLPlayerExpeStatusNotice			= 10679;
+
+	kMsgCL2GSPlayerExpeLevelListRequest			= 10680;
+
+	kMsgGS2CLPlayerExpeLevelListReply			= 10681;
+
+	kMsgCL2GSPlayerExpeLevelRewardRequest			= 10682;
+
+	kMsgGS2CLPlayerExpeLevelRewardReply			= 10683;
+
+	kMsgCL2GSPlayerExpeBatchCollectRequest			= 10684;
+
+	kMsgGS2CLPlayerExpeBatchCollectReply			= 10685;
+
+	kMsgGS2CLPlayerExpeBattleResultNotice			= 10686;
+
+	kMsgCL2GSPlayerExpeChallengeLevelRequest			= 10687;
+
+	kMsgGS2CLPlayerExpeChallengeLevelReply			= 10688;
+
+	kMsgCL2GSPlayerExpeExitLevelRequest			= 10689;
+
+	kMsgGS2CLPlayerExpeExitLevelReply			= 10690;
+
+	kMsgIS2GSPlayerExpePostBattleResultRequest			= 10691;
+
+	kMsgIS2GSPlayerExpePostBattleResultReply			= 10692;
+
+	kMsgCL2GSRemoveViewRequest			= 10693;
+
+	kMsgGS2CLRemoveViewReply			= 10694;
+
+	kMsgGS2MSCreateTempleMonsterRequest			= 10695;
+
+	kMsgGS2CLGuildTechInfoResearchableNotice			= 10696;
+
+	kMsgMS2GMistUpdateRequest			= 10697;
+
+	kMsgGS2MSMistUpdateReply			= 10698;
+
+	kMsgGS2CLGuildTechInfoUpdateNotice			= 10699;
+
+	kMsgGS2CLBattleStatusChangeSyn			= 10702;
+
+	kMsgGS2CLBattleTargetChangeSyn			= 10703;
+
+	kMsgGuild2GSGuildDisbandNotice			= 10704;
+
+	kMsgGuild2OtherBuffEffectUpdateNotice			= 10705;
+
+	kMsgCL2GSExploreRequest			= 10706;
+
+	kMsgGS2CLExploreReply			= 10707;
+
+	kMsgGS2CLExploreUpdateVillageNotice			= 10708;
+
+	kMsgGS2CLExploreUpdateCaveNotice			= 10709;
+
+	kMsgGS2CLExploreUpdateBuildingNotice			= 10710;
+
+	kMsgCL2GSExploreVisitRequest			= 10717;
+
+	kMsgCL2GSExploreVisitReply			= 10718;
+
+	kMsgCL2GSExploreAwardRequest			= 10719;
+
+	kMsgGS2CLExploreAwardReply			= 10720;
+
+	kMsgGS2ISPlayerExpePostBattleResultReply			= 10721;
+
+	kMsgGS2CLGuildMarchListNotice			= 10722;
+
+	kMsgGS2CLBeGuildMarchAttackNotice			= 10723;
+
+	kMsgCL2GSGuildUpdateNameRequest			= 10724;
+
+	kMsgGS2CLGuildUpdateNameReply			= 10725;
+
+	kMsgCL2GSGuildUpdateShortNameRequest			= 10726;
+
+	kMsgGS2CLGuildUpdateShortNameReply			= 10727;
+
+	kMsgCL2GSGuildUpdateIconRequest			= 10728;
+
+	kMsgGS2CLGuildUpdateIconReply			= 10729;
+
+	kMsgCL2GSExploreBatchAwardRequest			= 10730;
+
+	kMsgGS2CLExploreBatchAwardReply			= 10731;
+
+	kMsgS2GSInstanceCloseNotice			= 10732;
+
+	kMsgGS2CLTokenNotice			= 10733;
+
+	kMsgCL2GSSearchEmptyPosRequest			= 10734;
+
+	kMsgGS2CLSearchEmptyPosReply			= 10735;
+
+	kMsgGS2CLCastleLeaveNotice			= 10736;
+
+	kMsgGS2CLMoveCastleNotice			= 10737;
+
+	kMsgGS2CLPlayerActivityDropNotice			= 10821;
+
+	kMsgGS2CLPlayerActivityExchangeNotice			= 10822;
+
+	kMsgCL2GSActivityExchangeRequest			= 10823;
+
+	kMsgCL2GSActivityExchangeReply			= 10824;
+
+	kMsgGS2CLBattleStickEnemy			= 10825;
+
+	kMsgGS2CLBattleStickJump			= 10826;
+
+	kMsgCL2GSGetTokenRequest			= 10827;
+
+	kMsgCL2GSGetTokenReply			= 10828;
+
+	kMsgGS2CLAllEquipmentNotice			= 10829;
+
+	kMsgGS2CLEquipmentNotice			= 10830;
+
+	kMsgGS2CLAddEquipmentsNotice			= 10831;
+
+	kMsgGS2CLRemoveEquipmentsNotice			= 10832;
+
+	kMsgCL2GSWearEquipmentRequest			= 10833;
+
+	kMsgGS2CLWearEquipmentReply			= 10834;
+
+	kMsgCL2GSTakeOffEquipmentRequest			= 10835;
+
+	kMsgGS2CLTakeOffEquipmentReply			= 10836;
+
+	kMsgCL2GSUpRankEquipmentRequest			= 10837;
+
+	kMsgGS2CLUpRankEquipmentReply			= 10838;
+
+	kMsgCL2GSEquipmentDecomposeRequest			= 10839;
+
+	kMsgGS2CLEquipmentDecomposeReply			= 10840;
+
+	kMsgCL2GSMaterialCompositeRequest			= 10841;
+
+	kMsgGS2CLMaterialCompositeReply			= 10842;
+
+	kMsgCL2GSMaterialDecomposeRequest			= 10843;
+
+	kMsgGS2CLMaterialDecomposeReply			= 10844;
+
+	kMsgGS2CLPlayerExpeReadyNotice			= 10845;
+
+	kMsgCL2GSUsePointRequest			= 10846;
+
+	kMsgGS2CLUsePointReply			= 10847;
+
+	kMsgCL2GSResetPointRequest			= 10848;
+
+	kMsgGS2CLResetPointReply			= 10849;
+
+	kMsgGS2CLPompeiiCureWorkNotice			= 10850;
+
+	kMsgGS2CLPompeiiWoundedSoldierNotice			= 10851;
+
+	kMsgCL2GSPompeiiHospitalCureRequest			= 10852;
+
+	kMsgGS2CLPompeiiHospitalCureReply			= 10853;
+
+	kMsgCL2GSPompeiiHospitalDealRequest			= 10854;
+
+	kMsgGS2CLPompeiiHospitalDealReply			= 10855;
+
+	kMsgCL2GSPompeiiHospitalInstantCureRequest			= 10856;
+
+	kMsgGS2CLPompeiiHospitalInstantCureReply			= 10857;
+
+	kMsgCL2GSPompeiiHospitalInstantSpeedUpRequest			= 10858;
+
+	kMsgGS2CLPompeiiHospitalInstantSpeedUpReply			= 10859;
+
+	kMsgCL2GSCreateCarriageRequest			= 10860;
+
+	kMsgGS2CLCreateCarriageReply			= 10861;
+
+	kMsgCL2GSGetCarriageCapacityRequest			= 10862;
+
+	kMsgGS2CLGetCarriageCapacityReply			= 10863;
+
+	kMsgGS2CLCarriageRemoveNotice			= 10864;
+
+	kMsgMS2GSCarriageIntoHomeRequest			= 10865;
+
+	kMsgGS2MSCarriageIntoHomeReply			= 10866;
+
+	kMsgGS2MSOpenPompeiiBuildRequest			= 10867;
+
+	kMsgGS2MSCapturePompeiiBuildRequest			= 10868;
+
+	kMsgGS2MSFinishEventRequest			= 10869;
+
+	kMsgGS2MSAddPompeiiWoundRequest			= 10870;
+
+	kMsgGS2CLPompeiiStatusNotice			= 10871;
+
+	kMsgCL2GSPompeiiGetMainUiRequest			= 10872;
+
+	kMsgGS2CLPompeiiGetMainUiReply			= 10873;
+
+	kMsgCL2GSPompeiiGetPreGuildResultRequest			= 10874;
+
+	kMsgGS2CLPompeiiGetPreGuildResultReply			= 10875;
+
+	kMsgCL2GSPompeiiSubmitRegistRequest			= 10876;
+
+	kMsgGS2CLPompeiiSubmitRegistReply			= 10877;
+
+	kMsgCL2GSPompeiiGetRegistDetailRequest			= 10878;
+
+	kMsgGS2CLPompeiiGetRegistDetailReply			= 10879;
+
+	kMsgCL2GSPompeiiSetupRegistDetailRequest			= 10880;
+
+	kMsgGS2CLPompeiiSetupRegistDetailReply			= 10881;
+
+	kMsgCL2GSPompeiiGetPairingInfoRequest			= 10882;
+
+	kMsgGS2CLPompeiiGetPairingInfoReply			= 10883;
+
+	kMsgCL2GSPompeiiSetupChatGroupRequest			= 10884;
+
+	kMsgGS2CLPompeiiSetupChatGroupReply			= 10885;
+
+	kMsgCL2GSPompeiiGetCandidateListRequest			= 10886;
+
+	kMsgGS2CLPompeiiGetCandidateListReply			= 10887;
+
+	kMsgCL2GSPompeiiEventQueryRequest			= 10888;
+
+	kMsgGS2CLPompeiiEventQueryReply			= 10889;
+
+	kMsgGS2CLPompeiiDataNotice			= 10890;
+
+	kMsgGS2CLPompeiiBuildBattleDataNotice			= 10891;
+
+	kMsgCL2GSPompeiiGameDataRequest			= 10892;
+
+	kMsgGS2CLPompeiiGameDataReply			= 10893;
+
+	kMsgCL2GSPompeiiIntoRequest			= 10894;
+
+	kMsgGS2CLPompeiiIntoReply			= 10895;
+
+	kMsgGS2CLActiveSkillEnergySyn			= 10896;
+
+	kMsgGS2CLCityContainerInfoNotice			= 10897;
+
+	kMsgCL2GSCityStoreBuildingRequest			= 10898;
+
+	kMsgGS2CLCityStoreBuildingReply			= 10899;
+
+	kMsgCL2GSCityFetchBuildingRequest			= 10900;
+
+	kMsgGS2CLCityFetchBuildingReply			= 10901;
+
+	kMsgCL2GSCityStoreRoadRequest			= 10902;
+
+	kMsgGS2CLCityStoreRoadReply			= 10903;
+
+	kMsgCL2GSCityFetchRoadRequest			= 10904;
+
+	kMsgGS2CLCityFetchRoadReply			= 10905;
+
+	kMsgCL2GSCityCopyThemeRequest			= 10906;
+
+	kMsgGS2CLCityCopyThemeReply			= 10907;
+
+	kMsgCL2GSCityUpdateThemeRequest			= 10908;
+
+	kMsgGS2CLCityUpdateThemeReply			= 10909;
+
+	kMsgCL2GSCityApplyThemeRequest			= 10910;
+
+	kMsgGS2CLCityApplyThemeReply			= 10911;
+
+	kMsgGS2GSCopyCityThemeRequest			= 10912;
+
+	kMsgGS2GSCopyCityThemeReply			= 10913;
+
+	kMsgCL2GSPompeiiLeaveRequest			= 10914;
+
+	kMsgGS2CLPompeiiLeaveReply			= 10915;
+
+	kMsgCL2GSPompeiiGameBaseDataRequest			= 10916;
+
+	kMsgGS2CLPompeiiGameBaseDataReply			= 10917;
+
+	kMsgGS2CLPompeiiGuildBaseDataNotice			= 10918;
+
+	kMsgCL2GSPompeiiLeaveTempRequest			= 10919;
+
+	kMsgGS2CLPompeiiLeaveTempReply			= 10920;
+
+	kMsgCL2GSPompeiiTempLeaveRequest			= 10921;
+
+	kMsgGS2CLPompeiiTempLeaveReply			= 10922;
+
+	kMsgGS2CLPompeiiEndNotice			= 10923;
+
+	kMsgXS2GSPompeiiGetPlayerMatchPointRequest			= 10924;
+
+	kMsgGS2XSPompeiiGetPlayerMatchPointReply			= 10925;
+
+	kMsgPompeii2GuildWarStatusNotice			= 10926;
+
+	kMsgMS2GSGetGarrisonHeroInfoRequest			= 10927;
+
+	kMsgMS2GSGetGarrisonHeroInfoResponse			= 10928;
+
+	kMsgGS2CLPMCreateInstanceNotice			= 10929;
+
+	kMsgXS2GSPompeiiNeedNoticeRequest			= 10930;
+
+	kMsgGS2XSPompeiiNeedNoticeReply			= 10931;
+
+	kMsgXS2GSPompeiiNeedNoticeNotice			= 10932;
+
+	kMsgCL2GSFastUpRankEquipmentRequest			= 10933;
+
+	kMsgGS2CLFastUpRankEquipmentReply			= 10934;
+
+	kMsgGS2CLPompeiiBossNotice			= 10935;
+
+	kMsgCL2GSCityInstanceBuildingsRequest			= 10936;
+
+	kMsgGS2CLCityInstanceBuildingsReply			= 10937;
+
+	kMsgGS2PompeiiBuildingsRequest			= 10938;
+
+	kMsgGS2InstanceBuildingsRequest			= 10939;
+
+	kMsgGS2CLPlayerActivityTurntableNotice			= 10940;
+
+	kMsgGS2CLPlayerActivityBeadNotice			= 10941;
+
+	kMsgCL2GSActivityTurntableRequest			= 10942;
+
+	kMsgCL2GSActivityTurntableReply			= 10943;
+
+	kMsgCL2GSActivityTurntableStageRewardRequest			= 10944;
+
+	kMsgGS2CLActivityTurntableStageRewardReply			= 10945;
+
+	kMsgCL2GSActivityBeadRewardRequest			= 10946;
+
+	kMsgCL2GSActivityBeadRewardReply			= 10947;
+
+	kMsgGS2CLVipInfoNotice			= 10948;
+
+	kMsgCL2GSGetVipExpRequest			= 10949;
+
+	kMsgGS2CLGetVipExpReply			= 10950;
+
+	kMsgCL2GSGetVipGiftRequest			= 10951;
+
+	kMsgGS2CLGetVipGiftReply			= 10952;
+
+	kMsgCL2GSCityBuyToContainterRequest			= 10953;
+
+	kMsgGS2CLCityBuyToContainerReply			= 10954;
+
+	kMsgCL2GSActivityBeadTaskRewardRequest			= 10955;
+
+	kMsgCL2GSActivityBeadTaskRewardReply			= 10956;
+
+	kMsgCL2GSActivityBeadFinalRewardRequest			= 10957;
+
+	kMsgCL2GSActivityBeadFinalRewardReply			= 10958;
+
+	kMsgGS2CLEntityUpdateMoveSpeedNotice			= 10959;
+
+	kMsgMAS2GSNoticeFullServerMail			= 10960;
+
+	kMsgGS2CLKingdomMailRefreshNotice			= 10961;
+
+	kMsgCL2GSMailSendKingdomRequest			= 10962;
+
+	kMsgGS2CLMailSendKingdomReply			= 10963;
+
+	kMsgGS2CLAllMarchFaceNotice			= 10964;
+
+	kMsgGS2CLAddMarchFaceNotice			= 10965;
+
+	kMsgCL2GSGetBattleDetailLogRequest			= 10966;
+
+	kMsgGS2CLGetBattleDetailLogReply			= 10967;
+
+	kMsgCL2GSSetKingTitleRequest			= 10968;
+
+	kMsgGS2CLSetKingTitleReply			= 10969;
+
+	kMsgGuild2GSUpdateKingdomTitleNotice			= 10970;
+
+	kMsgCL2GSChangeGuildMarchLimitRequest			= 10971;
+
+	kMsgGS2CLChangeGuildMarchLimitReply			= 10972;
+
+	kMsgGS2CLPlayerActivityHonorNotice			= 10973;
+
+	kMsgCL2GSActivityHonorTaskRewardRequest			= 10974;
+
+	kMsgCL2GSActivityHonorTaskRewardReply			= 10975;
+
+	kMsgCL2GSActivityHonorLevelRewardRequest			= 10976;
+
+	kMsgCL2GSActivityHonorLevelRewardReply			= 10977;
+
+	kMsgCL2GSActivityHonorBuyLevelRequest			= 10978;
+
+	kMsgCL2GSActivityHonorBuyLevelReply			= 10979;
+
+	kMsgGS2CLKingDataNotice			= 10980;
+
+	kMsgGS2CLPlayerActivityHonorBaseNotice			= 10981;
+
+	kMsgGS2CLKingGiftPlayersNotice			= 10982;
+
+	kMsgCL2GSSendKinGiftRequest			= 10983;
+
+	kMsgGS2CLSendKinGiftReply			= 10984;
+
+	kMsgCL2GSKingManagerInfoRequest			= 10985;
+
+	kMsgGS2CLKingManagerInfoReply			= 10986;
+
+	kMsgCL2GSKingSetBulletinRequest			= 10987;
+
+	kMsgGS2CLKingSetBulletinReply			= 10988;
+
+	kMsgCL2GSKingSetBattlePowerLimitRequest			= 10989;
+
+	kMsgGS2CLKingSetBattlePowerLimitReply			= 10990;
+
+	kMsgGS2GSSetKingTitleRequest			= 10991;
+
+	kMsgGS2GSSetKingTitleReply			= 10992;
+
+	kMsgGS2CLPlayerPropertyNotice			= 10993;
+
+	kMsgGS2CLPlayerActivityCleanDayNotice			= 10994;
+
+	kMsgGS2CLGuildActivityNotice			= 10995;
+
+	kMsgCL2GSGuildGetActivityRequest			= 10996;
+
+	kMsgGS2CLGuildGetActivityReply			= 10997;
+
+	kMsgMS2GSKillBarbariansFortRequest			= 10998;
+
+	kMsgGS2MSKillBarbariansFortReply			= 10999;
+
+	kMsgGS2GuildDoActivityAcitonNotice			= 11000;
+
+	kMsgGuild2OtherKingdomBuffEffectUpdateNotice			= 11001;
+
+	kMsgCL2GSExploreCaveExtraAwardRequest			= 11002;
+
+	kMsgGS2CLExploreCaveExtraAwardReply			= 11003;
+
+	kMsgGS2CLKingMailRefreshNotice			= 11004;
+
+	kMsgCL2GSMailSendKingRequest			= 11005;
+
+	kMsgGS2CLMailSendKingReply			= 11006;
+
+	kMsgMAS2GSNoticeKingdomMail			= 11007;
+
+	kMsgCL2GSKingdomBuffActiveLogRequest			= 11008;
+
+	kMsgGS2CLKingdomBuffActiveLogReply			= 11009;
+
+	kMsgCL2GSKingdomBuffMainInfoRequest			= 11010;
+
+	kMsgGS2CLKingdomBuffMainInfoReply			= 11011;
+
+	kMsgCL2GSKingdomBuffActiveRequest			= 11012;
+
+	kMsgGS2CLKingdomBuffActiveReply			= 11013;
+
+	kMsgGS2CLAllMallNotice			= 11014;
+
+	kMsgGS2CLAddMallNotice			= 11015;
+
+	kMsgGS2CLRemoveMallNotice			= 11016;
+
+	kMsgCL2GSFirstChargeRewardRequest			= 11017;
+
+	kMsgCL2GSFirstChargeRewardReply			= 11018;
+
+	kMsgCL2GSGuildTechUseSkillRequest			= 11019;
+
+	kMsgGS2CLGuildTechUseSkillReply			= 11020;
+
+	kMsgCL2GSKingdomListInfoRequest			= 11021;
+
+	kMsgGS2CLKingdomListInfoReply			= 11022;
+
+	kMsgGS2CLBattlePrepareUseSkill			= 11023;
+
+	kMsgCL2GSListPioneerApplicationRequest			= 11024;
+
+	kMsgGS2CLListPioneerApplicationReply			= 11025;
+
+	kMsgCL2GSApplyPioneerRequest			= 11026;
+
+	kMsgGS2CLApplyPioneerReply			= 11027;
+
+	kMsgCL2GSAnswerPioneerApplicationRequst			= 11028;
+
+	kMsgGS2CLAnswerPioneerApplicationReply			= 11029;
+
+	kMsgCL2GSImmigrateRequest			= 11030;
+
+	kMsgGS2CLImmigrateReply			= 11031;
+
+	kMsgCL2GSCityUpdateForbidCopyRequest			= 11032;
+
+	kMsgGS2CLCityUpdateForbidCopyReply			= 11033;
+
+	kMsgCS2GSChargeRequest			= 11034;
+
+	kMsgGS2CSChargeReply			= 11035;
+
+	kMsgCS2GSReloadMallConfigNotice			= 11036;
+
+	kMsgCL2GSAnswerPioneerApplicationRequest			= 11037;
+
+	kMsgGS2CLMallDataNotify			= 11040;
+
+	kMsgGS2CLMallCommonData			= 11041;
+
+	kMsgGS2CLMallFirstChargeData			= 11042;
+
+	kMsgGS2CLUpdateMallCommonData			= 11043;
+
+	kMsgGM2GSGetBasePlayerInfoRequest			= 11044;
+
+	kMsgGS2GMGetBasePlayerInfoReply			= 11045;
+
+	kMsgCharge2GSBuyGoodsRequest			= 11046;
+
+	kMsgGS2ChargeBuyGoodsReply			= 11047;
+
+	kMsgCharge2GSReloadMallConfigNotice			= 11048;
+
+	kMsgGS2CLMallAllDataNotice			= 11049;
+
+	kMsgGS2CLMallOrderDataNotice			= 11050;
+
+	kMsgGS2CLMallFirstChargeNotice			= 11051;
+
+	kMsgGM2GSPlayerRenameRequest			= 11052;
+
+	kMsgGM2GSPlayerRenameReply			= 11053;
+
+	kMsgGS2GMPlayerRenameReply			= 11054;
+
+	kMsgCL2GSImmigrateKingdomInfoRequest			= 11055;
+
+	kMsgGS2CLImmigrateKingdomInfoReply			= 11056;
+
+	kMsgGS2GMPlayerCountNotice			= 11057;
+
+	kMsgCL2GSChargeCommonReply			= 11058;
+
+	kMsgCL2GSLifeLineInfoRequest			= 11059;
+
+	kMsgGS2CLLifeLineInfoReply			= 11060;
+
+	kMsgGS2CLLifeLineNotice			= 11061;
+
+	kMsgCL2GSLifeLineSelectRequest			= 11062;
+
+	kMsgGS2CLLifeLineSelectReply			= 11063;
+
+	kMsgCL2GSLifeLineNpcSetRequest			= 11064;
+
+	kMsgGS2CLLifeLineNpcSetReply			= 11065;
+
+	kMsgGS2CLAllchievementInfoNotice			= 11066;
+
+	kMsgGS2CLAchievementBaseInfoNotice			= 11067;
+
+	kMsgGS2CLAchievementRewardInfoNotice			= 11068;
+
+	kMsgGS2CLAchievementInfoNotice			= 11069;
+
+	kMsgCL2GSAchievementRewardRequest			= 11070;
+
+	kMsgGS2CLAchievementRewardReply			= 11071;
+
+	kMsgCL2GSQuestionBankRequest			= 11072;
+
+	kMsgGS2CLQuestionBankReply			= 11073;
+
+	kMsgGS2CLQuestionBankNotice			= 11074;
+
+	kMsgCL2GSAnswerQuestionsRequest			= 11075;
+
+	kMsgGS2CLAnswerQuestionsReply			= 11076;
+
+	kMsgCL2GSGiveupAnswerQuestionsRequest			= 11077;
+
+	kMsgGS2CLGiveupAnswerQuestionsReply			= 11078;
+
+	kMsgCL2GSHelpAnswerQuestionRequest			= 11079;
+
+	kMsgGS2CLHelpAnswerQuestionReply			= 11080;
+
+	kMsgCL2GSGetGlobalHeroPointsRequest			= 11081;
+
+	kMsgGS2CLGetGlobalHeroPointsReply			= 11082;
+
+	kMsgS2GSReduceResourceRequest			= 11083;
+
+	kMsgS2GSReduceResourceReply			= 11084;
+
+	kMsgGS2SReduceResourceReply			= 11085;
+
+	kMsgGS2CLMallTotalChargeNotice			= 11086;
+
+	kMsgGS2CLMallEverydayHeroNotice			= 11087;
+
+	kMsgCL2GSTotalChargeRewardRequest			= 11088;
+
+	kMsgCL2GSTotalChargeRewardReply			= 11089;
+
+	kMsgMS2GSCarriageDoneRequest			= 11090;
+
+	kMsgGS2MSCarriageDoneReply			= 11091;
+
+	kMsgCL2GSTimeCardRewardRequest			= 11092;
+
+	kMsgCL2GSTimeCardRewardReply			= 11093;
+
+	kMsgGS2CLBuyTimeCardNotice			= 11094;
+
+	kMsgCL2GSGrowthFundRewardRequest			= 11095;
+
+	kMsgCL2GSGrowthFundRewardReply			= 11096;
+
+	kMsgGS2CLBuyGrowthFundNotice			= 11097;
+
+	kMsgGS2CLAchievementConfirmInfoNotice			= 11098;
+
+	kMsgCL2GSAchievementConfirmRequest			= 11099;
+
+	kMsgGS2CLAchievementConfirmReply			= 11100;
+
+	kMsgCL2GSEverydayHeroFreeRequest			= 11101;
+
+	kMsgCL2GSEverydayHeroFreeReply			= 11102;
+
+	kMsgGS2CLHonroAllInfoNotice			= 11103;
+
+	kMsgGS2CLHonorBaseInfoNotice			= 11104;
+
+	kMsgGS2CLHonorTaskInfoNotice			= 11105;
+
+	kMsgCL2GSHonorTaskRewardRequest			= 11106;
+
+	kMsgGS2CLHonorTaskRewardReply			= 11107;
+
+	kMsgCL2GSHonorLevelRewardRequest			= 11108;
+
+	kMsgGS2CLHonorLevelRewardReply			= 11109;
+
+	kMsgCL2GSHonorBuyLevelRequest			= 11110;
+
+	kMsgGS2CLHonorBuyLevelReply			= 11111;
+
+	kMsgCL2GSCityVipFreeTimeRequest			= 11112;
+
+	kMsgGS2CLCityVipFreeTimeReply			= 11113;
+
+	kMsgGS2CLAchievementFlagInfoNotice			= 11114;
+
+	kMsgCL2GSAddAchievementFlagRequest			= 11115;
+
+	kMsgGS2CLAddAchievementFlagReply			= 11116;
+
+	kMsgCL2GSDelAchievementFlagRequest			= 11117;
+
+	kMsgGS2CLDelAchievementFlagReply			= 11118;
+
+	kMsgCL2GSResearchVipFreeTimeRequest			= 11119;
+
+	kMsgGS2CLResearchVipFreeTimeReply			= 11120;
+
+	kMsgCL2GSPlayerExpeUnlockListRequest			= 11121;
+
+	kMsgCL2GSPlayerExpeUnlockListReply			= 11122;
+
+	kMsgCL2GSPlayerExpeUnlockAddRequest			= 11123;
+
+	kMsgCL2GSPlayerExpeUnlockAddReply			= 11124;
+
+	kMsgGS2CLKingdomBuffStatusInfoNotice			= 11125;
+
+	kMsgMS2GSReduceAPNotice			= 11126;
+
+	kMsgMS2GSReenforceArriveJoinRequest			= 11127;
+
+	kMsgGS2MSReenforceArriveJoinReply			= 11128;
+
+	kMsgGS2CLGuildDerbyPlayerInfoNotice			= 11129;
+
+	kMsgCL2GSGuildDerbyAcceptTaskRequest			= 11130;
+
+	kMsgGS2CLGuildDerbyAcceptTaskReply			= 11131;
+
+	kMsgCL2GSGuildDerbyQuitTaskRequest			= 11132;
+
+	kMsgGS2CLGuildDerbyQuitTaskReply			= 11133;
+
+	kMsgCL2GSGuildDerbySubmitTaskRequest			= 11134;
+
+	kMsgGS2CLGuildDerbySubmitTaskReply			= 11135;
+
+	kMsgCL2GSGuildDerbyInfoRequest			= 11136;
+
+	kMsgGS2CLGuildDerbyInfoReply			= 11137;
+
+	kMsgCL2GSGuildDerbyApplyRequest			= 11138;
+
+	kMsgGS2CLGuildDerbyApplyReply			= 11139;
+
+	kMsgCL2GSGuildDerbyMemberRankInfoRequest			= 11140;
+
+	kMsgGS2CLGuildDerbyMemberRankInfoReply			= 11141;
+
+	kMsgCL2GSGuildDerbyGuildRankInfoRequest			= 11142;
+
+	kMsgGS2CLGuildDerbyGuildRankInfoReply			= 11143;
+
+	kMsgCL2GSGuildDerbyGetRewardRequest			= 11144;
+
+	kMsgGS2CLGuildDerbyGetRewardReply			= 11145;
+
+	kMsgCL2GSGuildDerbyBuyCountRequest			= 11146;
+
+	kMsgGS2CLGuildDerbyBuyCountReply			= 11147;
+
+	kMsgCL2GSGuildDerbyRefreshTaskRequest			= 11148;
+
+	kMsgGS2CLGuildDerbyRefreshTaskReply			= 11149;
+
+	kMsgGS2CLGuildDerbyTaskNotice			= 11150;
+
+	kMsgGS2CLGuildStatusNotice			= 11151;
+
+	kMsgGDS2GuildSGuildDerbyActivityStatus			= 11152;
+
+	kMsgGDS2GuildSGuildDerbyGuildScoreSync			= 11153;
+
+	kMsgGS2GDSGuildDerbyNextNotice			= 11154;
+
+	kMsgGS2GuildSGuildDerbySetScore			= 11155;
+
+	kMsgGS2GuildSGuildDerbyClearAcceptTime			= 11156;
+
+	kMsgGS2GuildSGuildDerbySetPlayerScore			= 11157;
+
+	kMsgGuildS2GSGuildStatusChangeNotice			= 11158;
+
+	kMsgCL2GSWhoHelpAnswerQuestionRequest			= 11159;
+
+	kMsgGS2CLWhoHelpAnswerQuestionReply			= 11160;
+
+	kMsgMS2GSCastleRecycleRequest			= 11161;
+
+	kMsgGS2MSCastleRecycleReply			= 11162;
+
+	kMsgGS2CLServerStartTimeNotice			= 11163;
+
+	kMsgMS2GSScoutPlayerRequest			= 11164;
+
+	kMsgGS2MSScoutPlayerReply			= 11165;
+
+	kMsgGDS2GuildSGuildDerbyGuildRankNotice			= 11166;
+
+	kMsgCL2GSInstantSpeedUpResearchRequest			= 11167;
+
+	kMsgGS2CLInstantSpeedUpResearchReply			= 11168;
+
+	kMsgMS2GSCollectEmptyResourceRequest			= 11169;
+
+	kMsgGS2MSCollectEmptyResourceReply			= 11170;
+
+	kMsgGS2CLPlayerExpeUnlockListReply			= 11171;
+
+	kMsgGS2CLPlayerExpeUnlockAddReply			= 11172;
+
+	kMsgMS2GSTempleNotice			= 11173;
+
+	kMsgMS2GSPassNotice			= 11174;
+
+	kMsgCL2GSAchievementLevelRewardRequest			= 11175;
+
+	kMsgGS2CLAchievementLevelRewardReply			= 11176;
+
+	kMsgCL2GSEquipmentExchangeRequest			= 11177;
+
+	kMsgGS2CLEquipmentExchangeReply			= 11178;
+
+	kMsgCL2GSCityImmediateCompleteRequest			= 11179;
+
+	kMsgGS2CLCityImmediateCompleteReply			= 11180;
+
+	kMsgGS2CLOnlineGiftInfoNotice			= 11181;
+
+	kMsgCL2GSOnlineGiftClaimRequest			= 11182;
+
+	kMsgGS2CLOnlineGiftClaimReply			= 11183;
+
+	kMsgGS2CLMysteryMallNotice			= 11184;
+
+	kMsgCL2GSPathFindRequest			= 11185;
+
+	kMsgGS2CLPathFindReply			= 11186;
+
+	kMsgMS2GSBattleLeaveRequest			= 11187;
+
+	kMsgGS2MSBattleLeaveReply			= 11188;
+
+	kMsgS2ASMileStoneTaskAddNotice			= 11189;
+
+	kMsgGS2CLGuildDerbyStatusNotice			= 11190;
+
+	kMsgCL2GSGameEvaluationRequest			= 11191;
+
+	kMsgGS2CLGameEvaluationReply			= 11192;
+
+	kMsgGS2ASRemovePlayerNotice			= 11193;
+
+	kMsgGS2CLPresbyterDataUpdateNotice			= 11194;
+
+	kMsgG2CLIntoRegionNotice			= 11195;
+
+	kMsgG2CLLeaveRegionNotice			= 11196;
+
+	kMsgCL2GSRankHistoryRequest			= 11197;
+
+	kMsgGS2CLRankHistoryReply			= 11198;
+
+	kMsgCL2GSLastRankPeriodRequest			= 11199;
+
+	kMsgGS2CLLastRankPeriodReply			= 11200;
+
+	kMsgCL2GSGetBattleMailCacheRequest			= 11201;
+
+	kMsgGS2CLGetBattleMailCacheReply			= 11202;
+
+	kMsgCL2GSCurrentRankPeriodRequest			= 11203;
+
+	kMsgGS2CLCurrentRankPeriodReply			= 11204;
+
+	kMsgGS2MSViewerKeepLiveRequest			= 11205;
+
+	kMsgMS2GSViewerKeepLiveReply			= 11206;
+
+	kMsgS2ASMileStoneTaskAddGuildNotice			= 11207;
+
+	kMsgCheckVersionNotice			= 11208;
+
+	kMsgS2GSCastleIsBattleNotice			= 11209;
+
+	kMsgGS2CLGuildAddMemberNotice			= 11210;
+
+	kMsgGS2CLGuildRemoveMemberNotice			= 11211;
+
+	kMsgGS2CLPlayerExpeRefreshWaveNotice			= 11212;
+
+	kMsgGS2CLGuildAddApplicantNotice			= 11213;
+
+	kMsgGS2CLGuildRemoveApplicantNotice			= 11214;
+
+	kMsgCL2GSGuildGiftUseAnonymousRequest			= 11215;
+
+	kMsgGS2CLGuildGiftUseAnonymousReply			= 11216;
+
+	kMsgCL2GSPlayerExpeStoryRewardInfoRequest			= 11217;
+
+	kMsgGS2CLPlayerExpeStoryRewardInfoReply			= 11218;
+
+	kMsgCL2GSPlayerExpeStoryRewardClaimRequest			= 11219;
+
+	kMsgGS2CLPlayerExpeStoryRewardClaimReply			= 11220;
+
+	kMsgS2RPSBattleReport			= 11221;
+
+	kMsgGS2CLMarchOutStationedNotice			= 11222;
+
+	kMsgGS2CLGuildDerbyScoreNotice			= 11223;
+
+	kMsgCL2GSCleanDayGetRewardRequest			= 11224;
+
+	kMsgGS2CLCleanDayGetRewardReply			= 11225;
+
+	kMsgGS2CLNeedDayResetNotice			= 11226;
+
+	kMsgGS2CLDayResetNotice			= 11227;
+
+	kMsgGS2CLEnterBattleSyn			= 11228;
+
+	kMsgGM2GSKickoffPlayers			= 11229;
+
+	kMsgGM2GSKickPlayersNotice			= 11230;
+
+	kMsgGS2CLMarchStationedInNotice			= 11231;
+
+	kMsgGM2USSetCreateRoleRule			= 11232;
+
+	kMsgS2SServerTimeUpdateNotice			= 11233;
+
+	kMsgCL2GSActivityPeriodRequest			= 11234;
+
+	kMsgGS2CLActivityPeriodReply			= 11235;
+
+	kMsgCL2GSGuildDerbySetAutoRefreshRequest			= 11236;
+
+	kMsgGS2CLGuildDerbySetAutoRefreshReply			= 11237;
+
+	kMsgGS2CLGuildDerbyAutoRefreshNotice			= 11238;
+
+	kMsgGS2CLRaderAllInfoNotice			= 11239;
+
+	kMsgGS2CLRaderBaseInfoNotice			= 11240;
+
+	kMsgGS2CLRaderInfoNotice			= 11241;
+
+	kMsgGS2CLDelRaderNotice			= 11242;
+
+	kMsgCL2GSRaderAcceptRequest			= 11243;
+
+	kMsgGS2CLRaderAcceptReply			= 11244;
+
+	kMsgCL2GSRaderCompleteRequest			= 11245;
+
+	kMsgGS2CLRaderCompleteReply			= 11246;
+
+	kMsgCL2GSRaderRewardRequest			= 11247;
+
+	kMsgGS2CLRaderRewardReply			= 11248;
+
+	kMsgGS2CLMapGuildStatusInfoNotice			= 11249;
+
+	kMsgGS2CLMapGuildUpdateStatusNotice			= 11250;
+
+	kMsgGS2CLMapGuildRemoveStatusNotice			= 11251;
+
+	kMsgGS2CLVirtualQueueAllInfoNotice			= 11252;
+
+	kMsgGS2CLVirtualQueueUpdateInfoNotice			= 11253;
+
+	kMsgGS2CLGuildMasterChangedNotice			= 11254;
+
+	kMsgCL2GSGuildDerbyApplyPlayerInfoRequest			= 11255;
+
+	kMsgGS2CLGuildDerbyApplyPlayerInfoReply			= 11256;
+
+	kMsgGS2CLRadarAllInfoNotice			= 11257;
+
+	kMsgGS2CLRadarBaseInfoNotice			= 11258;
+
+	kMsgGS2CLRadarInfoNotice			= 11259;
+
+	kMsgGS2CLDelRadarNotice			= 11260;
+
+	kMsgCL2GSRadarAcceptRequest			= 11261;
+
+	kMsgGS2CLRadarAcceptReply			= 11262;
+
+	kMsgCL2GSRadarRewardRequest			= 11263;
+
+	kMsgGS2CLRadarRewardReply			= 11264;
+
+	kMsgCL2GSRadarCompleteRequest			= 11265;
+
+	kMsgGS2CLRadarCompleteReply			= 11266;
+
+	kMsgCL2GSVirtualQueueCompleteRequest			= 11267;
+
+	kMsgGS2CLVirtualQueueCompleteReply			= 11268;
+
+	kMsgCL2GSPiggySavingsRewardRequest			= 11269;
+
+	kMsgCL2GSPiggySavingsRewardReply			= 11270;
+
+	kMsgGS2CLPiggySavingsNotice			= 11271;
+
+	kMsgS2RPSPushMsg			= 11272;
+
+	kMsgGS2RPSPlayerGameID			= 11273;
+
+	kMsgMS2GSExploreFoundBuildingRequest			= 11274;
+
+	kMsgGS2MSExploreFoundBuildingReply			= 11275;
+
+	kMsgGS2ASMileStoneRankNotice			= 11276;
+
+	kMsgMS2GuildSMileStoneRankNotice			= 11277;
+
+	kMsgGuildS2ASMileStoneRankNotice			= 11278;
+
+	kMsgMS2GuildSMileStoneRankGuildDataNotice			= 11279;
+
+	kMsgGuildS2ASMileStoneRankGuildDataNotice			= 11280;
+
+	kMsgMS2GSAllRadarInfoNotice			= 11281;
+
+	kMsgMS2GSRadarUpdateInfoNotice			= 11282;
+
+	kMsgMS2GSRadarDeleteInfoNotice			= 11283;
+
+	kMsgGS2MSClearRadarNotice			= 11284;
+
+	kMsgMS2GSRadarMonsterDeadNotice			= 11285;
+
+	kMsgMS2GSRadarMonsterDeadRequest			= 11286;
+
+	kMsgGS2MSRadarMonsterDeadReply			= 11287;
+
+	kMsgMS2GSMoveCastleNotice			= 11288;
+
+	kMsgMS2GSCastlePositionChangeNotice			= 11289;
+
+	kMsgCL2GSVirtualQueueAcceptRequest			= 11290;
+
+	kMsgGS2CLVirtualQueueAcceptReply			= 11291;
+
+	kMsgGS2CLActivityRetainedNotice			= 11292;
+
+	kMsgCL2GSActivityRetainedLotteryRequest			= 11293;
+
+	kMsgGS2CLActivityRetainedLotteryReply			= 11294;
+
+	kMsgCL2GSActivityRetainedReceiveAwardRequest			= 11295;
+
+	kMsgGS2CLActivityRetainedReceiveAwardReply			= 11296;
+
+	kMsgCL2GSDeblockingFeatureTroopRequest			= 11297;
+
+	kMsgGS2CLDeblockingFeatureTroopReply			= 11298;
+
+	kMsgCL2GSUseFeatureToopRequest			= 11299;
+
+	kMsgGS2CLUseFeatureToopReply			= 11300;
+
+	kMsgCL2GSGuildMembersPositionRequest			= 11301;
+
+	kMsgGS2CLGuildMembersPositionReply			= 11302;
+
+	kMsgCL2GSUpgradeStageRequest			= 11303;
+
+	kMsgGS2CLUpgradeStageReply			= 11304;
+
+	kMsgGS2CLPickFinishNotice			= 11305;
+
+	kMsgMS2GSAddRuneStatusRequest			= 11306;
+
+	kMsgGS2MSAddRuneStatusReply			= 11307;
+
+	kMsgCL2GSExploreUpdateExpAndLevel			= 11308;
+
+	kMsgCL2GSExploreUpdateAuto			= 11309;
+
+	kMsgGS2CLExploreUpdateExpAndLevel			= 11310;
+
+	kMsgGS2CLExploreUpdateAuto			= 11311;
+
+	kMsgGS2CLExploreNotice			= 11312;
+
+	kMsgGS2CLExploreExpAndLevelNotice			= 11313;
+
+	kMsgGS2CLAutoExploreNotice			= 11314;
+
+	kMsgCL2GSGetTDRequest			= 11327;
+
+	kMsgGS2CLGetTDReply			= 11328;
+
+	kMsgGS2CLTDNotice			= 11329;
+
+	kMsgCL2GSOpenTDBoxRequest			= 11330;
+
+	kMsgGS2CLOpenTDBoxReply			= 11331;
+
+	kMsgCL2GSUpgradeTDCardRequest			= 11332;
+
+	kMsgGS2CLUpgradeTDCardReply			= 11333;
+
+	kMsgCL2GSGetTdDChapterRequest			= 11334;
+
+	kMsgGS2CLGetTDChapterReply			= 11335;
+
+	kMsgGS2CLUpdateTDChapterNotice			= 11336;
+
+	kMsgGS2CLUpdateTDPassNotice			= 11337;
+
+	kMsgCL2GSSetTDCardGroupRequest			= 11338;
+
+	kMsgGS2CLSetTDCardGroupReply			= 11339;
+
+	kMsgCL2GSGetTDCardGroupRequest			= 11340;
+
+	kMsgGS2CLGetTDCardGroupReply			= 11341;
+
+	kMsgCL2GSTDFightStartRequest			= 11342;
+
+	kMsgCL2GSTDFightStartReply			= 11343;
+
+	kMsgCL2GSTDFightEndRequest			= 11344;
+
+	kMsgCL2GSTDFightEndReply			= 11345;
+
+	kMsgGS2CLStumentAllInNotice			= 11346;
+
+	kMsgGS2CLGetDeployInfoNotice			= 11347;
+
+	kMsgGS2CLGetDeployInfoRequest			= 11348;
+
+	kMsgGS2CLGetDeployInfoReply			= 11349;
+
+	kMsgGS2CLSetDeployInfoRequest			= 11350;
+
+	kMsgGS2CLSetDeployInfoReply			= 11351;
+
+	kMsgG2CLUpdateStrongholdNotice			= 11352;
+
+	kMsgG2CLRemoveStrongholdNotice			= 11353;
+
+	kMsgGS2CLInstumentAllInNotice			= 11355;
+
+	kMsgGS2CLInstumentReserchWorkNotice			= 11356;
+
+	kMsgCL2GSInstumentResearchRequest			= 11357;
+
+	kMsgGS2CLInstumentResearchnReply			= 11358;
+
+	kMsgCL2GSInstumentInstantResearchRequest			= 11359;
+
+	kMsgGS2CLInstumentInstantResearchnReply			= 11360;
+
+	kMsgCL2GSInstumentCancelResearchRequest			= 11361;
+
+	kMsgGS2CLInstumentCancelResearchReply			= 11362;
+
+	kMsgCL2GSInstumentResearchVipFreeTimeRequest			= 11363;
+
+	kMsgGS2CLInstumentResearchVipFreeTimeReply			= 11364;
+
+	kMsgCL2GSInstumentInstantSpeedUpResearchRequest			= 11365;
+
+	kMsgGS2CLInstumentInstantSpeedUpResearchReply			= 11366;
+
+	kMsgGS2CLAllInstumentNotice			= 11367;
+
+	kMsgCL2GSPrepareSoldierRequest			= 11368;
+
+	kMsgCL2GSPrepareSoldierReply			= 11369;
+
+	kMsgGS2CLPrepareSoldierNotice			= 11370;
+
+	kMsgGS2CLPrepareSoldierTrainNotice			= 11371;
+
+	kMsgCL2GSPrepareSoldierTrainRequest			= 11372;
+
+	kMsgGS2CLPrepareSoldierTrainReply			= 11373;
+
+	kMsgCL2GSPrepareSoldierInstantTrainRequest			= 11374;
+
+	kMsgGS2CLPrepareSoldierInstantTrainReply			= 11375;
+
+	kMsgCL2GSPrepareSoldierInstantSpeedUpRequest			= 11376;
+
+	kMsgGS2CLPrepareSoldierInstantSpeedUpReply			= 11377;
+
+	kMsgGS2CLInstumentResearchReply			= 11378;
+
+	kMsgGS2CLInstumentInstantResearchReply			= 11379;
+
+	kMsgCL2GSPrepareSoldierNotice			= 11380;
+
+	kMsgGS2CLPrepareSoldierBaseNotice			= 11381;
+
+	kMsgCL2GSPrepareSoldierCancelRequest			= 11382;
+
+	kMsgGS2CLPrepareSoldierCancelReply			= 11383;
+
+	kMsgCL2GSGiveupStrongholdRequest			= 11384;
+
+	kMsgGS2CLGiveupStrongholdReply			= 11385;
+
+	kMsgMS2GSAddStatusRequest			= 11386;
+
+	kMsgGS2MSAddStatusReply			= 11387;
+
+	kMsgMS2GSRemoveStatusRequest			= 11388;
+
+	kMsgGS2MSRemoveStatusReply			= 11389;
+
+	kMsgCL2GSGetStrongholdRewardRequest			= 11390;
+
+	kMsgGS2CLGetStrongholdRewardReply			= 11391;
+
+	kMsgGS2CLPrepareCureWorkNotice			= 11392;
+
+	kMsgGS2CLPrepareWoundedSoldierNotice			= 11393;
+
+	kMsgCL2GSPrepareHospitalCureRequest			= 11394;
+
+	kMsgGS2CLPrepareHospitalCureReply			= 11395;
+
+	kMsgCL2GSPrepareHospitalInstantCureRequest			= 11396;
+
+	kMsgGS2CLPrepareHospitalInstantCureReply			= 11397;
+
+	kMsgCL2GSPrepareHospitalInstantSpeedUpRequest			= 11398;
+
+	kMsgGS2CLPrepareHospitalInstantSpeedUpReply			= 11399;
+
+	kMsgCL2GSInstumentDealResearchRequest			= 11400;
+
+	kMsgGS2CLInstumentDealResearchReply			= 11401;
+
+	kMsgCL2GSPrepareHospitalCancelRequest			= 11402;
+
+	kMsgCL2GSPrepareHospitalCancelReply			= 11403;
+
+	kMsgGS2CLMarchEnterLeaveTempleRange			= 11404;
+
+	kMsgGS2CLPrepareHospitalCancelReply			= 11405;
+
+	kMsgGS2CLDeployTroopUpdateNotice			= 11406;
+
+	kMsgCL2GSGiveupTempleRequest			= 11407;
+
+	kMsgGS2CLGiveupTempleReply			= 11408;
+
+	kMsgCL2GSStartTempleWarRequest			= 11409;
+
+	kMsgGS2CLStartTempleWarReply			= 11410;
+
+	kMsgCL2GSCreateMarchTKRequest			= 11411;
+
+	kMsgGS2CLCreateMarchTKReply			= 11412;
+
+	kMsgCL2GSGetMapBuildingBriefInfoRequest			= 11413;
+
+	kMsgGS2CLGetMapBuildingBriefInfoReply			= 11414;
+
+	kMsgGS2CLUpdateMapBuildingBriefInfo			= 11415;
+
+	kMsgCL2GSGetSeekTalentRequest			= 11416;
+
+	kMsgGS2CLGetSeekTalentReply			= 11417;
+
+	kMsgCL2GSOpenSeekTalentRequest			= 11418;
+
+	kMsgGS2CLOpenSeekTalentReply			= 11419;
+
+	kMsgGS2CLOpenSeekTalentNotice			= 11420;
+
+	kMsgG2CLUpdateGuildStrongholdNotice			= 11421;
+
+	kMsgG2CLRemoveGuildStrongholdNotice			= 11422;
+
+	kMsgGS2CLDeployGoHomeNotice			= 11423;
+
+	kMsgMS2GSGetDeployInfoRequest			= 11424;
+
+	kMsgGS2MSGetDeployInfoReply			= 11425;
+
+	kMsgMS2GSDeploySetInMapRquest			= 11426;
+
+	kMsgGS2MSDeploySetInMapReply			= 11427;
+
+	kMsgMS2GSDeployGoHomeRequest			= 11428;
+
+	kMsgGS2MSDeployGoHomeRequest			= 11429;
+
+	kMsgGS2MSDeployGoHomeReply			= 11430;
+
+	kMsgCL2GSPluginDeployRequest			= 11431;
+
+	kMsgCL2GSPluginDeployReply			= 11432;
+
+	kMsgGS2CLPluginDeployReply			= 11433;
+
+	kMsgCL2GSMyStrongholdRequest			= 11434;
+
+	kMsgGS2CLMyStrongholdReply			= 11435;
+
+	kMsgGS2MSSetStrongholdStatusRequest			= 11436;
+
+	kMsgCL2GSRadarRefreshRequest			= 11437;
+
+	kMsgGS2CLRadarRefreshReply			= 11438;
+
+	kMsgGS2CLCityVipFreeTimeReply_test_info			= 11439;
+
+	kMsgGS2CLCityVipFreeTimeReply_test			= 11440;
+
+	kMsgGS2CLStrongholdMonsterCreateNotice			= 11441;
+
+	kMsgCL2GSRepairStrongholdRequest			= 11442;
+
+	kMsgGS2CLRepairStrongholdReply			= 11443;
+
+	kMsgGS2CLGuildTempleAndPassNotice			= 11444;
+
+	kMsgGS2CLDramaStoryNotice			= 11445;
+
+	kMsgCL2GSDramaStoryInfoRequest			= 11446;
+
+	kMsgGS2CLDramaStoryInfoReply			= 11447;
+
+	kMsgGS2CLTaskStutusNotice			= 11448;
+
+	kMsgCL2GSDramaStoryRewardRequest			= 11449;
+
+	kMsgGS2CLDramaStoryRewardReply			= 11450;
+
+	kMsgS2ASUpdateDramaStoryRankDataNotice			= 11451;
+
+	kMsgGS2CLGuildExpAndLevelNotice			= 11452;
+
+	kMsgGS2CLDramaStoryTaskValueNotice			= 11453;
+
+	kMsgAS2GSDramaStoryChapterNotice			= 11454;
+
+	kMsgAS2GSDramaStoryStatusNotice			= 11455;
+
+	kMsgAS2GSDramaStoryAcceptPlayerTaskNotice			= 11456;
+
+	kMsgCL2GSStrongholdReenforceInfoRequest			= 11457;
+
+	kMsgGS2CLStrongholdReenforceInfoReply			= 11458;
+
+	kMsgGS2CLStrongholdReenforceInfoNotice			= 11459;
+
+	kMsgGuild2GSExpAndLevelNotice			= 11460;
+
+	kMsgCL2GSResetHeroRequest			= 11461;
+
+	kMsgGS2CLResetHeroReply			= 11462;
+
+	kMsgCL2GSBreakHeroRequest			= 11463;
+
+	kMsgGS2CLBreakHeroReply			= 11464;
+
+	kMsgCL2GSBreakDebrisRequest			= 11465;
+
+	kMsgGS2CLBreakDebrisReply			= 11466;
+
+	kMsgGS2CLChapterChangeNotice			= 11467;
+
+	kMsgS2GSPlayerDramaStoryUpdateRankRequest			= 11468;
+
+	kMsgS2GSPlayerDramaStoryUpdateRankReply			= 11469;
+
+	kMsgMS2GSPlayerStrongholdInfoUpdateRequest			= 11470;
+
+	kMsgMS2GSPlayerStrongholdInfoUpdateReply			= 11471;
+
+	kMsgAS2GSDramaStoryTaskComplate			= 11472;
+
+	kMsgMS2GuildSTempleInfoNotice			= 11473;
+
+	kMsgGS2CLGuildAchievmentNotice			= 11474;
+
+	kMsgAS2SDramaStoryInfo			= 11475;
+
+	kMsgAS2SAllDramaStoryInfo			= 11476;
+
+	kMsgCL2GSChangeMealRequest			= 11477;
+
+	kMsgCL2GSChangeMealReply			= 11478;
+
+	kMsgGS2CLGuildMealNotice			= 11479;
+
+	kMsgGS2CLShopManNotice			= 11480;
+
+	kMsgCL2GSShopManTalkRequest			= 11481;
+
+	kMsgGS2CLShopManTalkReply			= 11482;
+
+	kMsgCL2GSChangeMedalWalRequest			= 11483;
+
+	kMsgCL2GSChangeMedalWallReply			= 11484;
+
+	kMsgGS2CLGuildMedalWalNotice			= 11485;
+
+	kMsgCL2GSChangeMedalWallRequest			= 11486;
+
+	kMsgGS2CLGuildMedalWallNotice			= 11487;
+
+	kMsgCL2GSResetReforemPointRequest			= 11488;
+
+	kMsgGS2CLResetReforemPointRequest			= 11489;
+
+	kMsgGS2CLResetReforemPointReply			= 11490;
+
+	kMsgGS2MSCaptureStrongholdRequest			= 11491;
+
+	kMsgGS2MSCreateStrongholdMonsterRequest			= 11492;
+
+	kMsgGS2CLCastleReenforceInfoNotice			= 11493;
+
+	kMsgGS2CLMintageNotice			= 11494;
+
+	kMsgCL2GSMintageCollectRequest			= 11495;
+
+	kMsgGS2CLWallAttachNotice			= 11520;
+
+	kMsgCL2GSWallAttachLevelUpRequest			= 11521;
+
+	kMsgCL2GSWallAttachLevelUpReply			= 11522;
+
+	kMsgCL2GSWallAttachLevelUpCancelRequest			= 11523;
+
+	kMsgCL2GSWallAttachLevelUpCancelReply			= 11524;
+
+	kMsgCL2GSWallAttachLevelUpInstantRequest			= 11525;
+
+	kMsgCL2GSWallAttachLevelUpInstantReply			= 11526;
+
+	kMsgGS2CLMintageCollectReply			= 11527;
+
+	kMsgCL2GSMintageRequest			= 11528;
+
+	kMsgGS2CLMintageReply			= 11529;
+
+	kMsgCL2GSStrengthenEquipmentRequest			= 11530;
+
+	kMsgGSS2CLtrengthenEquipmentReply			= 11531;
+
+	kMsgCL2GSRefiningEquipmentRequest			= 11532;
+
+	kMsgGS2CLRefiningEquipmentReply			= 11533;
+
+	kMsgCL2GSResetRefinedEquipmentRequest			= 11534;
+
+	kMsgGS2CLResetRefinedEquipmentReply			= 11535;
+
+	kMsgMS2GSCastleBattlePillageRequest			= 11536;
+
+	kMsgMS2GSCastleBattlePillageReply			= 11537;
+
+	kMsgMS2GSNpcFortInitRequest			= 11538;
+
+	kMsgMS2GSNpcFortInitReply			= 11539;
+
+	kMsgMS2GSNpcDataUpdateRequest			= 11540;
+
+	kMsgMS2GSNpcDataUpdateReply			= 11541;
+
+	kMsgGS2CLProsperityNotice			= 11542;
+
+	kMsgCL2GSWallAttachSpeedupRequest			= 11543;
+
+	kMsgCL2GSWallAttachSpeedupReply			= 11544;
+
+	kMsgCL2GSWallRepairSpeedUp			= 11545;
+
+	kMsgCL2GSWallRepairSpeedReply			= 11546;
+
+	kMsgGs2CLDramaStoryChangeInfoNotice			= 11547;
+
+	kMsgCL2GSDramaStoryChangeInfoRequest			= 11548;
+
+	kMsgGS2CLDramaStoryChangeInfoReply			= 11549;
+
+	kMsgCL2GSDramaStoryChangeRewardRequest			= 11550;
+
+	kMsgCL2GSDramaStoryChangeRewardReply			= 11551;
+
+	kMsgGS2CLCastleFriendReenforceInfoNotice			= 11552;
+
+	kMsgMS2GSNpcFortInitNotice			= 11553;
+
+	kMsgAS2GSDramaStoryChangeInfoNotice			= 11554;
+
+	kMsgAS2GSDramaStoryChangeCompleteNotice			= 11555;
+
+	kMsgCL2GSGetReenforcepRequest			= 11556;
+
+	kMsgGS2CLGetReenforcepReply			= 11557;
+
+	kMsgGS2CLFriendReenforceInfoNotice			= 11558;
+
+	kMsgCL2GSCancelReenforceRequest			= 11561;
+
+	kMsgGS2CLCancelReenforceReply			= 11562;
+
+	kMsgGS2CLGuildHostilityNotice			= 11563;
+
+	kMsgGuild2GSGuildHostilityNotice			= 11564;
+
+	kMsgGS2CLWallAttachLevelUpReply			= 11565;
+
+	kMsgGS2CLWallAttachLevelUpCancelReply			= 11566;
+
+	kMsgGS2CLWallAttachLevelUpInstantReply			= 11567;
+
+	kMsgGS2CLWallAttachSpeedupReply			= 11568;
+
+	kMsgGS2CLWallRepairSpeedReply			= 11569;
+
+	kMsgGS2CLWallBuffNotice			= 11570;
+
+	kMsgGS2CLLoginActivityNotice			= 11571;
+
+	kMsgCL2GSLLoginActivityReceiveAwardRequest			= 11576;
+
+	kMsgGS2CLLoginActivityReceiveAwardReply			= 11577;
+
+	kMsgCL2GSUnlockExploredBuildingRequest			= 11582;
+
+	kMsgGS2CLUnlockExploredBuildingReply			= 11583;
+
+	kMsgGS2CLPlayerAllActivityPersonalNotice			= 11584;
+
+	kMsgGS2CLPlayerActivityPersonalRewardedNotice			= 11585;
+
+	kMsgGS2CLPlayerActivityPersonalNotice			= 11586;
+
+	kMsgGS2CLLoginActivityyPersonalNotice			= 11587;
+
+	kMsgCL2GSLoginActivityyPersonalReceiveAwardRequest			= 11588;
+
+	kMsgGS2CLLoginActivityyPersonalReceiveAwardReply			= 11589;
+
+	kMsgGS2MSCreateWoodenStake			= 11590;
+
+	kMsgGS2CLActivityPersonalStatusNotice			= 11591;
+
+	kMsgGS2CLActivityyPersonalRemoveNotice			= 11592;
+
+	kMsgCL2GSStationRequest			= 11593;
+
+	kMsgGS2CLStationgReply			= 11594;
+
+	kMsgGS2CLActivityPersonalRemoveNotice			= 11595;
+
+	kMsgGS2CLLoginActivityPersonalNotice			= 11596;
+
+	kMsgCL2GSLoginActivityPersonalReceiveAwardRequest			= 11597;
+
+	kMsgGS2CLLoginActivityPersonalReceiveAwardReply			= 11598;
+
+	kMsgGS2CLPlayerActivityPersonalTaskUpdateNotice			= 11599;
+
+	kMsgGS2CLPlayerActivityPersonalScoreNotice			= 11600;
+
+	kMsgCL2GSActivityPersonalTaskAwardRequest			= 11601;
+
+	kMsgCL2GSActivityPersonalTaskAwardReply			= 11602;
+
+	kMsgGS2ASCreateEvent			= 11603;
+
+	kMsgCL2GSActivityTaskPersonalReceiveVipAwardRequest			= 11604;
+
+	kMsgGS2CLctivityTaskPersonalReceiveVipAwardReply			= 11605;
+
+	kMsgCL2GSActivityTaskPersonalReceiveAwardRequest			= 11606;
+
+	kMsgGS2CLctivityTaskPersonalReceiveAwardReply			= 11607;
+
+	kMsgCL2GSPluginDeployInfoREequest			= 11608;
+
+	kMsgGS2CLPluginDeployInfoReply			= 11609;
+
+	kMsgCL2GSPluginDeployInfoRequest			= 11610;
+
+	kMsgGS2CLPluginDeployInfoNotice			= 11611;
+
+	kMsgGS2CLPluginDeployErrorNotice			= 11612;
+
+	kMsgAS2GSDramaStoryStartEventNotice			= 11613;
+
+	kMsgCL2GSGuildLevelUpRequest			= 11614;
+
+	kMsgGS2CLGuildLevelUpReply			= 11615;
+
+	kMsgCL2GSGuildExpDonateRequest			= 11616;
+
+	kMsgGS2CLGuildExpDonateReply			= 11617;
+
+	kMsgGS2CLGuildExpDonateNotice			= 11618;
+
+	kMsgGS2CLGuildExpDonateCountNotice			= 11619;
+
+	kMsgGuild2GSUpdatePlayerGuildExpInfoRequest			= 11620;
+
+	kMsgGS2GuildUpdatePlayerGuildExpInfoReply			= 11621;
+
+	kMsgGuild2ASDramaStoryOccupyCityNotice			= 11622;
+
+	kMsgGuild2ASDramaStoryOccupyStrongNotice			= 11623;
+
+	kMsgG2CLUpdataKillDataNotice			= 11624;
+
+	kMsgDramaStroyTaskChangeNotice			= 11625;
+
+	kMsgCL2GSGuildTaskRefreshRequest			= 11626;
+
+	kMsgGS2CLGuildTaskRefreshReply			= 11627;
+
+	kMsgGS2CLGuildTaskNotice			= 11628;
+
+	kMsgGS2CLGuildTaskUpdateNotice			= 11629;
+
+	kMsgMS2GSAddBuffRequest			= 11630;
+
+	kMsgGS2MSAddBuffReply			= 11631;
+}
+
+enum MsgIDEnum
+{
+	kMsgIDEnum_Base			= 0;	
+	kMsgIDEnum_BeginID			= 10000;	 // 动态分配消息ID起始值
+	kMsgIDEnum_LastID			= 11631;	 // 最后使用的消息ID
+	kMsgIDEnum_EndID			= 50000;		 // 动态分配消息ID，最大值
+}
+

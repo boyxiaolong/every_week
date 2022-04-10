@@ -1,0 +1,41 @@
+syntax = "proto3";
+package protomsg;
+
+
+//////////////////////////////////////////////////////////////////////////
+///  chat 客户端消息 开始
+//////////////////////////////////////////////////////////////////////////
+
+//通知聊天TOKEN
+message MsgGS2CLTokenNotice
+{
+    string token = 1;
+    AllGateWayAddress address = 2;
+}
+
+//获取聊天TOKEN
+message MsgCL2GSGetTokenRequest
+{
+    
+}
+
+//获取聊天TOKEN
+message MsgCL2GSGetTokenReply
+{
+    int32	error_code		= 99;
+}
+
+message GateWayAddress
+{
+  string name = 1;
+  string address = 2;
+}
+
+message AllGateWayAddress
+{
+  repeated GateWayAddress all_gateway_address = 1;
+}
+
+//////////////////////////////////////////////////////////////////////////
+///  chat 客户端消息 结束
+//////////////////////////////////////////////////////////////////////////

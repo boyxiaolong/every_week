@@ -1,0 +1,30 @@
+<btree name="guild">
+  <root name="root test" type="sequence" sleep_time="1000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="root test" type="sequence" sleep_time="1000">
+          <node name="login" type="task" task_type="Login" task_params="1"/>
+          <node name="superman" type="task" task_type="PM" task_params="superman"/>
+        </node> 
+    </node>
+    <node name="wait time" type="randomweigth" random_weigth="10,80">
+      <node name="wait 500" type="task" task_type="Default" sleep_time="500" />
+      <node name="wait 2000" type="task" task_type="Default" sleep_time="2000"/>
+    </node>    
+    <node name="isinguild" type="condition" condition_check="IsInGuild" condition_result="false">
+      <node name="join guild" type="randomweigth" random_weigth="10,90">
+        <node name="create guild" type="task" task_type="CreateGuild" task_params="1" />
+        <node name="join guild" type="task" task_type="JoinGuild" task_params="1"/>
+      </node>
+      <node name="leaveguild" type="randomweigth" random_weigth="10,10,10">
+        <node name="default" type="task" task_type="Default"/>
+        <node name="isinguild" type="condition" condition_check="CheckGuildPosition" condition_params="2" condition_result="true">
+          <node name="join guild" type="task" task_type="SendGuildMail" task_params="0" reset_intervel="60" do_times="1"/>
+        </node>        
+        <node name="isinguild" type="condition" condition_check="CheckGuildPosition" condition_params="5" condition_result="true">
+          <node name="dismiss guild" type="task" task_type="DismissGuild" task_params="1" />
+          <node name="leave guild" type="task" task_type="LeaveGuild" />
+        </node>
+      </node>      
+    </node>
+  </root>
+</btree>

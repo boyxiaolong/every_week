@@ -1,0 +1,87 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common_rank.proto";
+
+// 查看排行榜
+message MsgCL2GSRankQueryRankBoardRequest
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  uint32  rank_board_id = 2;    // 排行榜ID
+  uint32  start_rank    = 3;    // 开始显示的名次, 每次最多下发50个
+}
+
+message MsgGS2CLRankQueryRankBoardReply
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  uint32  rank_board_id = 2;    // 排行榜ID
+  uint32  start_rank    = 3;    // 开始显示的名次
+  repeated RankInfo infos = 4;  // 榜单
+  uint32  self_rank     = 5;    // 自己的名次
+  uint32  self_last_rank  = 6;  // 自己上次名次
+  uint64  self_score    = 7;    // 自己的积分
+  int64   refresh_time  = 8;    // 刷新时间戳
+
+  int32   error_code    = 99; 
+}
+
+message MsgCL2GSRankJumpSelfRequest
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  uint32  rank_board_id = 2;    // 排行榜ID
+}
+
+message MsgGS2CLRankJumpSelfReply
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  uint32  rank_board_id = 2;    // 排行榜ID
+  uint32  start_rank    = 3;    // 开始显示的名次
+  repeated RankInfo infos = 4;  // 榜单
+  uint32  self_rank     = 5;    // 自己的名次
+  uint32  self_last_rank  = 6;  // 自己上次名次
+  uint64  self_score    = 7;    // 自己的积分
+  int64   refresh_time  = 8;    // 刷新时间戳
+
+  int32   error_code    = 99; 
+}
+
+message MsgCL2GSRankHistoryRequest
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  uint32  rank_board_id = 2;    // 排行榜ID
+}
+
+message MsgGS2CLRankHistoryReply
+{
+  repeated RankBoardHistory history = 1;
+
+  int32   error_code    = 99; 
+}
+
+// 获取活动排行榜上期期数
+message MsgCL2GSLastRankPeriodRequest
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  repeated uint32  rank_board_ids = 2;    // 排行榜ID列表
+}
+
+message MsgGS2CLLastRankPeriodReply
+{
+  repeated RankPeriodData datas = 1;
+
+  int32   error_code    = 99; 
+}
+
+// 获取当前活动排行榜期数
+message MsgCL2GSCurrentRankPeriodRequest
+{
+  RankBoardType type    = 1;    // 排行榜类型
+  repeated uint32  rank_board_ids = 2;    // 排行榜ID列表
+}
+
+message MsgGS2CLCurrentRankPeriodReply
+{
+  repeated RankPeriodData datas = 1;
+
+  int32   error_code    = 99; 
+}
+

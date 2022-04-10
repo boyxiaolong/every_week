@@ -1,0 +1,7 @@
+<btree name="login">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="login task" type="task" task_type="Login" task_params="1" reset_intervel="60" do_times="1" sleep_time ="5"/>
+    <node name="logout task" type="task" task_type="Logout"/>
+    <node name="end task" type="task" task_type="End"/>
+  </root>
+</btree>

@@ -1,0 +1,14 @@
+{
+  "kingdom_id": 0,
+  "period": 60,
+  "messages": [
+    {
+      "language": 1,
+      "content": "scrolling message..."
+    },
+    {
+      "language": 2,
+      "content": "走马灯信息......"
+    }
+  ]
+}

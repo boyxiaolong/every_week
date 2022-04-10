@@ -1,0 +1,13 @@
+<btree name="login">
+  <root name="root test" type="sequence" sleep_time="5000">
+    <node name="login task" type="task" task_type="Login" task_params="1" reset_intervel="60" do_times="1" sleep_time ="5"/>
+
+    <node name="superman" type="task" task_type="PM" task_params="skipguide" reset_intervel="0" do_times="1" sleep_time ="1"/>
+    <node name="superman" type="task" task_type="PM" task_params="cleanmist"  reset_intervel="0" do_times="1" sleep_time ="1"/>
+    <node name="superman" type="task" task_type="PM" task_params="additem 9000 100"  reset_intervel="0" do_times="1" sleep_time ="1"/>
+    <node name="superman" type="task" task_type="PM" task_params="superman" reset_intervel="0" do_times="1" sleep_time ="10"/>
+    <node name="superman" type="task" task_type="PM" task_params="addcurrency 1 10000000" reset_intervel="0" do_times="1" sleep_time ="1"/>
+    <node name="superman" type="task" task_type="PM" task_params="addsolider 1000000" reset_intervel="0" do_times="1" sleep_time ="1"/>
+    <node name="end task" type="task" task_type="End"/>
+  </root>
+</btree>

@@ -1,0 +1,37 @@
+syntax = "proto3";
+import "msg_common_map.proto";
+import "msg_common.proto";
+
+package protomsg;
+
+
+// 远征关卡信息
+message PlayerExpeLevelInfo
+{
+    uint32 level_id         = 1;
+    int32 star              = 2;
+    bool is_exist_reward    = 3;    // 是否有奖励未领
+}
+
+
+// 远征正规军编成信息
+message ExpeRegularArmyInfo {
+    uint64 player_id = 1;
+    bool hard_mode = 2;
+    repeated MarchArmyData army_data = 3;
+    MarchArmyData hq_data = 4;
+    uint32 castle_level = 5;    // 主堡等级
+}
+
+// 远征波次信息
+message ExpeWaveInfo {
+    uint32 wave_id = 1;
+    uint32 cur_wave = 2;    // 当前波数
+    uint32 max_wave = 3;    // 总波数
+    int64 wave_time = 4;    // 刷新时间点
+    repeated uint32 monster_id = 5;
+    uint32 monster_count = 6;
+    repeated vector2d refresh_pos = 7;
+}
+
+

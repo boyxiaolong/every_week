@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--this is DataLog_Object_Money  config-->
+<metalib>
+<items name = "object_money" desc ="货币类型">
+          <item name="1" desc="金币"/>
+          <item name="2" desc="食物（无用）"/>
+          <item name="3" desc="木材（无用）"/>
+          <item name="4" desc="钻石"/>
+          <item name="5" desc="兵种合成代币"/>
+          <item name="6" desc="公会贡献度"/>
+          <item name="7" desc="祝福能量"/>
+          <item name="8" desc="星辰之光"/>
+          <item name="9" desc="科技点"/>
+          <item name="10" desc="战争徽章"/>
+          <item name="11" desc="奇观点数"/>
+          <item name="12" desc="龙血"/>
+          <item name="13" desc="龙魂"/>
+          <item name="14" desc="石材"/>
+</items>
+</metalib>

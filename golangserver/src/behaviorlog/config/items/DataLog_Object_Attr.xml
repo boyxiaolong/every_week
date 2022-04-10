@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--this is DataLog_Object_Attr  config-->
+<metalib>
+<items name = "Object_Attr" desc ="属性类型">
+          <item name="20" desc="人口（废弃）"/>
+          <item name="21" desc="经验"/>
+          <item name="22" desc="等级"/>
+          <item name="23" desc="杯数"/>
+          <item name="24" desc="积分"/>
+          <item name="33" desc="钟楼的建筑生产时间"/>
+          <item name="34" desc="钟楼的法术生产时间"/>
+          <item name="35" desc="钟楼的科技生产时间"/>
+          <item name="38" desc="军力"/>
+          <item name="39" desc="人口"/>
+</items>
+</metalib>

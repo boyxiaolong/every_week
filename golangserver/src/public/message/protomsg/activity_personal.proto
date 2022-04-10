@@ -1,0 +1,126 @@
+syntax = "proto3";
+package protomsg;
+import "msg_common.proto";
+import "msg_common_activity.proto";
+import "msg_common_task.proto";
+
+
+//---------------------------------客户端协议--------------------------------- //
+
+//////////////////////////////////////////////////////////////////////////
+///  玩家部分 开始
+//////////////////////////////////////////////////////////////////////////
+
+// 玩家所有活动任务通知
+message MsgGS2CLPlayerAllActivityPersonalNotice 
+{
+    ActivityInfos infos  = 1;  // 活动的基础信息
+    repeated PlayerActivityRewarded rewarded = 2; //已领阶段奖励
+    // 具体的某个活动的数据
+    repeated PlayerLoginActivityInfo  login_info = 3 ; // 玩家个人七日登录
+	repeated PlayerActivityInfo player_activity_infos  = 4; //玩家活动任务信息
+}
+
+// 单个活动状态通知
+message MsgGS2CLActivityPersonalStatusNotice 
+{
+    int32 activity_id  = 1;
+    int32 sub_id  = 2;
+    uint64 time_begin = 3;  //开始时间
+    uint64 time_end = 4;    //结束时间
+    ActivityStatus status  = 5;
+    uint64 period = 6; // 期数
+}
+
+// 移除活动通知
+message MsgGS2CLActivityPersonalRemoveNotice
+{
+    int32 activity_id  = 1;
+    int32 sub_id  = 2; //sub_id为0时，移除主活动
+}
+
+// 玩家个人已领阶段奖励通知
+message MsgGS2CLPlayerActivityPersonalRewardedNotice 
+{
+    PlayerActivityRewarded rewarded = 1; //已领阶段奖励
+}
+
+// 玩家个人活动通知
+message MsgGS2CLPlayerActivityPersonalNotice 
+{
+    PlayerActivityInfo info  = 1; //玩家活动任务信息
+}
+
+
+// 玩家七日登录活动
+message MsgGS2CLLoginActivityPersonalNotice
+{
+    PlayerLoginActivityInfo notice = 1;   
+}
+
+//领取奖励
+message MsgCL2GSLoginActivityPersonalReceiveAwardRequest
+{
+    uint32 activity_id = 1;  
+    int32 index = 2;  //客户端
+}
+//
+message MsgGS2CLLoginActivityPersonalReceiveAwardReply
+{
+    uint32 activity_id = 1; 
+    int32 index = 2;
+    repeated protomsg.Resource reward_resource = 3;
+    int32 error_code   = 99;
+}
+
+// 玩家单个任务通知
+message MsgGS2CLPlayerActivityPersonalTaskUpdateNotice
+{
+  protomsg.TaskData main_task	= 1;
+  uint32	activity_id		= 2; // 主活动id
+  uint32	sub_id		= 3;     // 子活动id（为0时代表没有）
+}
+
+// 活动积分通知
+message MsgGS2CLPlayerActivityPersonalScoreNotice 
+{
+  int32 activity_id  = 1;
+  int32 sub_id  = 2;
+  uint64 score = 3;
+}
+
+// 任务请求领取奖励
+message MsgCL2GSActivityPersonalTaskAwardRequest
+{
+  uint32	activity_id		= 1; // 主活动id
+  uint32	sub_id		= 2;     // 子活动id（为0时代表没有）
+  uint32	task_id			= 3;
+}
+
+// 奖励回复
+message MsgCL2GSActivityPersonalTaskAwardReply
+{
+  uint32	task_id			= 1;
+  repeated Resource awards	= 2;	// 奖品信息
+  uint32	activity_id		= 3; // 主活动id
+  uint32	sub_id		= 4;     // 子活动id（为0时代表没有）
+  int32	error_code		= 99;		// 结果和错误码
+}
+
+//请求领取任务奖励
+message MsgCL2GSActivityTaskPersonalReceiveAwardRequest
+{
+    uint32 activity_id = 1;  
+    int32 index = 2;  //客户端
+}
+//
+message MsgGS2CLctivityTaskPersonalReceiveAwardReply
+{
+    uint32 activity_id = 1; 
+    int32 index = 2;
+    repeated protomsg.Resource reward_resource = 3;
+	bool vip_reward = 4;  // vip奖励
+	bool normal_reward = 5;   // 普通奖励
+    int32 error_code   = 99;
+}
+

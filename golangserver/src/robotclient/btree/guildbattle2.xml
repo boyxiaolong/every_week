@@ -1,0 +1,12 @@
+<btree name="guildbattle">
+  <root name="root test" type="sequence" sleep_time="1000">
+    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
+        <node name="login task" type="task" task_type="Login" task_params="1"/>
+    </node>
+    <node name="MarchMove" type="task" task_type="MarchMoveBack" task_params="" reset_intervel="0" do_times="1"/>
+    <node name="CheckGuildPosition to guild" type="condition" condition_check="CheckGuildPosition" condition_params="5" condition_result="false">
+      <node name="Move Castle To Guild" type="task" task_type="MoveCastleToGuild" task_params="1,100" reset_intervel="0" do_times="1"/>
+    </node>
+    <node name="join guild" type="task" task_type="JoinGuildMarch" task_params="0,0,1000,1000" reset_intervel="60" do_times="1"/>
+  </root>
+</btree>

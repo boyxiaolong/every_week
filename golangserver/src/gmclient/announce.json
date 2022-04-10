@@ -1,0 +1,29 @@
+{
+  "kingdom": 1,
+  "items": [
+    {
+      "id": "1#0",
+      "value": 100
+    },
+    {
+      "id": "2#5",
+      "value": 30
+    }
+  ],
+  "announcements": [
+    {
+      "language": 0,
+      "subject": "system announcement",
+      "content": "something..."
+    },
+    {
+      "language": 1,
+      "subject": "系统公告",
+      "content": "某些内容......"
+    }
+  ],
+	"type": 2,
+  "param": {
+    "version": "1.5.0"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kingdoms": [
+    {
+      "kingdom_id": 10001,
+      "kingdom_begin_time": 1618284993,
+      "new": 0
+    },
+    {
+      "kingdom_id": 10002,
+      "kingdom_begin_time": 1618285000,
+      "new": 1
+    }
+  ]
+}

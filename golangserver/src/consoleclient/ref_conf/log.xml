@@ -1,0 +1,37 @@
+<logging>
+  <!-- Levels are FINEST|FINE|DEBUG|TRACE|INFO|WARNING|ERROR -->
+  <!-- 前端打印 -->
+  <filter enabled="false">
+    <tag>stderr</tag>
+    <type>console</type>
+    <level>FINE</level>
+    <format name="pattern">[%D %T] [%L] [%s] %M</format>
+  </filter>
+
+  <!-- 所有log -->
+  <filter enabled="true">
+    <tag>file</tag>
+    <type>file</type>
+    <level>FINEST</level>     
+    <property name="filename">gamelog/game_all.log</property>
+    <property name="format">[%D %T] [%L] [%s] %M</property>
+  </filter>
+
+  <!-- debug log -->
+  <filter enabled="true">
+    <tag>file</tag>
+    <type>file</type>
+    <level>DEBUG</level>   
+    <property name="filename">gamelog/game_debug.log</property>
+    <property name="format">[%D %T] [%L] [%s] %M</property>
+  </filter>
+
+<!-- error log -->
+<filter enabled="true">
+    <tag>file</tag>
+    <type>file</type>
+    <level>ERROR</level>   
+    <property name="filename">gamelog/game_error.log</property>
+    <property name="format">[%D %T] [%L] [%s] %M</property>
+  </filter>
+</logging>
