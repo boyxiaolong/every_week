@@ -1,8 +1,0 @@
-<btree name="quartermarch">
-  <root name="root test" type="sequence" sleep_time="5000">
-    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
-        <node name="login task" type="task" task_type="Login" task_params="1"/>
-    </node>
-    <node name="quarter march task" type="task" task_type="QuarterMarch" task_params=""/>
-  </root>
-</btree>

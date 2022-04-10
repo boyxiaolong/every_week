@@ -1,8 +1,0 @@
-<btree name="battletobarbarian">
-  <root name="root test" type="sequence" sleep_time="5000">
-    <node name="islogin" type="condition" condition_check="IsOnline" condition_result="false">
-        <node name="login task" type="task" task_type="Login" task_params="1"/>
-    </node>
-    <node name="battle task" type="task" task_type="Battle" task_params="0,0,1,0,0,1000,1000"/>
-  </root>
-</btree>
