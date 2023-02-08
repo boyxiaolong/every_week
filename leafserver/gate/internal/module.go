@@ -1,10 +1,12 @@
 package internal
 
 import (
-	"github.com/name5566/leaf/gate"
+	"fmt"
 	"server/conf"
 	"server/game"
 	"server/msg"
+
+	"github.com/name5566/leaf/gate"
 )
 
 type Module struct {
@@ -12,11 +14,11 @@ type Module struct {
 }
 
 func (m *Module) OnInit() {
+	fmt.Println("TCPAddr", conf.Server.TCPAddr, conf.MaxMsgLen, conf.LenMsgLen)
 	m.Gate = &gate.Gate{
 		MaxConnNum:      conf.Server.MaxConnNum,
 		PendingWriteNum: conf.PendingWriteNum,
 		MaxMsgLen:       conf.MaxMsgLen,
-		WSAddr:          conf.Server.WSAddr,
 		HTTPTimeout:     conf.HTTPTimeout,
 		CertFile:        conf.Server.CertFile,
 		KeyFile:         conf.Server.KeyFile,
