@@ -1,0 +1,93 @@
+version: '3.7'
+services:
+  redis-master:
+    image: redis
+    container_name: redis-master
+    command: redis-server /var_redis/7102/redis.conf
+    ports:
+      - 7102:7102
+    volumes:
+      - ./var_redis:/var_redis
+    
+  redis-7100:
+    image: redis
+    container_name: redis-7100
+    command: redis-server /var_redis/7100/redis.conf
+    ports:
+      - 7100:7100
+    volumes:
+      - ./var_redis:/var_redis
+    depends_on:
+      - redis-master
+    
+  redis-7101:
+    image: redis
+    container_name: redis-7101
+    command: redis-server /var_redis/7101/redis.conf
+    ports:
+      - 7101:7101
+    volumes:
+      - ./var_redis:/var_redis
+    depends_on:
+      - redis-master
+    
+  sentinel1:
+    image: redis
+    container_name: redis_sentinel_1
+    ports:
+      - "26377:26377"
+    volumes:
+      - ./var_redis:/var_redis
+    command: redis-sentinel /var_redis/sentinel_1.conf
+    depends_on:
+      - redis-master
+    
+  sentinel2:
+    image: redis
+    container_name: redis_sentinel_2
+    ports:
+      - "26378:26378"
+    volumes:
+      - ./var_redis:/var_redis
+    command: redis-sentinel /var_redis/sentinel_2.conf
+    depends_on:
+      - redis-master
+    
+  sentinel3:
+    image: redis
+    container_name: redis_sentinel_3
+    ports:
+      - "26379:26379"
+    volumes:
+      - ./var_redis:/var_redis
+    command: redis-sentinel /var_redis/sentinel_3.conf
+    depends_on:
+      - redis-master
+  database:
+    image: mysql:5.7
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'CaveOnlineTrunk_Role'  
+      MYSQL_USER: 'dev001'
+      MYSQL_PASSWORD: 'caveonline'      
+      MYSQL_ROOT_PASSWORD: 'caveonline'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - '../.mysql-data/db:/var/lib/mysql'
+
+  mycentos:
+    image: allenzhao123/mycentosgcc:latest
+    container_name: centosbase
+    ports:
+      - '22:22'
+      - 10000-11000:10000-11000
+    expose:
+      - '22'
+    volumes:
+      - ../log:/log
+      - ../binary:/binary
+    
