@@ -8,7 +8,7 @@ services:
       - 7102:7102
     volumes:
       - ./var_redis:/var_redis
-    
+      - redisdata:/data
   redis-7100:
     image: redis
     container_name: redis-7100
@@ -17,6 +17,7 @@ services:
       - 7100:7100
     volumes:
       - ./var_redis:/var_redis
+      - redisdata:/data
     depends_on:
       - redis-master
     
@@ -28,6 +29,7 @@ services:
       - 7101:7101
     volumes:
       - ./var_redis:/var_redis
+      - redisdata:/data
     depends_on:
       - redis-master
     
@@ -77,7 +79,7 @@ services:
     expose:
       - '3306'
     volumes:
-      - '../.mysql-data/db:/var/lib/mysql'
+      - mysqldb:/var/lib/mysql
 
   mycentos:
     image: allenzhao123/centos7:latest
@@ -90,4 +92,8 @@ services:
     volumes:
       - ../log:/log
       - ../binary:/binary
+
+volumes:
+  mysqldb:
+  redisdata:
     
