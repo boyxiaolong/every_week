@@ -80,7 +80,7 @@ services:
       - '../.mysql-data/db:/var/lib/mysql'
 
   mycentos:
-    image: allenzhao123/mycentosgcc:latest
+    image: allenzhao123/centos7:latest
     container_name: centosbase
     ports:
       - '22:22'
