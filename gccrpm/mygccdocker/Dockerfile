@@ -4,11 +4,11 @@
 FROM centos:7
  
 #设置一个时区的环境变量
-ENV TZ = "Asia/Shanghai"\
-LANG = zh_CN.UTF-8\
+ENV TZ = "Asia/Shanghai"
+ENV LANG = en_US.utf8
 #虚拟终端
-container = docker\
-DISTCC_HOSTS="127.0.0.1 3"
+ENV container = docker
+ENV HOME=/home/cave2
 #dockerfile中有2条命令可以复制文件，1.COPY 2.ADD， ADD比COPY多2个功能，可以写成连接 直接COPY到container，如果是压缩文件，add能自动解压
 RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && \
     yum install -y git make  logrotate glibc-langpack-en.x86_64 gcc gcc-c++ && \
@@ -28,7 +28,11 @@ WORKDIR /usr/bin
 RUN rm -rf cc c++;\
 ln -s /usr/local/bin/gcc cc;\
 ln -s /usr/local/bin/g++ c++;\
+mkdir /usr/local/distcc;\
+ln -s /usr/bin/distcc /usr/local/distcc/c++;\
+ln -s /usr/bin/distcc /usr/local/distcc/cc;\
+ln -s /usr/bin/distcc /usr/local/distcc/gcc;\
+ln -s /usr/bin/distcc /usr/local/distcc/g++;\
 rm -rf /home/cave2/mygccrpm 
-EXPOSE 22
 VOLUME [ "/sys/fs/cgroup" ]
 CMD ["/usr/sbin/init"]
