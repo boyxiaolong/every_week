@@ -12,7 +12,7 @@ ENV HOME=/home/cave2
 RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && \
     yum install -y git make  logrotate glibc-langpack-en.x86_64 gcc gcc-c++ && \
     yum -y install epel-release && yum -y install distcc screen cmake3 python-pip python-devel mariadb-devel ccache openssh openssh-server openssh-clients&&\
-	yum -y install wqy-microhei-fonts chpasswd subversion&&\
+	yum -y install wqy-microhei-fonts chpasswd subversion golang&&\
     pip install MySQL-python&&\
     yum clean all;\
 #创建admin用户
