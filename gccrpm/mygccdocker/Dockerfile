@@ -11,8 +11,8 @@ ENV HOME=/home/cave2
 #dockerfile中有2条命令可以复制文件，1.COPY 2.ADD， ADD比COPY多2个功能，可以写成连接 直接COPY到container，如果是压缩文件，add能自动解压
 RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && \
     yum install -y git make  logrotate glibc-langpack-en.x86_64 gcc gcc-c++ && \
-    yum -y install epel-release && yum -y install distcc screen cmake3 python-pip python-devel mariadb-devel ccache openssh-server openssh-clients&&\
-	yum -y install wqy-microhei-fonts&&\
+    yum -y install epel-release && yum -y install distcc screen cmake3 python-pip python-devel mariadb-devel ccache openssh openssh-server openssh-clients&&\
+	yum -y install wqy-microhei-fonts chpasswd&&\
     pip install MySQL-python&&\
     yum clean all;\
 #创建admin用户
@@ -34,9 +34,13 @@ ln -s /usr/bin/distcc /usr/local/distcc/cc;\
 ln -s /usr/bin/distcc /usr/local/distcc/gcc;\
 ln -s /usr/bin/distcc /usr/local/distcc/g++;\
 rm -rf /home/cave2/mygccrpm;\
-ssh-keygen -q -t rsa -b 2048 -f /etc/ssh/ssh_host_rsa_key -N '';\
-ssh-keygen -q -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N '';\
-ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key -N '';
+mkdir -p /var/run/sshd;\
+ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key;\
+ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key;\
+ssh-keygen -t dsa -f /etc/ssh/ssh_host_ecdsa_key;\
+/bin/echo "caveonline" | passwd --stdin root;\
+sed -ri 's/PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config;\
+sed -ri 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 ENV LC_ALL=en_US.utf8
 ENV LANG=en_US.utf8 
 EXPOSE 22
