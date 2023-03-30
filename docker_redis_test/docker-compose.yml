@@ -86,12 +86,14 @@ services:
     container_name: centosbase
     ports:
       - '22:22'
-      - 10000-11000:10000-11000
+      - 10010-10100:10010-10100
+      - 3632:3632
     expose:
       - '22'
     volumes:
-      - ../log:/log
-      - ../binary:/binary
+      - C:\Download\CaveOnlinecp1:/binary
+    environment:
+      - DISTCC_HOSTS=localhost/3 192.168.200.144:23632/30
 
 volumes:
   mysqldb:
