@@ -12,7 +12,7 @@ ENV HOME=/home/cave2
 RUN yum install -y curl wget tar bzip2 unzip vim-enhanced passwd sudo yum-utils hostname net-tools rsync man && \
     yum install -y git make  logrotate glibc-langpack-en.x86_64 gcc gcc-c++ && \
     yum -y install epel-release && yum -y install distcc screen cmake3 python-pip python-devel mariadb-devel ccache openssh openssh-server openssh-clients&&\
-	yum -y install wqy-microhei-fonts chpasswd&&\
+	yum -y install wqy-microhei-fonts chpasswd subversion&&\
     pip install MySQL-python&&\
     yum clean all;\
 #创建admin用户
@@ -40,9 +40,9 @@ ssh-keygen -t dsa -f /etc/ssh/ssh_host_ed25519_key;\
 ssh-keygen -t dsa -f /etc/ssh/ssh_host_ecdsa_key;\
 /bin/echo "caveonline" | passwd --stdin root;\
 sed -ri 's/PermitEmptyPasswords no/PermitEmptyPasswords yes/' /etc/ssh/sshd_config;\
-sed -ri 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+sed -ri 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config;
 ENV LC_ALL=en_US.utf8
 ENV LANG=en_US.utf8 
 EXPOSE 22
 VOLUME [ "/sys/fs/cgroup" ]
-CMD ["/usr/sbin/init"]
+CMD ["/usr/sbin/sshd","-D"]
